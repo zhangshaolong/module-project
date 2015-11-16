@@ -1,0 +1,30 @@
+{
+  "name": "module-project-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "base.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+  },
+  "author": "zhangshaolong",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-cache": "^0.3.0",
+    "gulp-clean": "^0.3.1",
+    "gulp-connect": "^2.2.0",
+    "gulp-htmlmin": "^1.2.0",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-less": "^3.0.3",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-rev": "^6.0.1",
+    "gulp-rev-all": "^0.8.22",
+    "gulp-sequence": "^0.4.1",
+    "imagemin-pngquant": "^4.2.0",
+    "less-plugin-functions": "0.0.2",
+    "requirejs": "^2.1.20",
+    "through2": "^2.0.0"
+  }
+}

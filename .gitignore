@@ -1,0 +1,15 @@
+test
+/output
+build.sh
+*.bat
+*.psd
+npm-debug.log
+router.sublime-project
+router.sublime-workspace
+.DS_Store
+.swp
+/node_modules
+gulp
+gulp.cmd
+r.js
+r.js.cmd
