@@ -10,6 +10,11 @@ define(function (require, exports) {
 
     require('tpl!/tpl/module1/index.tpl');
 
+    // 页面中的子模块需要手动require进来，打包时分析依赖用
+    require('./sub1');
+
+    require('./sub2');
+
     exports.init = function (id) {
 
         // 模块元素，查找元素都要基于此元素，目的是防止干扰其他模块

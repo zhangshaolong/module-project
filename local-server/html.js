@@ -10,14 +10,15 @@ var fs = require('fs');
 var path = require('path');
 var URL = require('url');
 
-var includeReg = /\<\%\s*include\s*\(([^\)]+)\)[^\%]*\%\>/g;
-var createIncludeTpl = function (content) {
-    var pathReg = /(['"])(.*)\1/;
+var includeReg = /\<\%\s*include\s*\(([^\)]+)\)\s*\;?\s*\%\>/g;
+
+var createIncludeTpl = function (content, encoding) {
+    var pathReg = /(['"])(.*?)\1/;
     content.replace(includeReg, function (all, key) {
         if (key) {
             var p = pathReg.exec(key)[2];
             var tplContent = fs.readFileSync(path.resolve('view/' + p));
-            Simplite.addTemplate(p, new String(tplContent, 'utf-8'));
+            Simplite.addTemplate(p, new String(tplContent, encoding));
         }
     });
 };
@@ -26,7 +27,7 @@ var htmlWriter = function (res) {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
         var key = (new Date().getTime()) + '_t';
-        createIncludeTpl(content);
+        createIncludeTpl(content, encoding);
         Simplite.addTemplate(key, content);
         content = Simplite.render(key);
         file.contents = new Buffer(content);
@@ -35,7 +36,6 @@ var htmlWriter = function (res) {
         return callback();
     });
 };
-
 
 exports.htmlProxy = function (req, res, next) {
     var url = req.url;
