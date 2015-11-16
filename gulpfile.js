@@ -135,8 +135,22 @@ gulp.task('htmlmin', function () {
     .pipe(gulp.dest('output/view'));
 });
 
+// 为了同时和多个rd进行联调，支持多个端口访问
+// 支持设置port参数，比如：gulp --port:8081
+var argvReg = /^\-\-port\:(.+)$/;
 gulp.task('connect', function() {
+    var port = 8080;
+    var options = process.argv.slice(2);
+    for (var i = 0, len = options.length; i < len; i++) {
+        var argi = options[i];
+        if (argvReg.test(argi)) {
+            port = RegExp.$1;
+            break;
+        }
+    }
+
     return connect.server({
+        port: port,
         middleware: function(connect, opt) {
             return [
                 require('./local-server/html').htmlProxy,
