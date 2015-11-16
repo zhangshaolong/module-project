@@ -8,12 +8,72 @@
 var queryString = require('querystring');
 
 var URL = require('url');
+
+var http = require('http');
+
 var pathNormalize = require('path').normalize;
 
 var formDataReg = /multipart\/form-data/;
 
+var proxyInfo;
+
 module.exports = function (req, res, next) {
+
     if (req.url.indexOf('.ajax') > 0) {
+
+        var getProxyInfo = function () {
+            var pageUrl = req.headers.referer;
+
+            var query = URL.parse(pageUrl, true).query;
+
+            if (query && query.proxy) {
+                var pair = query.proxy.split(':');
+                return {
+                    host: pair[0],
+                    port: pair[1] || 80
+                }
+            }
+            return false;
+        };
+
+        var doProxy = function () {
+            var options = {
+                host: proxyInfo.host,
+                port: proxyInfo.port,
+                path: req.url,
+                method: req.method,
+                headers: {
+                    'Content-Type': 'application/json;charset=UTF-8'
+                }
+                // headers: {
+                //   // 如果代理服务器需要认证
+                //   'Proxy-Authentication': 'Base ' + new Buffer('user:password').toString('base64')    // 替换为代理服务器用户名和密码
+                // }
+            };
+
+            var proxyReq = http.request(options, function(proxyRes) {
+                res.writeHead(200, {'Content-Type': 'application/json;charset=UTF-8'});
+                proxyRes.pipe(res);
+            });
+
+            req.on('data', function (data) {
+                proxyReq.write(data);
+            });
+
+            req.on('end', function () {
+                proxyReq.end();
+            });
+        };
+
+        if (proxyInfo === undefined) {
+            proxyInfo = getProxyInfo();
+        }
+
+        if (proxyInfo) {
+            doProxy();
+            return ;
+        }
+
         var doMock = function (params, pathName) {
             res.writeHead(200, {'Content-Type': 'application/json;charset=UTF-8'});
             try {

@@ -163,18 +163,6 @@ gulp.task('copy', function () {
     .pipe(gulp.dest('output/dep'));
 });
 
-gulp.task('proxy', function() {
-    return connect.server({
-        middleware: function(connect, opt) {
-            return [
-                require('./local-server/proxy'),
-                require('./local-server/less'),
-                require('./local-server/html').htmlProxy
-            ];
-        }
-    });
-});
-
 gulp.task('build', sequence(
     'clean',
     ['htmlmin', /*'imagemin',*/ 'main', 'copy'] // 图片依赖libc.so.6: version `GLIBC_2.14'
