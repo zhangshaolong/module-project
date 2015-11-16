@@ -22,13 +22,9 @@ var pageJSBulder = function () {
                 baseUrl: 'src',
                 name: path,
                 paths: {
-                    tpl: 'common/tpl',
-                    jockey: 'common/jockey'
+                    tpl: 'common/tpl'
                 },
                 shim: {
-                    'jockey': {
-                        exports: 'jockey'
-                    }
                 },
                 stubModules: ['tpl'],
                 optimizeAllPluginResources: false,
