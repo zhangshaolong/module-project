@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var connect = require('gulp-connect');
 var less = require('gulp-less');
+var cssmin = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
 var cache = require('gulp-cache');
@@ -92,6 +93,7 @@ var pageLessBuilder = function () {
             lessPath = lessPath.substr(1);
             gulp.src(lessPath + '.less')
             .pipe(less({ plugins: [new lessPluginFunction()] }))
+            .pipe(cssmin())
             .pipe(gulp.dest('output/' + lessPath.substr(0, lessPath.lastIndexOf('/'))));
             return all.replace('.less', '.css');
         });
