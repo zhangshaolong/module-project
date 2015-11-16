@@ -179,7 +179,7 @@ gulp.task('copy', function () {
 
 gulp.task('build', sequence(
     'clean',
-    ['htmlmin', /*'imagemin',*/ 'main', 'copy'] // 图片依赖libc.so.6: version `GLIBC_2.14'
+    ['htmlmin', 'imagemin', 'main', 'copy'] // 图片依赖libc.so.6: version `GLIBC_2.14'
 ));
 
 gulp.task('default', ['connect']);
