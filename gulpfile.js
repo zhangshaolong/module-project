@@ -14,6 +14,19 @@ var through = require('through2');
 var lessPluginFunction = require('less-plugin-functions');
 var fs = require('fs');
 
+var commentTrimReg = /(?:(["'])[\s\S]*?\1)|(?:\/\/.*\n)|(?:\/\*([\s\S])*?\*\/)/g;
+
+var commentTrimHandler = function (all) {
+    var start = all.charAt(0);
+    switch (start) {
+        case '/' :
+            return '';
+        case '"' :
+        case "'" :
+            return all;
+    }
+};
+
 var pageJSBulder = function () {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
@@ -38,7 +51,7 @@ var pageJSBulder = function () {
                     if (moduleName === 'tpl') {
                         return '';
                     }
-                    return contents.replace(/(['"])tpl\!/g, '$1tpl');
+                    return contents.replace(commentTrimReg, commentTrimHandler).replace(/(['"])tpl\!/g, '$1tpl');
                 },
                 out: 'output/asset/' + path + '.js'
             });
@@ -49,19 +62,6 @@ var pageJSBulder = function () {
         this.push(file);
         return callback();
     });
-};
-
-var commentTrimReg = /(?:(["'])[\s\S]*?\1)|(?:\/\/.*\n)|(?:\/\*([\s\S])*?\*\/)/g;
-
-var commentTrimHandler = function (all) {
-    var start = all.charAt(0);
-    switch (start) {
-        case '/' :
-            return '';
-        case '"' :
-        case "'" :
-            return all;
-    }
 };
 
 var tplBuilder = function (content) {
