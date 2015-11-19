@@ -60,6 +60,7 @@ var pageJSBulder = function () {
 };
 
 var tplCache = {};
+
 var tplBuilder = function (content) {
     var tplDefines = [];
     content.replace(/["']tpl!([^"']+)["']/g, function (all, path) {
