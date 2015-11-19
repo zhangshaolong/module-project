@@ -37,8 +37,6 @@ var pageJSBulder = function () {
                 paths: {
                     tpl: 'common/tpl'
                 },
-                shim: {
-                },
                 stubModules: ['tpl'],
                 optimizeAllPluginResources: false,
                 onBuildRead: function (moduleName, pth, contents) {
@@ -47,7 +45,7 @@ var pageJSBulder = function () {
                     }
                     return contents;
                 },
-                onBuildWrite: function (moduleName, path, contents) {
+                onBuildWrite: function (moduleName, pth, contents) {
                     if (moduleName === 'tpl') {
                         return '';
                     }
