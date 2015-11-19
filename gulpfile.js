@@ -40,10 +40,7 @@ var pageJSBulder = function () {
                 stubModules: ['tpl'],
                 optimizeAllPluginResources: false,
                 onBuildRead: function (moduleName, pth, contents) {
-                    if (moduleName === path) {
-                        contents = tplBuilder(contents);
-                    }
-                    return contents;
+                    return tplBuilder(contents);
                 },
                 onBuildWrite: function (moduleName, pth, contents) {
                     if (moduleName === 'tpl') {
@@ -62,19 +59,24 @@ var pageJSBulder = function () {
     });
 };
 
+var tplCache = {};
 var tplBuilder = function (content) {
     var tplDefines = [];
     content.replace(/["']tpl!([^"']+)["']/g, function (all, path) {
-        var data = fs.readFileSync(path.substr(1), 'utf-8');
-        var tplDefine = ''
-            + 'define("tpl!' + path + '", function () {'
-                + 'var tplReg = /\\{\\{\\s*\\-\\-\\s*tpl\\s*\\:\\s*([^\\}\\s]+)\\s*\\-\\-\\s*\\}\\}\\s*([\\s\\S]+?)\\{\\{\\s*\\-\\-\\s*\\/tpl\\s*\\-\\-\\s*\\}\\}/g;'
-                +   '"' + data.replace(commentTrimReg, commentTrimHandler).replace(/"/g, '\\"').replace(/\s+/g, ' ') + '".replace(tplReg, function (all, tplId, tplContent) {'
-                +       'Simplite.addTemplate(tplId, tplContent);'
-                +       'Simplite.compile(tplId, Simplite);'
-                +   '});'
-            + '})';
-        tplDefines.push(tplDefine);
+        var compiled = tplCache[path];
+        if (!compiled) {
+            var data = fs.readFileSync(path.substr(1), 'utf-8');
+            compiled = ''
+                + 'define("tpl!' + path + '", function () {'
+                    + 'var tplReg = /\\{\\{\\s*\\-\\-\\s*tpl\\s*\\:\\s*([^\\}\\s]+)\\s*\\-\\-\\s*\\}\\}\\s*([\\s\\S]+?)\\{\\{\\s*\\-\\-\\s*\\/tpl\\s*\\-\\-\\s*\\}\\}/g;'
+                    +   '"' + data.replace(commentTrimReg, commentTrimHandler).replace(/"/g, '\\"').replace(/\s+/g, ' ') + '".replace(tplReg, function (all, tplId, tplContent) {'
+                    +       'Simplite.addTemplate(tplId, tplContent);'
+                    +       'Simplite.compile(tplId, Simplite);'
+                    +   '});'
+                + '})';
+            tplCache[path] = compiled;
+        }
+        tplDefines.push(compiled);
     });
     return ';' + tplDefines.join(';') + ';' + content;
 };
