@@ -13,6 +13,8 @@ var http = require('http');
 
 var pathNormalize = require('path').normalize;
 
+var contentTypeConfig = {'Content-Type': 'application/json;charset=UTF-8'};
+
 var formDataReg = /multipart\/form-data/;
 
 var proxyInfo;
@@ -33,7 +35,6 @@ module.exports = function (req, res, next) {
                     port: pair[1] || 80
                 }
             }
-            return false;
         };
 
         var doProxy = function () {
@@ -42,9 +43,7 @@ module.exports = function (req, res, next) {
                 port: proxyInfo.port,
                 path: req.url,
                 method: req.method,
-                headers: {
-                    'Content-Type': 'application/json;charset=UTF-8'
-                }
+                headers: contentTypeConfig
                 // headers: {
                 //   // 如果代理服务器需要认证
                 //   'Proxy-Authentication': 'Base ' + new Buffer('user:password').toString('base64')    // 替换为代理服务器用户名和密码
@@ -52,7 +51,7 @@ module.exports = function (req, res, next) {
             };
 
             var proxyReq = http.request(options, function(proxyRes) {
-                res.writeHead(200, {'Content-Type': 'application/json;charset=UTF-8'});
+                res.writeHead(200, contentTypeConfig);
                 proxyRes.pipe(res);
             });
 
@@ -65,7 +64,7 @@ module.exports = function (req, res, next) {
             });
         };
 
-        if (proxyInfo === undefined) {
+        if (!proxyInfo) {
             proxyInfo = getProxyInfo();
         }
 
@@ -75,7 +74,7 @@ module.exports = function (req, res, next) {
         }
 
         var doMock = function (params, pathName) {
-            res.writeHead(200, {'Content-Type': 'application/json;charset=UTF-8'});
+            res.writeHead(200, contentTypeConfig);
             try {
                 var path = require.resolve(pathNormalize('../mock/' + pathName.replace(/\.ajax$/, '')));
                 delete require.cache[path];
