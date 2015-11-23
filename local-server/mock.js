@@ -17,8 +17,6 @@ var contentTypeConfig = {'Content-Type': 'application/json;charset=UTF-8'};
 
 var formDataReg = /multipart\/form-data/;
 
-var proxyInfo;
-
 module.exports = function (req, res, next) {
 
     if (req.url.indexOf('.ajax') > 0) {
@@ -37,7 +35,7 @@ module.exports = function (req, res, next) {
             }
         };
 
-        var doProxy = function () {
+        var doProxy = function (proxyInfo) {
             var options = {
                 host: proxyInfo.host,
                 port: proxyInfo.port,
@@ -64,12 +62,10 @@ module.exports = function (req, res, next) {
             });
         };
 
-        if (!proxyInfo) {
-            proxyInfo = getProxyInfo();
-        }
+        var proxyInfo = getProxyInfo();
 
         if (proxyInfo) {
-            doProxy();
+            doProxy(proxyInfo);
             return ;
         }
 
