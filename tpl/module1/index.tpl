@@ -13,7 +13,8 @@
     </thead>
     <tbody>
         <% var tmp; %>
-        <% for(var i = 0, len = _this.list.length ; i < len; i++){ tmp = _this.list[i]; %>
+        <% for(var i = 0, len = _this.list.length ; i < len; i++) {
+            tmp = _this.list[i]; %>
         <tr>
             <td>
                 <%= tmp.date %>

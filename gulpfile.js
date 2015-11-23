@@ -86,7 +86,7 @@ var pageLessBuilder = function () {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
 
-        content = content.replace(/\<link.*?href=["']([^"']+?)\.less["']/g, function (all, lessPath) {
+        content = content.replace(/\<link.*?href=["']([^>]+?)\.less["']/g, function (all, lessPath) {
             lessPath = lessPath.substr(1);
             gulp.src(lessPath + '.less')
             .pipe(less({ plugins: [new lessPluginFunction()] }))
