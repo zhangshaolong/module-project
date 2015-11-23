@@ -41,7 +41,10 @@ module.exports = function (req, res, next) {
                 port: proxyInfo.port,
                 path: req.url,
                 method: req.method,
-                headers: contentTypeConfig
+                headers: {
+                    'Content-Type': contentTypeConfig['Content-Type'],
+                    'cookie': req.headers.cookie
+                }
                 // headers: {
                 //   // 如果代理服务器需要认证
                 //   'Proxy-Authentication': 'Base ' + new Buffer('user:password').toString('base64')    // 替换为代理服务器用户名和密码
