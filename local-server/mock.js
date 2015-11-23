@@ -98,7 +98,7 @@ module.exports = function (req, res, next) {
         };
         var method = req.method.toUpperCase();
         var urlInfo = URL.parse(req.url, true);
-        var contentType = req.headers['content-type'];
+        var contentType = req.headers['Content-Type'];
         if (formDataReg.test(contentType)) {
             req.once('data', function(data) {
                 doMock(queryString.parse(String(data, 'UTF-8')), urlInfo.pathname);
