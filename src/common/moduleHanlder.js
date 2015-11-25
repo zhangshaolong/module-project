@@ -34,46 +34,32 @@ define(function (require, exports) {
             eventEmitter: eventEmitter,
             data: moduleNode.data()
         };
-        var loadModule = function (path, data) {
-            require([path], function (factory) {
-                if (factory && $.isFunction(factory.init)) {
-                    var deferred = factory.init.call(caller, data);
-                    if (deferred && $.isFunction(deferred.done)) {
-                        deferred.done(function () {
-                            exports.init(moduleNode.children());
-                        })
-                    } else {
-                        exports.init(moduleNode.children());
-                    }
-                }
-            });
+        var execModule = function (factory, data) {
+            if (factory && $.isFunction(factory.init)) {
+                factory.init.call(caller, data);
+                exports.init(moduleNode.children());
+            }
         };
-        if (interceptorPath) {
-            require([interceptorPath], function (interceptorFactory) {
-                if (interceptorFactory && $.isFunction(interceptorFactory.init)) {
 
-                    var deferred = interceptorFactory.init.call(caller);
-                    if (deferred.done) {
-                        deferred.done(function (data) {
-                            loadModule(path, data);
-                        });
+        require([path], function (factory) {
+            if (interceptorPath) {
+                require([interceptorPath], function (interceptorFactory) {
+                    if (interceptorFactory && $.isFunction(interceptorFactory.init)) {
+                        var deferred = interceptorFactory.init.call(caller);
+                        if (deferred.done) {
+                            deferred.done(function (data) {
+                                execModule(factory, data);
+                            });
+                        } else {
+                            execModule(factory, deferred);
+                        }
                     } else {
-                        loadModule(path, deferred);
+                        execModule(factory);
                     }
-                } else {
-                    loadModule(path);
-                }
-            });
-        } else {
-            loadModule(path);
-        }
-    };
-
-    /**
-     * 设计这个方法的目的是在元素添加html内容后，自动扫描并初始化html中的data-module-path模块
-     */
-    exports.add = function (moduleNode, moduleHtml) {
-        moduleNode.html(moduleHtml);
-        exports.init(moduleNode.children());
+                });
+            } else {
+                execModule(factory);
+            }
+        });
     };
 })

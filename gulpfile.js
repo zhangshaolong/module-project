@@ -4,15 +4,17 @@ var less = require('gulp-less');
 var cssmin = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var pngquant = require('imagemin-pngquant');
-var cache = require('gulp-cache');
 var htmlmin = require('gulp-htmlmin');
 var rjs = require('requirejs');
-var rev = require('gulp-rev');
 var clean = require('gulp-clean');
+
 var sequence = require('gulp-sequence');
+var rename = require('gulp-rename');
 var through = require('through2');
 var lessPluginFunction = require('less-plugin-functions');
 var fs = require('fs');
+var path = require('path');
+var crypto = require('crypto');
 
 var commentTrimReg = /(?:(["'])[\s\S]*?\1)|(?:\/\/.*\n)|(?:\/\*([\s\S])*?\*\/)/g;
 
@@ -25,6 +27,14 @@ var commentTrimHandler = function (all) {
         case "'" :
             return all;
     }
+};
+
+var md5 = function (filepath, cut) {
+    cut = cut || 10;
+    var shasum = crypto.createHash('md5');
+    var fileContent = fs.readFileSync(filepath);
+    shasum.update(fileContent);
+    return shasum.digest('hex').substring(0, cut);
 };
 
 var pageJSBulder = function () {
@@ -60,7 +70,6 @@ var pageJSBulder = function () {
 };
 
 var tplCache = {};
-
 var tplBuilder = function (content) {
     var tplDefines = [];
     content.replace(/["']tpl!([^"']+)["']/g, function (all, path) {
@@ -87,13 +96,47 @@ var pageLessBuilder = function () {
         var content = String(file.contents, encoding);
 
         content = content.replace(/\<link.*?href=["']([^>]+?)\.less["']/g, function (all, lessPath) {
-            lessPath = lessPath.substr(1);
-            gulp.src(lessPath + '.less')
+            var absPath = path.resolve('.' + lessPath + '.less');
+            var hashCode = md5(absPath);
+            var name = path.basename(absPath);
+            var suffix = '_' + hashCode + '.css';
+            gulp.src(lessPath.substr(1) + '.less')
             .pipe(less({ plugins: [new lessPluginFunction()] }))
             .pipe(cssmin())
+            .pipe(rename(name.replace('.less', suffix)))
             .pipe(gulp.dest('output/' + lessPath.substr(0, lessPath.lastIndexOf('/'))));
-            return all.replace('.less', '.css');
+            return all.replace('.less', suffix);
         });
+        file.contents = new Buffer(content);
+        this.push(file);
+        return callback();
+    });
+};
+
+var jsVersion = function () {
+    return through.obj(function (file, encoding, callback) {
+        var content = String(file.contents, encoding);
+        var moduleCode = {};
+        content = content.replace(/\<body data\-module\-path="([^"]+)"/, function (all, modulePath) {
+                var absPath = path.resolve('./output/asset/' + modulePath + '.js');
+                var hashCode = md5(absPath);
+                var suffix = '_' + hashCode + '.js';
+                var desAbsPath = absPath.replace('.js', suffix);
+                var readStream = fs.createReadStream(absPath);
+                var writeStream = fs.createWriteStream(desAbsPath);
+                readStream.pipe(writeStream);
+                moduleCode[modulePath] = modulePath + '_' + hashCode;
+                return all;
+            })
+            .replace(/<\/body>/, function (all) {
+                var config = ''
+                    + '<script>'
+                    +     'requirejs.config({'
+                    +         'paths: ' + JSON.stringify(moduleCode)
+                    +     '});'
+                    + '</script>';
+                return config + all;
+            });
         file.contents = new Buffer(content);
         this.push(file);
         return callback();
@@ -105,13 +148,19 @@ gulp.task('clean', function() {
     .pipe(clean({force: true}));
 });
 
+gulp.task('jsVersion', function() {
+    return gulp.src('output/view/**/*.html')
+            .pipe(jsVersion())
+            .pipe(gulp.dest('output/view/'));
+})
+
 gulp.task('imagemin', function() {
     return gulp.src('img/**/*.{png,jpg,gif,ico}')
-    .pipe(cache(imagemin({
+    .pipe(imagemin({
         progressive: true,
         svgoPlugins: [{removeViewBox: false}],
         use: [pngquant()]
-    })))
+    }))
     .pipe(gulp.dest('output/img'));
 });
 
@@ -126,12 +175,12 @@ gulp.task('htmlmin', function () {
         minifyJS: true,//压缩页面JS
         minifyCSS: true//压缩页面CSS
     };
-    gulp.src('view/**/*.html')
-    .pipe(require('./local-server/html').htmlWriter())
-    .pipe(htmlmin(options))
-    .pipe(pageJSBulder())
-    .pipe(pageLessBuilder())
-    .pipe(gulp.dest('output/view'));
+    return gulp.src('view/**/*.html')
+        .pipe(require('./local-server/html').htmlWriter())
+        .pipe(htmlmin(options))
+        .pipe(pageJSBulder())
+        .pipe(pageLessBuilder())
+        .pipe(gulp.dest('output/view'));
 });
 
 // 为了同时和多个rd进行联调，支持多个端口访问
@@ -169,7 +218,8 @@ gulp.task('copy', function () {
 
 gulp.task('build', sequence(
     'clean',
-    ['htmlmin', 'imagemin', 'main', 'copy'] // 图片依赖libc.so.6: version `GLIBC_2.14'
+    ['htmlmin', 'imagemin', 'main', 'copy'], // 图片依赖libc.so.6: version `GLIBC_2.14'
+    'jsVersion'
 ));
 
 gulp.task('default', ['connect']);

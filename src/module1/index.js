@@ -37,7 +37,7 @@ define(function (require, exports) {
         return indexService.getSomeData({
             id: id
         }).done(function (response) {
-            moduleNode.find('div').attr('data-user-name', response.data.name);
+            moduleNode.find('div').data('userName', response.data.name);
         });
     };
 });
