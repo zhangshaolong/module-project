@@ -19,7 +19,6 @@
     "gulp-less": "^3.0.3",
     "gulp-minify-css": "^1.2.1",
     "gulp-rename": "^1.2.2",
-    "gulp-rev-all": "^0.8.22",
     "gulp-sequence": "^0.4.1",
     "imagemin-pngquant": "^4.2.0",
     "less-plugin-functions": "0.0.2",
