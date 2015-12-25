@@ -1,6 +1,6 @@
 /**
  * @file 本地开发时的html请求拦截处理
- * @author zengcheng
+ * @author zengcheng zhangshaolong
  */
 
 var Simplite = require('../dep/Simplite');
@@ -12,21 +12,26 @@ var URL = require('url');
 
 var includeReg = /\<\%\s*include\s*\(\s*(['"])(.*?)\1/g;
 
-var createIncludeTpl = function (content, encoding) {
+var parseInclude = function (content, encoding) {
     content.replace(includeReg, function (all, quot, pth) {
         var tplContent = fs.readFileSync(path.resolve('view/' + pth));
         Simplite.addTemplate(pth, new String(tplContent, encoding));
     });
 };
 
-var htmlWriter = function (res) {
+var htmlMerge = exports.htmlMerge = function (htmlContent, encoding) {
+    var key = (new Date().getTime()) + '_t';
+    parseInclude(htmlContent, encoding || 'UTF-8');
+    Simplite.addTemplate(key, htmlContent);
+    Simplite.compiles = {};
+    content = Simplite.render(key);
+    return content;
+};
+
+var htmlWriter = exports.htmlWriter = function (res) {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
-        var key = (new Date().getTime()) + '_t';
-        createIncludeTpl(content, encoding);
-        Simplite.addTemplate(key, content);
-        Simplite.compiles = {};
-        content = Simplite.render(key);
+        content = htmlMerge(content, encoding);
         file.contents = new Buffer(content);
         this.push(file);
         res && res.end(content);
@@ -46,5 +51,3 @@ exports.htmlProxy = function (req, res, next) {
         return next();
     }
 };
-
-exports.htmlWriter = htmlWriter;

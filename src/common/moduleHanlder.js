@@ -36,8 +36,14 @@ define(function (require, exports) {
         };
         var execModule = function (factory, data) {
             if (factory && $.isFunction(factory.init)) {
-                factory.init.call(caller, data);
-                exports.init(moduleNode.children());
+                var deferred = factory.init.call(caller, data);
+                if (deferred && deferred.done) {
+                    deferred.done(function (data) {
+                        exports.init(moduleNode.children());
+                    });
+                } else {
+                    exports.init(moduleNode.children());
+                }
             }
         };
 
@@ -46,7 +52,7 @@ define(function (require, exports) {
                 require([interceptorPath], function (interceptorFactory) {
                     if (interceptorFactory && $.isFunction(interceptorFactory.init)) {
                         var deferred = interceptorFactory.init.call(caller);
-                        if (deferred.done) {
+                        if (deferred && deferred.done) {
                             deferred.done(function (data) {
                                 execModule(factory, data);
                             });

@@ -10,6 +10,8 @@ define(function (require, exports) {
 
     require('tpl!/tpl/module1/index.tpl');
 
+    require('./common/user');
+
     // 页面中的子模块需要手动require进来，打包时分析依赖用
     require('./sub1');
 
