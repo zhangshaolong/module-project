@@ -192,7 +192,7 @@ gulp.task('connect', function() {
         port: port,
         middleware: function(connect, opt) {
             return [
-                require('./local-server/html').htmlProxy,
+                require('./local-server/router'),
                 require('./local-server/mock'),
                 require('./local-server/less')
             ];

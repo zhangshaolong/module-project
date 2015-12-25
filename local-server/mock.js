@@ -42,14 +42,17 @@ module.exports = function (req, res, next) {
                 path: req.url,
                 method: req.method,
                 headers: {
-                    'Content-Type': contentTypeConfig['Content-Type'],
-                    'cookie': req.headers.cookie
+                    'Content-Type': contentTypeConfig['Content-Type']
                 }
                 // headers: {
                 //   // 如果代理服务器需要认证
                 //   'Proxy-Authentication': 'Base ' + new Buffer('user:password').toString('base64')    // 替换为代理服务器用户名和密码
                 // }
             };
+
+            if (req.headers.cookie) {
+                options.headers.cookie = req.headers.cookie;
+            }
 
             var proxyReq = http.request(options, function(proxyRes) {
                 res.writeHead(200, contentTypeConfig);
@@ -76,6 +79,8 @@ module.exports = function (req, res, next) {
             res.writeHead(200, contentTypeConfig);
             try {
                 var path = require.resolve(pathNormalize('../mock/' + pathName.replace(/\.ajax$/, '')));
+                // 下面是mock文件为单一层级的方式
+                // var path = require.resolve('../mock/' + pathName.replace(/^\/api\//, '').replace(/\//g, '-'));
                 delete require.cache[path];
                 var result = require(path);
                 if (typeof result === 'function') {
