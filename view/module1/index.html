@@ -1,1 +1,12 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=Edge"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimum-scale=1,maximum-scale=1"><meta name="renderer" content="webkit"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="HandheldFriendly" content="true"><meta name="MobileOptimized" content="320"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#FF9900"><meta name="baidu-site-verification" content="AwZm789POz"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><title>模块1标题</title><link rel="stylesheet" href="/dep/bootstrap3/bootstrap.css"></head><body data-module-path="module1/index" data-interceptor-path="module1/common/user" class="img-background"><p>测试下哈哈</p><div class="main" data-module-path="module1/sub1"></div><script async src="//www.google-analytics.com/analytics.js"></script><script src="/dep/jquery-1.11.3.min.js"></script><script src="/dep/bootstrap3/bootstrap.js"></script><script src="/dep/Simplite.js"></script><script src="/dep/require.js" data-main="base"></script><script>requirejs.config({baseUrl: '/asset',paths:{tpl:"common/tpl"}});</script><script>requirejs.config({paths: {"module1/index":"module1/index_3d81e57e5d"}});</script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <% include('common/header.html', {
+        title: '模块1标题'
+    }) %>
+    <body data-module-path="module1/index" data-interceptor-path="module1/common/user" class="img-background">
+        <p>测试下哈哈</p>
+        <div class="main" data-module-path="module1/sub1">
+        </div>
+        <% include('common/script.html'); %>
+    </body>
+</html>
