@@ -6,7 +6,6 @@
 'use strict';
 var gulp = require('gulp');
 var through = require('through2');
-var Simplite = require('../dep/Simplite');
 var URL = require('url');
 var fs = require('fs');
 var path = require('path');

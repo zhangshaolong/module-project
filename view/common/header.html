@@ -16,9 +16,8 @@
     <%
         if (_this && _this.links) {
             for (var i = 0, len = _this.links.length; i < len; i++) {
-                var link = _this.links[i];
     %>
-                <link rel="stylesheet" href="<%= link %>" />
+                <link rel="stylesheet" href="<%= _this.links[i] %>" />
     <%
             }
         }

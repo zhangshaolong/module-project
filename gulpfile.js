@@ -15,6 +15,7 @@ var lessPluginFunction = require('less-plugin-functions');
 var fs = require('fs');
 var path = require('path');
 var crypto = require('crypto');
+var Simplite = require('./dep/Simplite');
 
 var commentTrimReg = /(?:(["'])[\s\S]*?\1)|(?:\/\/.*\n)|(?:\/\*([\s\S])*?\*\/)/g;
 
@@ -56,7 +57,7 @@ var pageJSBulder = function () {
                     if (moduleName === 'tpl') {
                         return '';
                     }
-                    return contents.replace(commentTrimReg, commentTrimHandler).replace(/(['"])tpl\!/g, '$1tpl');
+                    return contents.replace(commentTrimReg, commentTrimHandler);
                 },
                 out: 'output/asset/' + path + '.js'
             });
@@ -69,26 +70,19 @@ var pageJSBulder = function () {
     });
 };
 
-var tplCache = {};
+var tplReg = /\{\{\s*\-\-\s*tpl\s*\:\s*([^\}\s]+)\s*\-\-\s*\}\}\s*([\s\S]+?)\{\{\s*\-\-\s*\/tpl\s*\-\-\s*\}\}/g;
 var tplBuilder = function (content) {
-    var tplDefines = [];
-    content.replace(/["']tpl!([^"']+)["']/g, function (all, path) {
-        var compiled = tplCache[path];
-        if (!compiled) {
-            var data = fs.readFileSync(path.substr(1), 'utf-8');
-            compiled = ''
-                + 'define("tpl!' + path + '", function () {'
-                    + 'var tplReg = /\\{\\{\\s*\\-\\-\\s*tpl\\s*\\:\\s*([^\\}\\s]+)\\s*\\-\\-\\s*\\}\\}\\s*([\\s\\S]+?)\\{\\{\\s*\\-\\-\\s*\\/tpl\\s*\\-\\-\\s*\\}\\}/g;'
-                    +   '"' + data.replace(commentTrimReg, commentTrimHandler).replace(/"/g, '\\"').replace(/\s+/g, ' ') + '".replace(tplReg, function (all, tplId, tplContent) {'
-                    +       'Simplite.addTemplate(tplId, tplContent);'
-                    +       'Simplite.compile(tplId, Simplite);'
-                    +   '});'
-                + '})';
-            tplCache[path] = compiled;
-        }
-        tplDefines.push(compiled);
+    var compileds = '';
+    content = content.replace(/require\(["']tpl!([^"']+)["']\);?/g, function (all, path) {
+        var data = fs.readFileSync(path.substr(1), 'utf-8');
+        data.replace(tplReg, function (all, tplId, tplContent) {
+            compileds += 'Simplite.compiles["' + tplId + '"]=function (data) {return (function(' + Simplite.dataKey + '){'
+                + Simplite.toCodeBlock(tplContent)
+                + '}).call(Simplite, data);},';
+        })
+        return '';
     });
-    return ';' + tplDefines.join(';') + ';' + content;
+    return ';' + compileds + content;
 };
 
 var pageLessBuilder = function () {
@@ -118,25 +112,25 @@ var jsVersion = function () {
         var content = String(file.contents, encoding);
         var moduleCode = {};
         content = content.replace(/\<body data\-module\-path="([^"]+)"/, function (all, modulePath) {
-                var absPath = path.resolve('./output/asset/' + modulePath + '.js');
-                var hashCode = md5(absPath);
-                var suffix = '_' + hashCode + '.js';
-                var desAbsPath = absPath.replace('.js', suffix);
-                var readStream = fs.createReadStream(absPath);
-                var writeStream = fs.createWriteStream(desAbsPath);
-                readStream.pipe(writeStream);
-                moduleCode[modulePath] = modulePath + '_' + hashCode;
-                return all;
-            })
-            .replace(/<\/body>/, function (all) {
-                var config = ''
-                    + '<script>'
-                    +     'requirejs.config({'
-                    +         'paths: ' + JSON.stringify(moduleCode)
-                    +     '});'
-                    + '</script>';
-                return config + all;
-            });
+            var absPath = path.resolve('./output/asset/' + modulePath + '.js');
+            var hashCode = md5(absPath);
+            var suffix = '_' + hashCode + '.js';
+            var desAbsPath = absPath.replace('.js', suffix);
+            var readStream = fs.createReadStream(absPath);
+            var writeStream = fs.createWriteStream(desAbsPath);
+            readStream.pipe(writeStream);
+            moduleCode[modulePath] = modulePath + '_' + hashCode;
+            return all;
+        })
+        .replace(/<\/body>/, function (all) {
+            var config = ''
+                + '<script>'
+                +     'requirejs.config({'
+                +         'paths: ' + JSON.stringify(moduleCode)
+                +     '});'
+                + '</script>';
+            return config + all;
+        });
         file.contents = new Buffer(content);
         this.push(file);
         return callback();

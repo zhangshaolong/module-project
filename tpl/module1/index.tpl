@@ -1,6 +1,6 @@
 {{ -- tpl:module1-index-sub -- }}
 <div>
-    用户名：<%= _this.name %>
+    用户名：<%= _this.name.replace(/\n/g, '<br>') %>
 </div>
 <table class="table">
     <thead>
