@@ -9,6 +9,7 @@ define(function (require, exports) {
     'use strict';
 
     var eventEmitter = require('./eventEmitter');
+    var store = require('./store');
 
     exports.init = function (context) {
         context = context || $('body');
@@ -32,7 +33,8 @@ define(function (require, exports) {
         var caller = {
             element: moduleNode,
             eventEmitter: eventEmitter,
-            data: moduleNode.data()
+            data: moduleNode.data(),
+            store: store
         };
         var execModule = function (factory, data) {
             if (factory && $.isFunction(factory.init)) {

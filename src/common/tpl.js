@@ -1,3 +1,8 @@
+/**
+ * @file 模板块分析器，自动分析出多个模板块并进行编译
+ * @author zhangshaolong
+ */
+
 define(function (require) {
 
     var tplMap = {};
