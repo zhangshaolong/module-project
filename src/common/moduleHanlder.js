@@ -46,6 +46,8 @@ define(function (require, exports) {
                 } else {
                     exports.init(moduleNode.children());
                 }
+            } else {
+                exports.init(moduleNode.children());
             }
         };
 

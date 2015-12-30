@@ -15,10 +15,6 @@ define(function (require) {
                 return ;
             }
             tplMap[path] = 1;
-            if (typeof $ === 'undefined') {
-                load();
-                return;
-            }
             $.ajax({
                 url: path,
                 dataType: 'text',

@@ -100,6 +100,16 @@
     };
 
     /**
+     * 获取名字为name的filter
+     * @param {string} name 注入的方法名称
+     * @param {Simplite?} simplite 当前的Simplite实例
+     * @return {Function} fun 注入的方法
+     */
+    Simplite.getFilter = function (name, simplite) {
+        return (simplite || Simplite).filters[name];
+    };
+
+    /**
      * 为模板引擎注册模板
      * @param {string} name 注入的模板名称
      * @param {string} template 模板内容字符串
@@ -144,7 +154,7 @@
                 return '';
             case '"' :
             case "'" :
-                return all.replace(endTokenReg, '\\n');
+                return all;
             case '>' :
                 return '><';
             default :
@@ -153,9 +163,9 @@
     };
     var attrHandler = function (all, p) {
         if (p.charAt(0) === '#') {
-            return '"+_t.filter("escape",' + p.slice(1).replace(filterReg, '_t.filter(') + ')+"';
+            return '"+_t.defaultAttr(_t.filter("escape",' + p.slice(1).replace(filterReg, '_t.filter(') + '))+"';
         }
-        return '"+(' + p.replace(filterReg, '_t.filter(') + ')+"';
+        return '"+_t.defaultAttr(' + p.replace(filterReg, '_t.filter(') + ')+"';
     };
     var htmlHandler = function (all) {
         return all.replace(quotReg, '\\"');
@@ -225,6 +235,15 @@
     };
 
     /**
+     * 输出的属性值的默认值
+     * @param {string} val 原始的属性值
+     * @return {string} 当原始值不存在时的默认值
+     */
+    Simplite.defaultAttr = function (val) {
+        return val || '';
+    };
+
+    /**
      * html模板编译
      * @param {string} name 模板名称
      * @return {Function(Object)} 返回根据html模板编译好的处理函数
@@ -253,6 +272,15 @@
     };
 
     /**
+     * 获取名字为name的filter
+     * @param {string} name 注入的方法名称
+     * @return {Function} fun 注入的方法
+     */
+    Simplite.prototype.getFilter = function (name) {
+        return Simplite.getFilter(name, this);
+    };
+
+    /**
      * 注册模板，主要为name和html模板建立关联，方便后续获取
      * @param {string} name 模板的名称
      * @param {string} template 模板
@@ -277,6 +305,15 @@
      */
     Simplite.prototype.include = function (name, data) {
         return Simplite.include.apply(this, arguments);
+    };
+
+    /**
+     * 输出的属性值的默认值
+     * @param {string} val 原始的属性值
+     * @return {string} 当原始值不存在时的默认值
+     */
+    Simplite.prototype.defaultAttr = function (val) {
+        return Simplite.defaultAttr(val);
     };
 
     return Simplite;
