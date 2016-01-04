@@ -36,3 +36,12 @@ http://localhost:8080/api/path?proxy=xxx.xxx.xxx.xxx:80
 ### 4：编译脚本自己压缩合并js代码、压缩合并编译less代码、编译tpl文件为js代码，并最终把页面的js进行md5处理。
 ### 5：页面中如果有多层级的data-module-path声明，可以通过设置对应js的init返回deferred对象控制子模块的初始化时机。
 ### 6：可以在声明了data-module-path的元素上声明data-interceptor-path进行模块初始化之前的一些处理，interceptor的init可以返回数据或者返回deferred，由deferred传出数据，返回的数据之间在data-module-path所指向的js的init方法的参数中获取。
+### 7：在每个模块的init方法中都可以获取到作用域元素、事件对象、数据存储对象以及作用域元素的data-xxx的数据。具体如下：
+```
+exports.init = function () {
+    var moduleNode = this.element;
+    var eventEmitter = this.eventEmitter;
+    var store = this.store;
+    var data = this.data;// 挂载在nodeleNode的data-xxx属性上的数据
+};
+```
