@@ -38,10 +38,10 @@ var md5 = function (filepath, cut) {
     return shasum.digest('hex').substring(0, cut);
 };
 
-var pageJSBulder = function () {
+var pageJSBuilder = function () {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
-        content.replace(/\<body data\-module\-path="([^"]+)"/, function (all, path) {
+        content.replace(/\s+data\-module\-path="([^"]+\/main)"/, function (all, path) {
             rjs.optimize({
                 baseUrl: 'src',
                 name: path,
@@ -111,7 +111,7 @@ var jsVersion = function () {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
         var moduleCode = {};
-        content = content.replace(/\<body data\-module\-path="([^"]+)"/, function (all, modulePath) {
+        content = content.replace(/\s+data\-module\-path="([^"]+\/main)"/, function (all, modulePath) {
             var absPath = path.resolve('./output/asset/' + modulePath + '.js');
             var hashCode = md5(absPath);
             var suffix = '_' + hashCode + '.js';
@@ -172,7 +172,7 @@ gulp.task('htmlmin', function () {
     return gulp.src('view/**/*.html')
         .pipe(require('./local-server/html').htmlWriter())
         .pipe(htmlmin(options))
-        .pipe(pageJSBulder())
+        .pipe(pageJSBuilder())
         .pipe(pageLessBuilder())
         .pipe(gulp.dest('output/view'));
 });
@@ -197,15 +197,12 @@ gulp.task('connect', function() {
 gulp.task('main', function () {
     return rjs.optimize({
         baseUrl: 'src',
-        name: 'base',
-        out: 'output/asset/base.js'
+        name: 'main',
+        out: 'output/asset/main.js'
     });
 });
 
 gulp.task('copy', function () {
-    gulp.src('css/iconfont/**')
-    .pipe(gulp.dest('output/css/iconfont'));
-
     gulp.src('dep/**/*.*')
     .pipe(gulp.dest('output/dep'));
 });
