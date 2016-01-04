@@ -1,11 +1,14 @@
-    <% include('common/header.html', {
+<%
+    include('common/header.html', {
         title: '模块1标题'
-    }) %>
-        <div data-module-path="module1/main" data-interceptor-path="module1/common/user" class="img-background">
-            <p>测试下哈哈</p>
-            <div class="main" data-module-path="module1/sub1">
-            </div>
-        </div>
-        <% include('common/script.html'); %>
-    </body>
-</html>
+    })
+%>
+
+<div data-module-path="module1/main" data-interceptor-path="module1/common/user" class="img-background">
+    <p>测试下哈哈</p>
+    <img src="/img/a.jpg" />
+    <div class="main" data-module-path="module1/sub1">
+    </div>
+</div>
+
+<% include('common/footer.html'); %>

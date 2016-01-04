@@ -7,6 +7,8 @@ npm install
 
 run gulp
 
-view    http://localhost:8080/view/module1/index.html
+view    http://localhost:8080
+
+        http://localhost:8080/view/module1/index.html
 
 build project use  gulp build
