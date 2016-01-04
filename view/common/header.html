@@ -1,25 +1,28 @@
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1">
-    <meta name="renderer" content="webkit">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="HandheldFriendly" content="true">
-    <meta name="MobileOptimized" content="320">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#FF9900">
-    <meta name="baidu-site-verification" content="AwZm789POz">
-    <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="x-dns-prefetch-control" content="on">
-    <title><%= (_this && _this.title) || '' %></title>
-    <link rel="stylesheet" href="/dep/bootstrap3/bootstrap.css">
-    <%
-        if (_this && _this.links) {
-            for (var i = 0, len = _this.links.length; i < len; i++) {
-    %>
-                <link rel="stylesheet" href="<%= _this.links[i] %>" />
-    <%
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1, maximum-scale=1">
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="MobileOptimized" content="320">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="theme-color" content="#FF9900">
+        <meta name="baidu-site-verification" content="AwZm789POz">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="x-dns-prefetch-control" content="on">
+        <title><%= (_this && _this.title) || '' %></title>
+        <link rel="stylesheet" href="/dep/bootstrap3/bootstrap.css">
+        <%
+            if (_this && _this.links) {
+                for (var i = 0, len = _this.links.length; i < len; i++) {
+        %>
+                    <link rel="stylesheet" href="<%= _this.links[i] %>" />
+        <%
+                }
             }
-        }
-    %>
-</head> 
+        %>
+    </head>
+    <body data-module-path="main">
