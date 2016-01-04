@@ -1,9 +1,18 @@
-# module-project
-page module dev amd
+# 页面模块化开发
+================
+> page module dev amd
 
-install nodejs
+## Install
 
-npm install
+### install nodejs
+
+### npm install
+
+```
+npm install -g gulp
+```
+
+
 
 run gulp
 
