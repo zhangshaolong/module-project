@@ -13,13 +13,13 @@ var http = require('http');
 
 var pathNormalize = require('path').normalize;
 
-var contentTypeConfig = {'Content-Type': 'application/json;charset=UTF-8'};
-
 var formDataReg = /multipart\/form-data/;
 
 module.exports = function (req, res, next) {
 
     if (req.url.indexOf('.ajax') > 0) {
+
+        var contentType = req.headers['content-type'];
 
         var getProxyInfo = function () {
             var pageUrl = req.headers.referer;
@@ -42,7 +42,7 @@ module.exports = function (req, res, next) {
                 path: req.url,
                 method: req.method,
                 headers: {
-                    'Content-Type': contentTypeConfig['Content-Type']
+                    'Content-Type': contentType
                 }
                 // headers: {
                 //   // 如果代理服务器需要认证
@@ -55,7 +55,7 @@ module.exports = function (req, res, next) {
             }
 
             var proxyReq = http.request(options, function(proxyRes) {
-                res.writeHead(200, contentTypeConfig);
+                res.writeHead(200, {'Content-Type': contentType});
                 proxyRes.pipe(res);
             });
 
@@ -76,7 +76,7 @@ module.exports = function (req, res, next) {
         }
 
         var doMock = function (params, pathName) {
-            res.writeHead(200, contentTypeConfig);
+            res.writeHead(200, {'Content-Type': contentType});
             try {
                 var path = require.resolve(pathNormalize('../mock/' + pathName.replace(/\.ajax$/, '')));
                 // 下面是mock文件为单一层级的方式
@@ -88,7 +88,7 @@ module.exports = function (req, res, next) {
                 }
                 if (!isNaN(result.sleep) && result.sleep > 0) {
                     setTimeout(function () {
-                        //delete result.sleep;
+                        delete result.sleep;
                         res.end(JSON.stringify(result));
                     }, result.sleep);
                 } else {
@@ -103,7 +103,6 @@ module.exports = function (req, res, next) {
         };
         var method = req.method.toUpperCase();
         var urlInfo = URL.parse(req.url, true);
-        var contentType = req.headers['Content-Type'];
         if (formDataReg.test(contentType)) {
             req.once('data', function(data) {
                 doMock(queryString.parse(String(data, 'UTF-8')), urlInfo.pathname);
