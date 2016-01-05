@@ -55,5 +55,5 @@ module.exports = {
     }
 };
 ```
-#### 可以支持直接的数据或者返回一个function，function用于需要动态结果时使用，可以支持延时返回，对应的返回字段sleep，值为毫秒数。
+#### 可以支持直接的数据或者返回一个function，此function支持获取请求参数，并把return的数据作为mock的数据返回。function用于需要动态结果时使用，可以支持延时返回，对应的返回字段sleep，值为毫秒数。
 
