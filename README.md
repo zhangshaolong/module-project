@@ -45,3 +45,15 @@ exports.init = function (dataFromInterceptor) {
     var dataFromNode = this.data;// 挂载在nodeleNode的data-xxx属性上的数据。
 };
 ```
+#### 8：本地开发mock，比如我们的规则是.ajax结尾的请求都认为是调用后端api的接口，比如：/module1/common/user.ajax，那么映射到mock文件为/mock/module1/common/user.js，对应的内容类似如下：
+```
+module.exports = {
+    "status" : 200,
+    "data": {
+        id: 1,
+        name: "张三\n12 sfdsd /nsdfsf "
+    }
+};
+```
+#### 可以支持直接的数据或者返回一个function，function用于需要动态结果时使用，可以支持延时返回，对应的返回字段sleep，值为毫秒数。
+
