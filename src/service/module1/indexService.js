@@ -11,9 +11,10 @@ define(function (require, exports) {
      * 获取某个模块数据
      * @param {number} id
      */
-    exports.getSomeData = function (id) {
+    exports.getSomeData = function (id, options) {
+        options = options || {};
         return ajax.post('/module1/common/user.ajax', {
             id: id
-        });
+        }, options);
     };
 });

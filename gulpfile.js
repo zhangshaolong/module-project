@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var clean = require('gulp-clean');
 var sequence = require('gulp-sequence');
+var config = require('./gulp-builder/config');
 var server = require('./local-server/server');
 
 var htmlIncludeProcessor = require('./gulp-builder/html-include');
@@ -10,7 +11,7 @@ var htmlJsProcessor = require('./gulp-builder/html-js');
 var htmlLessProcessor = require('./gulp-builder/html-less');
 var appEntryProcessor = require('./gulp-builder/app-entry');
 var imageminProcessor = require('./gulp-builder/image-min');
-var config = require('./gulp-builder/config');
+
 var buildPath = config.buildPath;
 var htmlPath = config.htmlPath;
 

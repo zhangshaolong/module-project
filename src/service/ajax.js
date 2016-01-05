@@ -24,15 +24,20 @@ define(function (require, exports) {
             type: 'POST',
             dataType: 'json',
             contentType: 'application/json;charset=UTF-8',
-            async: options.sync ? false : true
+            async: options.sync ? false : true,
+            timeout: 20000,
+            beforeSend: options.beforeSend || function () {
+                var time = new Date().getTime();
+                options._time = time;
+                options.holder && options.holder.append('<div class="data-loading data-loading-' + time + '">').addClass('data-loading-relative');
+            }
         }).pipe(function (response) {
+            options.holder && options.holder.removeClass('data-loading-relative').find('.data-loading-' + options._time).remove();
             if (response.status === 200) {
                 return response;
             } else {
                 var deferred = $.Deferred();
-                if (+response.status === 700) { // unauthorized
-                    location.href = 'https://i.genshuixue.com/login?next=' + encodeURIComponent(location.href);
-                } else if (commonErrors[response.status]) {
+                if (commonErrors[response.status]) {
                     deferred.reject(response);
                 } else {
                     deferred.reject(response);

@@ -36,9 +36,14 @@ define(function (require, exports) {
         });
 
         // 可以返回一个Deferred来延迟初始化此模块下面的所有模块
-        return indexService.getSomeData({
-            id: id
-        }).done(function (response) {
+        return indexService.getSomeData(
+            {
+                id: id
+            },
+            {
+                holder: moduleNode
+            }
+        ).done(function (response) {
             moduleNode.find('div').data('userName', response.data.name);
         });
     };
