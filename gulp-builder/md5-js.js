@@ -18,13 +18,11 @@ module.exports = function () {
             moduleCode[modulePath] = modulePath + '_' + hashCode;
             return all;
         })
-        .replace(/<\/body>/, function (all) {
+        .replace(/require\(\[(['"])main\1\]\)/, function (all) {
             var config = ''
-                + '<script>'
                 +     'requirejs.config({'
                 +         'paths: ' + JSON.stringify(moduleCode)
                 +     '});'
-                + '</script>';
             return config + all;
         });
         file.contents = new Buffer(content);
