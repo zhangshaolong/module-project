@@ -1,3 +1,4 @@
+var gulp = require('gulp');
 var through = require('through2');
 var md5 = require('./md5');
 var rename = require('gulp-rename');
