@@ -1,5 +1,4 @@
 # 页面模块化开发
-> page module dev amd
 ### 环境搭建
 #### 1：安装nodejs，网上很多安装教程。安装完nodejs后，应该会自带npm，如果没有，还需要安装npm。
 #### 2：安装全局的gulp
