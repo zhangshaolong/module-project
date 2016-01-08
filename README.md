@@ -29,6 +29,7 @@ gulp build
 ```
 http://localhost:8080/api/path?proxy=xxx.xxx.xxx.xxx:80
 设置proxy参数，指向rd的机器ip与端口
+注意：一般联调可能有用户验证之类的操作，如果验证是利用cookie处理的，那么可以把代理地址的cookie手动在本地也设置一份，记得path设置为‘/’，这样的话，代理服务器会自动带上这个cookie。
 ```
 #### 2：支持本地本地路由，参考local-server/routerConfig.js文件
 #### 3：编码规范为src下的main.js为启动框架的js，建议设置<body data-module-path="main">，所有的页面入口js也都命名为xxx/main.js
