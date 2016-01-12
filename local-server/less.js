@@ -4,6 +4,7 @@
  */
 
 'use strict';
+var fs = require('fs');
 var gulp = require('gulp');
 var less = require('gulp-less');
 var through = require('through2');
@@ -20,10 +21,14 @@ var cssWriter = function (res) {
 module.exports = function (req, res, next) {
     var url = req.url;
     if (url.indexOf('.less') > 0) {
-        res.writeHead(200, {'Content-Type': 'text/css'});
-        return gulp.src(url.substr(1))
-            .pipe(less({ plugins: [new lessPluginFunction()] }))
-            .pipe(cssWriter(res));
+        if (fs.existsSync(url.replace(/^\//, ''))) {
+            res.writeHead(200, {'Content-Type': 'text/css'});
+            return gulp.src(url.substr(1))
+                .pipe(less({ plugins: [new lessPluginFunction()] }))
+                .pipe(cssWriter(res));
+        } else {
+            return next();
+        }
     } else {
         return next();
     }
