@@ -7,7 +7,9 @@ var mock = require('./mock');
 var less = require('./less');
 module.exports = function () {
     var port = argv.p || 8080;
+    var host = argv.h || 'localhost';
     return connect.server({
+        host: host,
         port: port,
         root: process.cwd(),
         middleware: function(connect, opt) {
