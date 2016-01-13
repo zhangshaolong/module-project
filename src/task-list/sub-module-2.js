@@ -14,7 +14,7 @@ define(function (require, exports) {
 
         var moduleData = this.data;
 
-        moduleNode.html(Simplite.render('module1-index-sub2', '哈哈测试传递的参数'));
+        moduleNode.html(Simplite.render('task-list-sub-module-2', '哈哈测试传递的参数'));
 
         moduleNode.on('click', 'div', function () {
             eventEmitter.fire('sub2-clicked', {

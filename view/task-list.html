@@ -1,0 +1,15 @@
+<%
+    include('common/header.html', {
+        title: '任务列表页面',
+        links: ['/css/task-list.less']
+    })
+%>
+
+<div data-module-path="task-list/main" data-interceptor-path="task-list/interceptor/user" class="img-background">
+    <p>测试下哈哈</p>
+    <img src="/img/a.jpg" />
+    <div class="main" data-module-path="task-list/sub-module-1">
+    </div>
+</div>
+
+<% include('common/footer.html'); %>

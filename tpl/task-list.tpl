@@ -1,4 +1,4 @@
-{{ -- tpl:module1-index-sub -- }}
+{{ -- tpl:task-list-sub-module-1 -- }}
 <div>
     用户名：<%= _this.name.replace(/\n/g, '<br>') %>
 </div>
@@ -28,17 +28,17 @@
         <% } %>
     </tbody>
 </table>
-<div data-module-path="module1/sub2"></div>
+<div data-module-path="task-list/sub-module-2"></div>
 {{ -- /tpl -- }}
 
-{{ -- tpl:module1-index-sub2 -- }}
+{{ -- tpl:task-list-sub-module-2 -- }}
 <div>
-    这个是子模块2
+    <a href="http://www.baidu.com">这个是子模块2</a>
 </div>
-<% include('module1-index-sub2-include') %>
+<% include('task-list-sub2-include') %>
 {{ -- /tpl -- }}
 
-{{ -- tpl:module1-index-sub2-include -- }}
+{{ -- tpl:task-list-sub2-include -- }}
 <p>
     通过include传递参数<%= _this %>
 </p>

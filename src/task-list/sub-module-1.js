@@ -49,7 +49,7 @@ define(function (require, exports) {
         var deferred = $.Deferred();
 
         setTimeout(function () {
-            moduleNode.html(Simplite.render('module1-index-sub', {
+            moduleNode.html(Simplite.render('task-list-sub-module-1', {
                 name: moduleData.userName,
                 list: [
                     {

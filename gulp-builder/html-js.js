@@ -2,17 +2,6 @@ var through = require('through2');
 var rjs = require('requirejs');
 var tplToJs = require('./tpl-compile');
 var config = require('./config');
-var commentTrimReg = /(?:(["'])[\s\S]*?\1)|(?:\/\/.*\n)|(?:\/\*([\s\S])*?\*\/)/g;
-var commentTrimHandler = function (all) {
-    var start = all.charAt(0);
-    switch (start) {
-        case '/' :
-            return '';
-        case '"' :
-        case "'" :
-            return all;
-    }
-};
 module.exports = function () {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
@@ -32,7 +21,7 @@ module.exports = function () {
                     if (moduleName === 'tpl') {
                         return '';
                     }
-                    return contents.replace(commentTrimReg, commentTrimHandler);
+                    return contents;
                 },
                 out: config.buildPath + '/' + config.jsPath + '/' + path + '.js'
             });

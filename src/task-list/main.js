@@ -6,18 +6,17 @@
 define(function (require, exports) {
     'use strict';
 
-    var indexService = require('service/module1/indexService');
+    var service = require('service/task-list');
 
-    require('tpl!/tpl/module1/index.tpl');
-
-    require('./common/user');
+    require('tpl!/tpl/task-list.tpl');
 
     // 页面中的子模块需要手动require进来，打包时分析依赖用
-    require('./sub1');
+    require('./sub-module-1');
+    require('./sub-module-2');
 
-    require('./sub2');
+    exports.init = function (interceptorData) {
 
-    exports.init = function (id) {
+        console.log('模块能获取对应的interceptor的返回值：', interceptorData);
 
         // 模块元素，查找元素都要基于此元素，目的是防止干扰其他模块
         var moduleNode = this.element;
@@ -35,16 +34,15 @@ define(function (require, exports) {
             alert(data.id);
         });
 
+        moduleNode.find('div').data('userName', interceptorData.name);
+
         // 可以返回一个Deferred来延迟初始化此模块下面的所有模块
-        return indexService.getSomeData(
-            {
-                id: id
-            },
+        return service.getTaskList(
             {
                 holder: moduleNode
             }
-        ).done(function (response) {
-            moduleNode.find('div').data('userName', response.data.name);
+        ).done(function (resp) {
+            console.log('这个是获取到的taskList数据，', resp);
         });
     };
 });

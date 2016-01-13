@@ -7,19 +7,19 @@ define(function (require, exports) {
      *
      * @inner
      * @param {string} url 请求 url
-     * @param {Object} data 发送的数据
+     * @param {Object} params 发送的数据
      * @param {Object=} options
      * @property {boolean} options.sync 是否是同步请求
      * @property {Object=} options.errorHandler 自定义 error 处理
      *
      * @return {Promise}
      */
-    exports.post = function (url, data, options) {
+    exports.post = function (url, params, options) {
+        params = params || {};
         options = options || {};
-        data = data || {};
         return $.ajax({
             url: url,
-            data: JSON.stringify(data),
+            data: JSON.stringify(params),
             method: 'POST',
             type: 'POST',
             dataType: 'json',
@@ -51,13 +51,13 @@ define(function (require, exports) {
      * 发送跨域的 jsonp请求
      *
      * @param  {string} url
-     * @param  {Object} data
+     * @param  {Object} params
      * @return {Promise}
      */
-    exports.jsonp = function (url, data, timeout) {
+    exports.jsonp = function (url, params, timeout) {
         return $.ajax({
             url: url,
-            data: data,
+            data: JSON.stringify(params),
             dataType: 'jsonp',
             timeout: timeout
         });

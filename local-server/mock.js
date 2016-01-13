@@ -17,8 +17,8 @@ var formDataReg = /multipart\/form-data/;
 
 module.exports = function (req, res, next) {
 
-    if (req.url.indexOf('.ajax') > 0) {
-
+    if (req.url.indexOf('/projectxxx/') === 0) {
+    // if (req.url.indexOf('.ajax') > 0) {
         var contentType = req.headers['content-type'];
 
         var getProxyInfo = function () {
@@ -78,9 +78,9 @@ module.exports = function (req, res, next) {
         var doMock = function (params, pathName) {
             res.writeHead(200, {'Content-Type': contentType});
             try {
-                var path = require.resolve(pathNormalize('../mock/' + pathName.replace(/\.ajax$/, '')));
+                // var path = require.resolve(pathNormalize('../mock/' + pathName.replace(/\.ajax$/, '')));
                 // 下面是mock文件为单一层级的方式
-                // var path = require.resolve('../mock/' + pathName.replace(/^\/api\//, '').replace(/\//g, '-'));
+                var path = require.resolve('../mock/' + pathName.replace(/^\/projectxxx\//, '').replace(/\//g, '_'));
                 delete require.cache[path];
                 var result = require(path);
                 if (typeof result === 'function') {
