@@ -8,7 +8,7 @@ define(function (require, exports) {
 
     exports.init = function () {
 
-        return userService.getUserData(12).pipe(function (resp) {
+        return userService.getUserData(1).pipe(function (resp) {
             return resp.data;
         });
 

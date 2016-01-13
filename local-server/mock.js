@@ -115,7 +115,12 @@ module.exports = function (req, res, next) {
                 params += data;
             });
             req.on('end', function () {
-                doMock(queryString.parse(params), urlInfo.pathname);
+                if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+                    params = queryString.parse(params);
+                } else if (contentType.indexOf('application/json') > -1) {
+                    params = JSON.parse(params);
+                }
+                doMock(params, urlInfo.pathname);
             });
         } else if (method === 'GET') {
             params = urlInfo.query;

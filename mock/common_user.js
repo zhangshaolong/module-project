@@ -1,13 +1,13 @@
-module.exports = function (id) {
+module.exports = function (params) {
 
     var name = '张三\n12 sfdsd /nsdfsf ';
-    if (id == 1) {
+    if (params.id == 1) {
         name = 'id为1时返回的名字';
     }
     return {
         status: 200,
         data: {
-            id: id,
+            id: params.id,
             name: name
         }
     };
