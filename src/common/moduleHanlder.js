@@ -8,27 +8,27 @@ define(function (require, exports) {
 
     'use strict';
 
-    var eventEmitter = require('./eventEmitter');
     var store = require('./store');
+    var eventEmitter = require('./eventEmitter');
 
-    exports.init = function (context) {
+    exports.init = function (context, parentModule) {
         context = context || $('body');
         var size = context.size();
         if (size > 1) {
             $.each(context, function () {
-                exports.init($(this));
+                exports.init($(this), parentModule);
             });
         } else if (size === 1) {
             var path = context.data('modulePath');
             if (path) {
-                exports.load(path, context);
+                exports.load(path, context, parentModule);
             } else {
-                exports.init(context.children());
+                exports.init(context.children(), parentModule);
             }
         }
     };
 
-    exports.load = function (path, moduleNode) {
+    exports.load = function (path, moduleNode, parentModule) {
         var interceptorPath = moduleNode.data('interceptorPath');
         var caller = {
             element: moduleNode,
@@ -37,17 +37,26 @@ define(function (require, exports) {
             store: store
         };
         var execModule = function (factory, data) {
-            if (factory && $.isFunction(factory.init)) {
-                var deferred = factory.init.call(caller, data);
-                if (deferred && deferred.done) {
-                    deferred.done(function (data) {
-                        exports.init(moduleNode.children());
-                    });
+            if (factory) {
+                if ($.isFunction(factory.init)) {
+                    var deferred = factory.init.call(caller, data);
+                    if (deferred && deferred.done) {
+                        deferred.done(function (data) {
+                            exports.init(moduleNode.children(), factory);
+                        });
+                    } else {
+                        exports.init(moduleNode.children(), factory);
+                    }
                 } else {
-                    exports.init(moduleNode.children());
+                    exports.init(moduleNode.children(), factory);
                 }
-            } else {
-                exports.init(moduleNode.children());
+                if (parentModule) {
+                    var subModules = parentModule.subModules;
+                    if (!subModules) {
+                        subModules = parentModule.subModules = [];
+                    }
+                    subModules.push(factory);
+                }
             }
         };
 
