@@ -6,7 +6,7 @@ define(function (require, exports) {
     'use strict';
 
     // 你可以通过init的参数获取在data-interceptor-path设置的js的返回值
-    exports.init = function (id) {
+    exports.init = function () {
 
         var moduleNode = this.element;
 
@@ -21,5 +21,9 @@ define(function (require, exports) {
                 id: 23
             });
         });
+    };
+
+    exports.dispose = function () {
+        console.log('dispose task-list/sub-module-2');
     };
 });

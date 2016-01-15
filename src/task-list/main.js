@@ -14,12 +14,14 @@ define(function (require, exports) {
     require('./sub-module-1');
     require('./sub-module-2');
 
+    var moduleNode;
+
     exports.init = function (interceptorData) {
 
         console.log('模块能获取对应的interceptor的返回值：', interceptorData);
 
         // 模块元素，查找元素都要基于此元素，目的是防止干扰其他模块
-        var moduleNode = this.element;
+        moduleNode = this.element;
 
         // 不同的模块间事件通讯
         var eventEmitter = this.eventEmitter;
@@ -28,6 +30,7 @@ define(function (require, exports) {
 
         moduleNode.on('click', '.main', function () {
             alert('module main clicked');
+            exports.dispose();
         });
 
         eventEmitter.on('sub2-clicked', function (data) {
@@ -44,5 +47,9 @@ define(function (require, exports) {
         ).done(function (resp) {
             console.log('这个是获取到的taskList数据，', resp);
         });
+    };
+
+    exports.dispose = function () {
+        console.log('dispose task-list/main');
     };
 });

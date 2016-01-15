@@ -57,6 +57,33 @@ define(function (require, exports) {
                     }
                     subModules.push(factory);
                 }
+
+                factory.disposeSubModules = function () {
+                    var disposeModules = function (modules) {
+                        if (!modules) {
+                            return;
+                        }
+                        $.each(modules, function (idx, module) {
+                            var dispose = module.dispose;
+                            if ($.isFunction(dispose)) {
+                                module.dispose();
+                            }
+                        });
+                    };
+                    disposeModules(this.subModules);
+                };
+
+                var dispose = factory.dispose;
+                if ($.isFunction(dispose)) {
+                    factory.dispose = function () {
+                        this.disposeSubModules();
+                        dispose.apply(factory, arguments);
+                    };
+                } else {
+                    factory.dispose = function () {
+                        this.disposeSubModules();
+                    };
+                }
             }
         };
 

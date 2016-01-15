@@ -76,6 +76,9 @@ define(function (require, exports) {
         }, 1000);
 
         return deferred.promise();
+    };
 
+    exports.dispose = function () {
+        console.log('dispose task-list/sub-module-1');
     };
 });
