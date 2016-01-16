@@ -11,6 +11,18 @@ define(function (require, exports) {
     var store = require('./store');
     var eventEmitter = require('./eventEmitter');
 
+    var disposeModules = function (modules) {
+        if (!modules) {
+            return;
+        }
+        $.each(modules, function (idx, module) {
+            var dispose = module.dispose;
+            if ($.isFunction(dispose)) {
+                module.dispose();
+            }
+        });
+    };
+
     exports.init = function (context, parentModule) {
         context = context || $('body');
         var size = context.size();
@@ -58,30 +70,15 @@ define(function (require, exports) {
                     subModules.push(factory);
                 }
 
-                factory.disposeSubModules = function () {
-                    var disposeModules = function (modules) {
-                        if (!modules) {
-                            return;
-                        }
-                        $.each(modules, function (idx, module) {
-                            var dispose = module.dispose;
-                            if ($.isFunction(dispose)) {
-                                module.dispose();
-                            }
-                        });
-                    };
-                    disposeModules(this.subModules);
-                };
-
                 var dispose = factory.dispose;
                 if ($.isFunction(dispose)) {
                     factory.dispose = function () {
-                        this.disposeSubModules();
+                        disposeModules(this.subModules);
                         dispose.apply(factory, arguments);
                     };
                 } else {
                     factory.dispose = function () {
-                        this.disposeSubModules();
+                        disposeModules(this.subModules);
                     };
                 }
             }
