@@ -50,6 +50,10 @@ define(function (require, exports) {
         };
         var execModule = function (factory, data) {
             if (factory) {
+                factory.element = moduleNode;
+                factory.eventEmitter = eventEmitter;
+                factory.data = caller.data;
+                factory.store = store;
                 if ($.isFunction(factory.init)) {
                     var deferred = factory.init.call(caller, data);
                     if (deferred && deferred.done) {
@@ -87,17 +91,23 @@ define(function (require, exports) {
         require([path], function (factory) {
             if (interceptorPath) {
                 require([interceptorPath], function (interceptorFactory) {
-                    if (interceptorFactory && $.isFunction(interceptorFactory.init)) {
-                        var deferred = interceptorFactory.init.call(caller);
-                        if (deferred && deferred.done) {
-                            deferred.done(function (data) {
-                                execModule(factory, data);
-                            });
+                    if (interceptorFactory) {
+                        interceptorFactory.element = moduleNode;
+                        interceptorFactory.eventEmitter = eventEmitter;
+                        interceptorFactory.data = caller.data;
+                        interceptorFactory.store = store;
+                        if ($.isFunction(interceptorFactory.init)) {
+                            var deferred = interceptorFactory.init.call(caller);
+                            if (deferred && deferred.done) {
+                                deferred.done(function (data) {
+                                    execModule(factory, data);
+                                });
+                            } else {
+                                execModule(factory, deferred);
+                            }
                         } else {
-                            execModule(factory, deferred);
+                            execModule(factory);
                         }
-                    } else {
-                        execModule(factory);
                     }
                 });
             } else {
