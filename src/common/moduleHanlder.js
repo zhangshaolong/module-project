@@ -41,21 +41,19 @@ define(function (require, exports) {
     };
 
     exports.load = function (path, moduleNode, parentModule) {
-        var interceptorPath = moduleNode.data('interceptorPath');
-        var caller = {
-            element: moduleNode,
-            eventEmitter: eventEmitter,
-            data: moduleNode.data(),
-            store: store
-        };
+        var moduleData = moduleNode.data();
+        var interceptorPath = moduleData.interceptorPath;
         var execModule = function (factory, data) {
             if (factory) {
+                if ($.isFunction(factory)) {
+                    factory = new factory();
+                }
                 factory.element = moduleNode;
                 factory.eventEmitter = eventEmitter;
-                factory.data = caller.data;
+                factory.data = moduleData;
                 factory.store = store;
                 if ($.isFunction(factory.init)) {
-                    var deferred = factory.init.call(caller, data);
+                    var deferred = factory.init(data);
                     if (deferred && deferred.done) {
                         deferred.done(function (data) {
                             exports.init(moduleNode.children(), factory);
@@ -78,11 +76,13 @@ define(function (require, exports) {
                 if ($.isFunction(dispose)) {
                     factory.dispose = function () {
                         disposeModules(this.subModules);
+                        delete this.subModules;
                         dispose.apply(factory, arguments);
                     };
                 } else {
                     factory.dispose = function () {
                         disposeModules(this.subModules);
+                        delete this.subModules;
                     };
                 }
             }
@@ -94,10 +94,10 @@ define(function (require, exports) {
                     if (interceptorFactory) {
                         interceptorFactory.element = moduleNode;
                         interceptorFactory.eventEmitter = eventEmitter;
-                        interceptorFactory.data = caller.data;
+                        interceptorFactory.data = moduleData;
                         interceptorFactory.store = store;
                         if ($.isFunction(interceptorFactory.init)) {
-                            var deferred = interceptorFactory.init.call(caller);
+                            var deferred = interceptorFactory.init();
                             if (deferred && deferred.done) {
                                 deferred.done(function (data) {
                                     execModule(factory, data);
