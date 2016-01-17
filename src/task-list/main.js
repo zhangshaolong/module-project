@@ -29,7 +29,7 @@ define(function (require, exports) {
         var module1Data = this.data;
 
         moduleNode.on('click', '.main', function () {
-            alert('module main clicked');
+            console.log('module main clicked');
             exports.dispose();
         });
 

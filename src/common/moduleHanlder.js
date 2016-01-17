@@ -11,16 +11,38 @@ define(function (require, exports) {
     var store = require('./store');
     var eventEmitter = require('./eventEmitter');
 
-    var disposeModules = function (modules) {
-        if (!modules) {
+    var disposeModule = function (module) {
+        if (!module) {
             return;
         }
-        $.each(modules, function (idx, module) {
-            var dispose = module.dispose;
-            if ($.isFunction(dispose)) {
-                module.dispose();
+        disposeParentRef(module);
+        var subModules = module.subModules;
+        if (!subModules) {
+            return;
+        }
+        for (var i = 0; i < subModules.length; i++) {
+            var subModule = subModules[i];
+            if (subModule && $.isFunction(subModule.dispose)) {
+                subModules.splice(i, 1);
+                i--;
+                subModule.dispose();
             }
-        });
+        }
+    };
+
+    var disposeParentRef = function (module) {
+        var parentModule = module.parentModule;
+        if (!parentModule) {
+            return;
+        }
+        var subModules = parentModule.subModules;
+        for (var i = 0; i < subModules.length; i++) {
+            var subModule = subModules[i];
+            if (subModule === module) {
+                subModules.splice(i, 1);
+                i--;
+            }
+        }
     };
 
     exports.init = function (context, parentModule) {
@@ -70,19 +92,18 @@ define(function (require, exports) {
                         subModules = parentModule.subModules = [];
                     }
                     subModules.push(factory);
+                    factory.parentModule = parentModule;
                 }
 
                 var dispose = factory.dispose;
                 if ($.isFunction(dispose)) {
                     factory.dispose = function () {
-                        disposeModules(this.subModules);
-                        delete this.subModules;
-                        dispose.apply(factory, arguments);
+                        disposeModule(this);
+                        dispose.apply(this, arguments);
                     };
                 } else {
                     factory.dispose = function () {
-                        disposeModules(this.subModules);
-                        delete this.subModules;
+                        disposeModule(this);
                     };
                 }
             }
