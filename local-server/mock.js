@@ -15,6 +15,8 @@ var pathNormalize = require('path').normalize;
 
 var formDataReg = /multipart\/form-data/;
 
+var proxyInfo;
+
 module.exports = function (req, res, next) {
 
     if (req.url.indexOf('/projectxxx/') === 0) {
@@ -68,7 +70,9 @@ module.exports = function (req, res, next) {
             });
         };
 
-        var proxyInfo = getProxyInfo();
+        if (!proxyInfo) {
+            proxyInfo = getProxyInfo();
+        }
 
         if (proxyInfo) {
             doProxy(proxyInfo);
