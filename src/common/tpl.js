@@ -6,7 +6,7 @@
 define(function (require) {
 
     var tplMap = {};
-    var tplReg = /\{\{\s*\-\-\s*tpl\s*\:\s*([^\}\s]+)\s*\-\-\s*\}\}\s*([\s\S]+?)\{\{\s*\-\-\s*\/tpl\s*\-\-\s*\}\}/g;
+    var tplReg = /\{\{\s*\-\-\s*tpl\s*\:\s*([^\}\s]+)\s*\-\-\s*\}\}\s*([\s\S]*?)\{\{\s*\-\-\s*\/tpl\s*\-\-\s*\}\}/g;
     return {
         load: function (resourceId, req, load, config) {
             var path = req.toUrl(resourceId);
