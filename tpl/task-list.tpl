@@ -1,6 +1,6 @@
 {{ -- tpl:task-list-sub-module-1 -- }}
 <div>
-    用户名：<%= _this.name.replace(/\n/g, '<br>') %>
+    ip：<%= _this.ip.replace(/\n/g, '<br>') %>
 </div>
 <table class="table">
     <thead>

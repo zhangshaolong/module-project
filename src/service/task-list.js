@@ -11,6 +11,6 @@ define(function (require, exports) {
      * 获取所有任务数据
      */
     exports.getTaskList = function (options) {
-        return ajax.post('/projectxxx/task/list', null, options);
+        return ajax.post('/module-project/task/list', null, options);
     };
 });

@@ -19,7 +19,7 @@ var proxyInfo;
 
 module.exports = function (req, res, next) {
 
-    if (req.url.indexOf('/projectxxx/') === 0) {
+    if (req.url.indexOf('/module-project/') === 0) {
     // if (req.url.indexOf('.ajax') > 0) {
         var contentType = req.headers['content-type'];
 
@@ -84,7 +84,7 @@ module.exports = function (req, res, next) {
             try {
                 // var path = require.resolve(pathNormalize('../mock/' + pathName.replace(/\.ajax$/, '')));
                 // 下面是mock文件为单一层级的方式
-                var path = require.resolve('../mock/' + pathName.replace(/^\/projectxxx\//, '').replace(/\//g, '_'));
+                var path = require.resolve('../mock/' + pathName.replace(/^\/module-project\//, '').replace(/\//g, '_'));
                 delete require.cache[path];
                 var result = require(path);
                 if (typeof result === 'function') {

@@ -11,7 +11,7 @@ define(function (require, exports) {
      * 获取某个模块数据
      * @param {Object} params
      */
-    exports.getUserData = function (params, options) {
-        return ajax.post('/module-project/common/user', params, options);
+    exports.getData = function (params, options) {
+        return ajax.post('/module-project/common/base', params, options);
     };
 });

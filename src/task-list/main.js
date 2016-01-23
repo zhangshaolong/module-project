@@ -37,7 +37,7 @@ define(function (require, exports) {
             alert(data.id);
         });
 
-        moduleNode.find('div').data('userName', interceptorData.name);
+        moduleNode.find('div').data('ip', interceptorData.ip);
 
         // 可以返回一个Deferred来延迟初始化此模块下面的所有模块
         return service.getTaskList(

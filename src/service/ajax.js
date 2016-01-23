@@ -35,6 +35,8 @@ define(function (require, exports) {
             options.holder && options.holder.removeClass('data-loading-relative').find('.data-loading-' + options._time).remove();
             if (response.status === 200) {
                 return response;
+            } else if (response.status === 302) { // 需要登录认证
+                window.location.href = '/login';
             } else {
                 var deferred = $.Deferred();
                 if (commonErrors[response.status]) {

@@ -4,12 +4,14 @@
 
 define(function (require, exports) {
 
-    var userService = require('service/common/user-service');
+    var baseService = require('service/common/base-service');
 
     exports.init = function () {
 
-        return userService.getUserData(1).pipe(function (resp) {
-            return resp.data;
+        return baseService.getData().pipe(function (resp) {
+            if (resp.status === 200) {
+                return resp.data;
+            }
         });
 
         // var deferred = $.Deferred();
