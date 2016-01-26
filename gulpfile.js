@@ -3,6 +3,7 @@ var clean = require('gulp-clean');
 var sequence = require('gulp-sequence');
 var config = require('./gulp-builder/config');
 var server = require('./local-server/server');
+var uglify = require('gulp-uglify');
 
 var htmlIncludeProcessor = require('./gulp-builder/html-include');
 var htmlminProcessor = require('./gulp-builder/html-min');
@@ -44,7 +45,10 @@ gulp.task('htmlmin', function () {
 gulp.task('main', appEntryProcessor);
 
 gulp.task('copy', function () {
-    gulp.src('dep/**/*.*')
+    gulp.src(['dep/**/*.*', '!dep/**/bootstrap.js', '!dep/Simplite.js'])
+        .pipe(gulp.dest(buildPath + '/dep'));
+    gulp.src(['dep/**/bootstrap.js', 'dep/Simplite.js'])
+        .pipe(uglify())
         .pipe(gulp.dest(buildPath + '/dep'));
 });
 

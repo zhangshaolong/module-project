@@ -1,5 +1,7 @@
 define(function (require, exports) {
 
+    require('./base-nav');
+
     var userService = require('service/common/user-service');
 
     exports.init = function () {
