@@ -33,7 +33,8 @@ location /module-project/ {
     proxy_redirect off;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
-    proxy_pass http://localhost:8081; // remote server host
+    proxy_pass http://localhost:8081; // remote server host，if api server path is not has zhe prefix ‘module-project’，
+                                         you can set proxy_pass http://localhost:8081/;
 }
 
 // router of path to html file
