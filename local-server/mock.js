@@ -22,6 +22,11 @@ module.exports = function (req, res, next) {
     if (req.url.indexOf('/module-project/') === 0) {
     // if (req.url.indexOf('.ajax') > 0) {
         var contentType = req.headers['content-type'];
+        res.writeHead(200, {'Content-Type': contentType});
+        var headers = {};
+        for (var key in req.headers) {
+            headers[key] = req.headers[key];
+        };
 
         var getProxyInfo = function () {
             var pageUrl = req.headers.referer;
@@ -38,26 +43,21 @@ module.exports = function (req, res, next) {
         };
 
         var doProxy = function (proxyInfo) {
+            headers.host = proxyInfo.host + ':' + proxyInfo.port;
+            delete headers['accept-encoding']; // 去掉压缩数据
             var options = {
                 host: proxyInfo.host,
                 port: proxyInfo.port,
                 path: req.url,
                 method: req.method,
-                headers: {
-                    'Content-Type': contentType
-                }
+                headers: headers
                 // headers: {
                 //   // 如果代理服务器需要认证
                 //   'Proxy-Authentication': 'Base ' + new Buffer('user:password').toString('base64')    // 替换为代理服务器用户名和密码
                 // }
             };
 
-            if (req.headers.cookie) {
-                options.headers.cookie = req.headers.cookie;
-            }
-
             var proxyReq = http.request(options, function(proxyRes) {
-                res.writeHead(200, {'Content-Type': contentType});
                 proxyRes.pipe(res);
             });
 
@@ -80,7 +80,6 @@ module.exports = function (req, res, next) {
         }
 
         var doMock = function (params, pathName) {
-            res.writeHead(200, {'Content-Type': contentType});
             try {
                 // var path = require.resolve(pathNormalize('../mock/' + pathName.replace(/\.ajax$/, '')));
                 // 下面是mock文件为单一层级的方式
