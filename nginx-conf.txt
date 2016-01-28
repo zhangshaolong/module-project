@@ -1,0 +1,43 @@
+location ^~ /dep/ {
+    root /xxxpath/module-project/output; // output is created by the result of run 'gulp build'
+    if ($query_string) {
+        expires max;
+    }
+}
+
+location ^~ /asset/ {
+    root /xxxpath/module-project/output;
+    if ($query_string) {
+        expires max;
+    }
+}
+
+location ^~ /css/ {
+    root /xxxpath/module-project/output;
+    if ($query_string) {
+        expires max;
+    }
+}
+
+location ^~ /img/ {
+    root /xxxpath/module-project/output;
+    if ($query_string) {
+        expires max;
+    }
+}
+
+// interceptor for remote api，‘module-project’ is a prefix for interceptor
+location /module-project/ {
+    proxy_pass_header Server;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_pass http://localhost:8081; // remote server host
+}
+
+// router of path to html file
+location / {
+    rewrite ^(.*)/list$ /$1-list.html?$query_string;
+    rewrite ^(.*)/add$ /$1-add.html?$query_string;
+}
