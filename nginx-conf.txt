@@ -1,44 +1,23 @@
-location ^~ /dep/ {
-    root /xxxpath/module-project/output; // output is created by the result of run 'gulp build'
-    if ($query_string) {
-        expires max;
+server {
+    listen 8080; // 前端项目的端口号
+
+    root /home/xxx/module-project/output/; // 前端项目的根路径
+
+    index           view/index.html; // 默认页面，即http://localhost:8080时自动映射到的文件
+
+    // interceptor for remote api，‘module-project’ is a prefix for interceptor
+    location /module-project/ {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://localhost:8081; // remote server host，if api server path is not has zhe prefix ‘module-project’，you can set proxy_pass http://localhost:8081/;
     }
-}
 
-location ^~ /asset/ {
-    root /xxxpath/module-project/output;
-    if ($query_string) {
-        expires max;
+    // router of path to html file
+    location / {
+        rewrite ^(.*)/list$ /view/$1-list.html?$query_string;
+        rewrite ^(.*)/add$ /view/$1-add.html?$query_string;
     }
-}
-
-location ^~ /css/ {
-    root /xxxpath/module-project/output;
-    if ($query_string) {
-        expires max;
-    }
-}
-
-location ^~ /img/ {
-    root /xxxpath/module-project/output;
-    if ($query_string) {
-        expires max;
-    }
-}
-
-// interceptor for remote api，‘module-project’ is a prefix for interceptor
-location /module-project/ {
-    proxy_pass_header Server;
-    proxy_set_header Host $http_host;
-    proxy_redirect off;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_pass http://localhost:8081; // remote server host，if api server path is not has zhe prefix ‘module-project’，
-                                         you can set proxy_pass http://localhost:8081/;
-}
-
-// router of path to html file
-location / {
-    rewrite ^(.*)/list$ /$1-list.html?$query_string;
-    rewrite ^(.*)/add$ /$1-add.html?$query_string;
 }
