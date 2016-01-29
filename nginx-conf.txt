@@ -1,9 +1,9 @@
 server {
-    listen 8080; // 前端项目的端口号
+    listen 8080; // fe project's port
 
-    root /home/xxx/module-project/output/; // 前端项目的根路径
+    root /home/xxx/module-project/output/; // fe project's root path
 
-    index           view/index.html; // 默认页面，即http://localhost:8080时自动映射到的文件
+    index           view/index.html; // default page. ps:http://localhost:8080
 
     // interceptor for remote api，‘module-project’ is a prefix for interceptor
     location /module-project/ {
