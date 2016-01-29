@@ -42,7 +42,7 @@ exports.init = function (dataFromInterceptor) {
     var moduleNode = this.element;// 所有的注册事件建议都代理到此元素上，可以安全地处理多个模块间的潜在的元素干扰。
     var eventEmitter = this.eventEmitter;// 页面间模块的事件通讯，建议子通过事件通知父模块，父直接通过调用子方法。
     var store = this.store;// 页面间所有模块的数据共享池。
-    var dataFromNode = this.data;// 挂载在nodeleNode的data-xxx属性上的数据。
+    var dataFromNode = this.data;// 挂载在moduleNode的data-xxx属性上的数据。
 };
 ```
 #### 8：本地开发mock，比如我们的规则是以/module-project/开头的请求都认为是调用后端api的接口，比如：/module-proejct/common/user，那么映射到mock文件为/mock/common_user.js，对应的内容类似如下：
