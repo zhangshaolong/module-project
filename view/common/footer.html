@@ -1,6 +1,6 @@
-        <script src="/dep/jquery-1.11.3.min.js"></script>
-        <script src="/dep/bootstrap3/bootstrap.js"></script>
-        <script src="/dep/Simplite.js"></script>
+        <script src="../dep/jquery-1.11.3.min.js"></script>
+        <script src="../dep/bootstrap3/bootstrap.js"></script>
+        <script src="../dep/Simplite.js"></script>
         <%
             if (_this && _this.scripts) {
                 for (var i = 0, len = _this.scripts.length; i < len; i++) {
@@ -10,10 +10,10 @@
                 }
             }
         %>
-        <script src="/dep/require.js"></script>
+        <script src="../dep/require.js"></script>
         <script>
             requirejs.config({
-                baseUrl: '/src',
+                baseUrl: '../src',
                 paths: {
                     tpl: 'common/tpl'
                 }

@@ -13,6 +13,8 @@ define(function (require, exports) {
     // 页面中的子模块需要手动require进来，打包时分析依赖用
     require('./sub-module-1');
     require('./sub-module-2');
+    require('./interceptor/base-data');
+    require('./instance-demo');
 
     var moduleNode;
 

@@ -8,7 +8,6 @@ router.sublime-project
 router.sublime-workspace
 .DS_Store
 .swp
-/node_modules
 gulp
 gulp.cmd
 r.js

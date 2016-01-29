@@ -25,7 +25,7 @@ module.exports = function () {
                 },
                 out: config.buildPath + '/' + config.jsPath + '/' + path + '.js'
             });
-            content = content.replace(/baseUrl\s*:\s*["']\/src["'],/, 'baseUrl: \'\/' + config.jsPath + '\',');
+            content = content.replace(/baseUrl\s*:\s*["']([^\/]+)?\/src["'],/, 'baseUrl: \'$1\/' + config.jsPath + '\',');
 
             file.contents = new Buffer(content);
             return all;
