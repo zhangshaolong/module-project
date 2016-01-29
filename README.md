@@ -27,7 +27,7 @@ gulp build
 ### 使用教程
 #### 1：支持本地代理，轻松与rd通过源代码联调。
 ```
-http://localhost:8080/api/path?proxy=xxx.xxx.xxx.xxx:80
+http://localhost:8080/task/list?proxy=xxx.xxx.xxx.xxx:80
 设置proxy参数，指向rd的机器ip与端口
 注意：一般联调可能有用户验证之类的操作，如果验证是利用cookie处理的，那么可以把代理地址的cookie手动在本地也设置一份，记得path设置为‘/’，这样的话，代理服务器会自动带上这个cookie。
 ```
