@@ -1,19 +1,19 @@
 var connect = require('gulp-connect');
-// 为了同时和多个rd进行联调，支持多个端口访问
-// 支持设置p参数，比如：gulp -p 8081
-var argv = require('yargs').argv;
+var config = require('./config');
 var router = require('./router');
+// var prefix = require('./prefix'); // 为了配合在nginx层面转了多次之后才到达前端系统的情况。
 var mock = require('./mock');
 var less = require('./less');
 module.exports = function () {
-    var port = argv.p || 8080;
-    var host = argv.h || 'localhost';
+    var port = config.server.port;
+    var host = config.server.host;
     return connect.server({
         host: host,
         port: port,
         root: process.cwd(),
         middleware: function(connect, opt) {
             return [
+                // prefix,
                 router,
                 mock,
                 less

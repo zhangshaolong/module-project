@@ -5,12 +5,13 @@
 define(function (require, exports) {
     'use strict';
 
+    // 事件管理器，页面内共享
+    var eventEmitter = require('common/eventEmitter');
+
     // 你可以通过init的参数获取在data-interceptor-path设置的js的返回值
     exports.init = function (id) {
 
         var moduleNode = this.element;
-
-        var eventEmitter = this.eventEmitter;
 
         var moduleData = this.data;
 
@@ -40,7 +41,7 @@ define(function (require, exports) {
                 ]
             }));
 
-            require('common/moduleHanlder').init(moduleNode.children(), exports);
+            require('dep/moduleHandler').init(moduleNode.children(), exports);
         }, 1000);
 
         return;

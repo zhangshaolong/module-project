@@ -12,6 +12,6 @@ define(function (require, exports) {
      * @param {Object} params
      */
     exports.getData = function (params, options) {
-        return ajax.post('/module-project/common/base', params, options);
+        return ajax.post('/api-prefix/common/base', params, options);
     };
 });

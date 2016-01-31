@@ -11,13 +11,13 @@ define(function (require, exports) {
      * 获取业务线数据
      */
     exports.getProduct = function (params, options) {
-        return ajax.post('/module-project/product/get', params, options);
+        return ajax.post('/api-prefix/product/get', params, options);
     };
 
     exports.saveProduct = function (params, options) {
         if (params.ProductId) {
-            return ajax.post('/module-project/product/edit', params, options);
+            return ajax.post('/api-prefix/product/edit', params, options);
         }
-        return ajax.post('/module-project/product/add', params, options);
+        return ajax.post('/api-prefix/product/add', params, options);
     };
 });

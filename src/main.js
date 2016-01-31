@@ -2,11 +2,13 @@ define(function (require, exports) {
 
     require('./base-nav');
 
+    // store里面的数据是页面内共享的
+    var store = require('common/store');
+
     var userService = require('service/common/user-service');
 
     exports.init = function () {
 
-        var store = this.store;
         var moduleNode = this.element;
 
         return userService.getUserData(Math.round(Math.random() * 100)).done(function (resp) {
@@ -21,6 +23,6 @@ define(function (require, exports) {
     };
 
     // 启动模块初始化
-    require('common/moduleHanlder').init();
+    require('dep/moduleHandler').init();
 
 });

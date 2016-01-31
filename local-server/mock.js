@@ -11,16 +11,27 @@ var URL = require('url');
 
 var http = require('http');
 
-var pathNormalize = require('path').normalize;
+var request = require('./request');
 
 var formDataReg = /multipart\/form-data/;
+
+var config = require('./config');
 
 var proxyInfo;
 
 module.exports = function (req, res, next) {
 
-    if (req.url.indexOf('/module-project/') === 0) {
-    // if (req.url.indexOf('.ajax') > 0) {
+    var reqUrl = req.url;
+
+    var apiType = config.api.type;
+    var apiValue = config.api.value;
+    var isApi = false;
+    if (apiType === 'prefix') {
+        isApi = reqUrl.indexOf(apiValue) === 0;
+    } else if (apiType === 'suffix') {
+        isApi = reqUrl.split('?')[0].endsWith(apiValue);
+    }
+    if (isApi) {
         var contentType = req.headers['content-type'];
         res.writeHead(200, {'Content-Type': contentType});
         var headers = {};
@@ -48,7 +59,7 @@ module.exports = function (req, res, next) {
             var options = {
                 host: proxyInfo.host,
                 port: proxyInfo.port,
-                path: req.url,
+                path: reqUrl,
                 method: req.method,
                 headers: headers
                 // headers: {
@@ -57,7 +68,7 @@ module.exports = function (req, res, next) {
                 // }
             };
 
-            var proxyReq = http.request(options, function(proxyRes) {
+            var proxyReq = request(options, function(proxyRes) {
                 proxyRes.pipe(res);
             });
 
@@ -81,9 +92,7 @@ module.exports = function (req, res, next) {
 
         var doMock = function (params, pathName) {
             try {
-                // var path = require.resolve(pathNormalize('../mock/' + pathName.replace(/\.ajax$/, '')));
-                // 下面是mock文件为单一层级的方式
-                var path = require.resolve('../mock/' + pathName.replace(/^\/module-project\//, '').replace(/\//g, '_'));
+                var path = require.resolve('../mock/' + pathName.replace(apiValue, '').replace(/^\//, '').replace(/\//g, '_'));
                 delete require.cache[path];
                 var result = require(path);
                 if (typeof result === 'function') {
@@ -105,7 +114,7 @@ module.exports = function (req, res, next) {
             }
         };
         var method = req.method.toUpperCase();
-        var urlInfo = URL.parse(req.url, true);
+        var urlInfo = URL.parse(reqUrl, true);
         if (formDataReg.test(contentType)) {
             req.once('data', function(data) {
                 doMock(queryString.parse(String(data, 'UTF-8')), urlInfo.pathname);

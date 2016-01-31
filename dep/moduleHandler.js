@@ -8,9 +8,6 @@ define(function (require, exports) {
 
     'use strict';
 
-    var store = require('./store');
-    var eventEmitter = require('./eventEmitter');
-
     var disposeModule = function (module) {
         if (!module) {
             return;
@@ -71,9 +68,7 @@ define(function (require, exports) {
                     factory = new factory();
                 }
                 factory.element = moduleNode;
-                factory.eventEmitter = eventEmitter;
                 factory.data = moduleData;
-                factory.store = store;
                 if ($.isFunction(factory.init)) {
                     var deferred = factory.init(data);
                     if (deferred && deferred.done) {
@@ -114,9 +109,7 @@ define(function (require, exports) {
                 require([interceptorPath], function (interceptorFactory) {
                     if (interceptorFactory) {
                         interceptorFactory.element = moduleNode;
-                        interceptorFactory.eventEmitter = eventEmitter;
                         interceptorFactory.data = moduleData;
-                        interceptorFactory.store = store;
                         if ($.isFunction(interceptorFactory.init)) {
                             var deferred = interceptorFactory.init();
                             if (deferred && deferred.done) {

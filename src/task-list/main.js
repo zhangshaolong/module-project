@@ -16,6 +16,9 @@ define(function (require, exports) {
     require('./interceptor/base-data');
     require('./instance-demo');
 
+    // 事件管理器，页面内共享
+    var eventEmitter = require('common/eventEmitter');
+
     var moduleNode;
 
     exports.init = function (interceptorData) {
@@ -24,9 +27,6 @@ define(function (require, exports) {
 
         // 模块元素，查找元素都要基于此元素，目的是防止干扰其他模块
         moduleNode = this.element;
-
-        // 不同的模块间事件通讯
-        var eventEmitter = this.eventEmitter;
 
         var module1Data = this.data;
 

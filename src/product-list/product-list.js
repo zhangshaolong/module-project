@@ -2,11 +2,12 @@ define(function (require, exports) {
 
     var service = require('service/product-list');
 
+    // store里面的数据是页面内共享的
+    var store = require('common/store');
+
     exports.init = function () {
 
         var moduleNode = this.element;
-
-        var store = this.store;
 
         service.getProductList({
             holder: moduleNode

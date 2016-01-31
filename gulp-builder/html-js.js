@@ -10,7 +10,8 @@ module.exports = function () {
                 baseUrl: 'src',
                 name: path,
                 paths: {
-                    tpl: 'common/tpl'
+                    tpl: 'common/tpl',
+                    dep: './../dep'
                 },
                 stubModules: ['tpl'],
                 optimizeAllPluginResources: false,
