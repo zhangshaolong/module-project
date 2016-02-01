@@ -12,7 +12,7 @@ module.exports = function () {
                 name: main,
                 paths: {
                     tpl: 'common/tpl',
-                    dep: './../dep'
+                    dep: '../dep'
                 },
                 stubModules: ['tpl'],
                 optimizeAllPluginResources: false,

@@ -7,7 +7,7 @@ module.exports = function () {
         name: 'main',
         paths: {
             tpl: 'common/tpl',
-            dep: './../dep'
+            dep: '../dep'
         },
         out: path.join(config.buildPath, config.jsPath, 'main.js')
     });
