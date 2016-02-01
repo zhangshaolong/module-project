@@ -1,3 +1,6 @@
+<%
+    var rootBase = _this && _this.rootBase || '';
+%>
 <!DOCTYPE html>
 <html lang="zh-CN">
     <head>
@@ -9,7 +12,7 @@
             <title>联调环境监控</title>
 
             <!-- Bootstrap -->
-            <link href="<%= _this && _this.rootBase || "" %>/dep/bootstrap3/bootstrap.css" rel="stylesheet">
+            <link href="<%= rootBase %>/dep/bootstrap3/bootstrap.css" rel="stylesheet">
         <%
             if (_this && _this.links) {
                 for (var i = 0, len = _this.links.length; i < len; i++) {
@@ -37,7 +40,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand logo-href" href="<%= _this && _this.rootBase || "" %>/"><span>联调环境监控</span></a>
+                        <a class="navbar-brand logo-href" href="<%= rootBase %>/"><span>联调环境监控</span></a>
                     </div>
                     <div class="collapse navbar-collapse user-account">
                         <ul class="nav navbar-nav navbar-right">
@@ -48,7 +51,7 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="user-operation-list">
-                                    <li><a href="<%= _this && _this.rootBase || "" %>/api-prefix/logout">退出登录</a></li>
+                                    <li><a href="<%= rootBase %>/api-prefix/logout">退出登录</a></li>
                                 </ul>
                             </li>
                         </ul>

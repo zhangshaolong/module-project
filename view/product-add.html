@@ -1,9 +1,12 @@
 <%
+    var rootBase = _this && _this.rootBase || '';
+%>
+<%
     include('common/header.html', {
         links: [
-            (_this && _this.rootBase || '') + '/css/product-add.less'
+            rootBase + '/css/product-add.less'
         ],
-        rootBase: _this && _this.rootBase || ''
+        rootBase: rootBase
     });
 %>
 

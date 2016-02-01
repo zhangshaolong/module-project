@@ -1,6 +1,9 @@
-        <script src="<%= _this && _this.rootBase || "" %>/dep/jquery-1.11.3.min.js"></script>
-        <script src="<%= _this && _this.rootBase || "" %>/dep/bootstrap3/bootstrap.js"></script>
-        <script src="<%= _this && _this.rootBase || "" %>/dep/Simplite.js"></script>
+<%
+    var rootBase = _this && _this.rootBase || '';
+%>
+        <script src="<%= rootBase %>/dep/jquery-1.11.3.min.js"></script>
+        <script src="<%= rootBase %>/dep/bootstrap3/bootstrap.js"></script>
+        <script src="<%= rootBase %>/dep/Simplite.js"></script>
         <%
             if (_this && _this.scripts) {
                 for (var i = 0, len = _this.scripts.length; i < len; i++) {
@@ -10,11 +13,11 @@
                 }
             }
         %>
-        <script src="<%= _this && _this.rootBase || "" %>/dep/require.js"></script>
+        <script src="<%= rootBase %>/dep/require.js"></script>
         <script>
-            window.rootBase = '<%= _this && _this.rootBase || "" %>';
+            window.rootBase = '<%= rootBase %>';
             requirejs.config({
-                baseUrl: '<%= _this && _this.rootBase || "" %>/src',
+                baseUrl: '<%= rootBase %>/src',
                 paths: {
                     tpl: 'common/tpl',
                     dep: '../dep'
