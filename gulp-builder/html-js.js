@@ -1,14 +1,15 @@
 var through = require('through2');
 var rjs = require('requirejs');
+var path = require('path');
 var tplToJs = require('./tpl-compile');
 var config = require('./config');
 module.exports = function () {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
-        content.replace(config.mainJsRule, function (all, path) {
+        content.replace(config.mainJsRule, function (all, main) {
             rjs.optimize({
                 baseUrl: 'src',
-                name: path,
+                name: main,
                 paths: {
                     tpl: 'common/tpl',
                     dep: './../dep'
@@ -24,7 +25,7 @@ module.exports = function () {
                     }
                     return contents;
                 },
-                out: config.buildPath + '/' + config.jsPath + '/' + path + '.js'
+                out: path.join(config.buildPath, config.jsPath, main + '.js')
             });
             content = content.replace(/baseUrl\s*:\s*["']([^\/]+)?\/src["'],/, 'baseUrl: \'$1\/' + config.jsPath + '\',');
 

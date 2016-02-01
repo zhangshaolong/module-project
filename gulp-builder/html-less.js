@@ -21,7 +21,7 @@ module.exports = function () {
             .pipe(less({ plugins: [new lessPluginFunction()] }))
             .pipe(cssmin())
             .pipe(rename(name.replace('.less', suffix)))
-            .pipe(gulp.dest(config.buildPath + '/' + lessPath.substr(0, lessPath.lastIndexOf('/'))));
+            .pipe(gulp.dest(path.join(config.buildPath, lessPath.substr(0, lessPath.lastIndexOf('/')))));
             return all.replace('.less', suffix);
         });
         file.contents = new Buffer(content);

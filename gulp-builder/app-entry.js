@@ -1,4 +1,5 @@
 var rjs = require('requirejs');
+var path = require('path');
 var config = require('./config');
 module.exports = function () {
     return rjs.optimize({
@@ -8,6 +9,6 @@ module.exports = function () {
             tpl: 'common/tpl',
             dep: './../dep'
         },
-        out: config.buildPath + '/' + config.jsPath + '/main.js'
+        out: path.join(config.buildPath, config.jsPath, 'main.js')
     });
 };
