@@ -100,7 +100,7 @@ define(function (require, exports) {
                 if (result) {
                     service.saveProduct(getFormData(moduleNode)).done(function (resp) {
                         if (resp.status === 200) {
-                            window.location.href = '/product/list';
+                            window.location.href = window.rootBase + '/product/list';
                         } else {
                             console.log('保存业务线数据出错', resp);
                         }
@@ -110,7 +110,7 @@ define(function (require, exports) {
         })
 
         .on('click', '.cancel-save', function () {
-            window.location.href = '/product/list';
+            window.location.href = window.rootBase + '/product/list';
         });
     };
 });

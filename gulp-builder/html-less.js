@@ -7,10 +7,12 @@ var less = require('gulp-less');
 var cssmin = require('gulp-minify-css');
 var lessPluginFunction = require('less-plugin-functions');
 var config = require('./config');
+var prefixReg = new RegExp('^' + config.rootBase);
 module.exports = function () {
     return through.obj(function (file, encoding, callback) {
         var content = String(file.contents, encoding);
         content = content.replace(config.lessRule, function (all, lessPath) {
+            lessPath = lessPath.replace(prefixReg, '');
             var absPath = path.resolve('.' + lessPath + '.less');
             var hashCode = md5(absPath);
             var name = path.basename(absPath);

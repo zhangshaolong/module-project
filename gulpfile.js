@@ -34,8 +34,8 @@ gulp.task('imagemin', function() {
 });
 
 gulp.task('htmlmin', function () {
-    return gulp.src(htmlPath + '/**/*.html')
-        .pipe(htmlIncludeProcessor())
+    return gulp.src(htmlPath + '/*.html')
+        .pipe(htmlIncludeProcessor(config.rootBase))
         .pipe(htmlminProcessor())
         .pipe(htmlJsProcessor())
         .pipe(htmlLessProcessor())

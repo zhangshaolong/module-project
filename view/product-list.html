@@ -1,8 +1,9 @@
 <%
     include('common/header.html', {
         links: [
-            '/css/product-list.less'
-        ]
+            (_this && _this.rootBase || '') + '/css/product-list.less'
+        ],
+        rootBase: _this && _this.rootBase || ''
     });
 %>
 

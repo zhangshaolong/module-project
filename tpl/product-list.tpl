@@ -2,7 +2,7 @@
     <div class="row">
         <div class="item-title">业务线列表</div>
         <div class="row item-body">
-            <a class="btn btn-primary add-product float-right" href="/product/add" role="button">添加业务线</a>
+            <a class="btn btn-primary add-product float-right" href="<%= window.rootBase %>/product/add" role="button">添加业务线</a>
             <div class="product-table">
                 <table class="table table-bordered">
                     <thead>
@@ -57,7 +57,7 @@
             <td><%= item.owner %></td>
             <td><%= item.ownerPhone %></td>
             <td><%= item.ownerMail %></td>
-            <td><a class="btn btn-primary" href="/product/add?id=<%= item.productId %>">编辑</a><span class="separator">|</span><a href="#" class="btn btn-danger to-set-delete" data-id="<%= item.productId %>" data-name="<%= item.productName %>" data-toggle="modal" data-target="#delete-product-modal">删除</a></td>
+            <td><a class="btn btn-primary" href="<%= window.rootBase %>/product/add?id=<%= item.productId %>">编辑</a><span class="separator">|</span><a href="#" class="btn btn-danger to-set-delete" data-id="<%= item.productId %>" data-name="<%= item.productName %>" data-toggle="modal" data-target="#delete-product-modal">删除</a></td>
         </tr>
     <% 
             }

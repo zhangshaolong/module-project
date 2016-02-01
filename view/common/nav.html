@@ -1,13 +1,13 @@
 <div class="base-nav" data-module-path="base-nav">
     <ul class="nav nav-pills nav-stacked">
         <li role="presentation">
-            <a data-href="/product/list">
+            <a data-href="<%= _this && _this.rootBase || "" %>/product/list">
                 <span class="glyphicon glyphicon-list-alt"></span>
                 业务线管理
             </a>
         </li>
         <li role="presentation">
-            <a data-href="/task/list">
+            <a data-href="<%= _this && _this.rootBase || "" %>/task/list">
                 <span class="glyphicon glyphicon-random"></span>
                 任务管理
             </a>

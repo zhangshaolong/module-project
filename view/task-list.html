@@ -1,14 +1,15 @@
 <%
     include('common/header.html', {
         links: [
-            '/css/task-list.less'
-        ]
+            (_this && _this.rootBase || '') + '/css/task-list.less'
+        ],
+        rootBase: _this && _this.rootBase || ''
     });
 %>
 
 <div class="base-container" data-module-path="task-list/main" data-interceptor-path="task-list/interceptor/base-data">
     <p>测试下哈哈</p>
-    <img src="/img/a.jpg" />
+    <img src="<%= _this && _this.rootBase || "" %>/img/a.jpg" />
     <div class="main" data-module-path="task-list/sub-module-1">
     </div>
 
