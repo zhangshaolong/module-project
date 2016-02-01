@@ -4,5 +4,5 @@ module.exports = {
     htmlPath: 'view',
     mainJsRule: /\s+data\-module\-path="((?:[^"]+\/)?main)"/g,
     lessRule: /\<link.*?href=["']([^>]+?)\.less["']/g,
-    rootBase: '/smile'
+    rootBase: ''
 };
