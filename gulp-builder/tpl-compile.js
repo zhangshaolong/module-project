@@ -1,5 +1,5 @@
 var fs = require('fs');
-var Simplite = require('../dep/Simplite');
+var Simplite = require('../dep/simplite');
 var tplReg = /\{\{\s*\-\-\s*tpl\s*\:\s*([^\}\s]+)\s*\-\-\s*\}\}\s*([\s\S]+?)\{\{\s*\-\-\s*\/tpl\s*\-\-\s*\}\}/g;
 var tplRule = /require\(["']tpl!([^"']+)["']\);?/g;
 module.exports = function (content) {

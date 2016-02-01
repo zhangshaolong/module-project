@@ -1,7 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var through = require('through2');
-var Simplite = require('../dep/Simplite');
+var Simplite = require('../dep/simplite');
 
 var includeReg = /\<\%\s*include\s*\(\s*(['"])(.*?)\1/g;
 

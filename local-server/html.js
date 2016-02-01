@@ -3,7 +3,7 @@
  * @author zengcheng zhangshaolong
  */
 
-var Simplite = require('../dep/Simplite');
+var Simplite = require('../dep/simplite');
 var gulp = require('gulp');
 var through = require('through2');
 var fs = require('fs');
