@@ -1,19 +1,19 @@
 var connect = require('gulp-connect');
 var config = require('./config');
 var router = require('./router');
-// var prefix = require('./prefix'); // 为了配合在nginx层面转了多次之后才到达前端系统的情况。
 var mock = require('./mock');
 var less = require('./less');
+var buildPath = require('../gulp-builder/config').buildPath;
 module.exports = function () {
     var port = config.server.port;
     var host = config.server.host;
+    var cwd = process.cwd();
     return connect.server({
         host: host,
         port: port,
-        root: process.cwd(),
+        root: [cwd, cwd + '/' + buildPath],
         middleware: function(connect, opt) {
             return [
-                // prefix,
                 router,
                 mock,
                 less
