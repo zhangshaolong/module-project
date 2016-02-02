@@ -24,7 +24,9 @@ var htmlMerge = exports.htmlMerge = function (htmlContent, encoding) {
     parseInclude(htmlContent, encoding || 'UTF-8');
     Simplite.addTemplate(key, htmlContent);
     Simplite.compiles = {};
-    content = Simplite.render(key);
+    content = Simplite.render(key, {
+        rootBase: ''
+    });
     return content;
 };
 
