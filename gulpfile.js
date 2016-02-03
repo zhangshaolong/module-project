@@ -54,7 +54,7 @@ gulp.task('copy', function () {
 });
 
 gulp.task('build', sequence(
-    'clean',
+    // 'clean',
     ['htmlmin', 'imagemin', 'main', 'copy'], // 图片依赖libc.so.6: version `GLIBC_2.14'
     'jsmd5'
 ));

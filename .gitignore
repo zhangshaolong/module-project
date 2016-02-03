@@ -1,6 +1,7 @@
 test
 output
-build.sh
+output_bak
+output_bak_temp
 *.bat
 *.psd
 npm-debug.log
@@ -9,7 +10,3 @@ router.sublime-workspace
 .DS_Store
 node_modules
 .swp
-gulp
-gulp.cmd
-r.js
-r.js.cmd
