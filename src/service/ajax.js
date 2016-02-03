@@ -18,7 +18,7 @@ define(function (require, exports) {
         params = params || {};
         options = options || {};
         return $.ajax({
-            url: url,
+            url: window.rootBase + url,
             data: JSON.stringify(params),
             method: 'POST',
             type: 'POST',
@@ -36,7 +36,7 @@ define(function (require, exports) {
             if (response.status === 200) {
                 return response;
             } else if (response.status === 302) { // 需要登录认证
-                window.location.href = '/login';
+                window.location.href = window.rootBase + '/login';
             } else {
                 var deferred = $.Deferred();
                 if (commonErrors[response.status]) {

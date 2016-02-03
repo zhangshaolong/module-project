@@ -3,6 +3,7 @@ var config = require('./config');
 var router = require('./router');
 var mock = require('./mock');
 var less = require('./less');
+var prefix = require('./prefix');
 var buildPath = require('../gulp-builder/config').buildPath;
 module.exports = function () {
     var port = config.server.port;
@@ -14,6 +15,7 @@ module.exports = function () {
         root: [cwd, cwd + '/' + buildPath],
         middleware: function(connect, opt) {
             return [
+                prefix,
                 router,
                 mock,
                 less

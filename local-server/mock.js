@@ -25,6 +25,9 @@ module.exports = function (req, res, next) {
 
     var apiType = config.api.type;
     var apiValue = config.api.value;
+    if (apiType === 'prefix') {
+        apiValue = config.rootBase + apiValue;
+    }
     var isApi = false;
     if (apiType === 'prefix') {
         isApi = reqUrl.indexOf(apiValue) === 0;

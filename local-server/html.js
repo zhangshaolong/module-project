@@ -9,6 +9,7 @@ var through = require('through2');
 var fs = require('fs');
 var path = require('path');
 var URL = require('url');
+var config = require('./config');
 
 var includeReg = /\<\%\s*include\s*\(\s*(['"])(.*?)\1/g;
 
@@ -25,7 +26,7 @@ var htmlMerge = exports.htmlMerge = function (htmlContent, encoding) {
     Simplite.addTemplate(key, htmlContent);
     Simplite.compiles = {};
     content = Simplite.render(key, {
-        rootBase: ''
+        rootBase: config.rootBase
     });
     return content;
 };
