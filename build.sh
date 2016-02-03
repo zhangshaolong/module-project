@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# npm install
+npm install
 
 if [ -d 'output_bak_temp' ]; then
     rm -rf output_bak_temp

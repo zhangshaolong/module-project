@@ -1,5 +1,4 @@
 var gulp = require('gulp');
-var clean = require('gulp-clean');
 var sequence = require('gulp-sequence');
 var config = require('./gulp-builder/config');
 var server = require('./local-server/server');
@@ -16,11 +15,6 @@ var imageminProcessor = require('./gulp-builder/image-min');
 
 var buildPath = config.buildPath;
 var htmlPath = config.htmlPath;
-
-gulp.task('clean', function() {
-    return gulp.src(buildPath, {read: false})
-        .pipe(clean({force: true}));
-});
 
 gulp.task('jsmd5', function() {
     return gulp.src(path.join(buildPath, htmlPath, '/**/*.html'))
@@ -54,7 +48,6 @@ gulp.task('copy', function () {
 });
 
 gulp.task('build', sequence(
-    // 'clean',
     ['htmlmin', 'imagemin', 'main', 'copy'], // 图片依赖libc.so.6: version `GLIBC_2.14'
     'jsmd5'
 ));
