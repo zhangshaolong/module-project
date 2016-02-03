@@ -30,7 +30,7 @@ gulp.task('jsmd5', function() {
 
 gulp.task('imagemin', function() {
     return gulp.src('img/**/*.{png,jpg,gif,ico}')
-        .pipe(imageminProcessor())
+        // .pipe(imageminProcessor()) // window编译可能报错，所以注释掉。
         .pipe(gulp.dest(path.join(buildPath, 'img')));
 });
 
