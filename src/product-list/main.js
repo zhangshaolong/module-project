@@ -2,7 +2,7 @@ define(function (require, exports) {
 
     require('tpl!/tpl/product-list.tpl');
     require('./product-list');
-    require('tpl!/src/component/pager/pager.tpl');
+
     var Pager = require('component/pager/pager');
 
     exports.init = function () {
