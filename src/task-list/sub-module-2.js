@@ -22,6 +22,18 @@ define(function (require, exports) {
                 id: 23
             });
         });
+
+        var pager = new Pager({
+            element: '#pager-container'
+        });
+        pager.on(function (page) {
+            console.log(page);
+        });
+
+        pager.render({
+            currentPage: 4,
+            totalPage: 20
+        });
     };
 
     exports.dispose = function () {
