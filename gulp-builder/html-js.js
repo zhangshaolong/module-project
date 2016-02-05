@@ -17,7 +17,7 @@ module.exports = function () {
                 stubModules: ['tpl'],
                 optimizeAllPluginResources: false,
                 onBuildRead: function (moduleName, pth, contents) {
-                    return tplToJs(contents);
+                    return tplToJs(contents, pth);
                 },
                 onBuildWrite: function (moduleName, pth, contents) {
                     if (moduleName === 'tpl') {
@@ -27,7 +27,7 @@ module.exports = function () {
                 },
                 out: path.join(config.buildPath, config.jsPath, main + '.js')
             });
-            content = content.replace(/baseUrl\s*:\s*["']([^'"]+)?\/src["'],/, 'baseUrl: \'$1\/' + config.jsPath + '\',');
+            content = content.replace(config.baseUrlReg, '$1' + config.jsPath + '$2');
 
             file.contents = new Buffer(content);
             return all;

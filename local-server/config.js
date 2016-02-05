@@ -9,5 +9,6 @@ module.exports = {
         host: argv.h || 'localhost',
         port: argv.p || 8080
     },
-    rootBase: ''
+    rootBase: '',
+    cwd: process.cwd()
 };

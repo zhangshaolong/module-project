@@ -1,6 +1,6 @@
 define(function (require) {
 
-    require('tpl!/src/component/pager/pager.tpl');
+    require('tpl!./pager.tpl');
 
     var Pager = function (options) {
         $.extend(this, options, Pager.defaultConfig);

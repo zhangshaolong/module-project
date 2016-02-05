@@ -1,6 +1,6 @@
 define(function (require, exports) {
 
-    require('tpl!/tpl/product-list.tpl');
+    require('tpl!../../tpl/product-list.tpl');
     require('./product-list');
 
     var Pager = require('component/pager/pager');

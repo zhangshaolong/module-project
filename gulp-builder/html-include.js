@@ -2,12 +2,11 @@ var fs = require('fs');
 var path = require('path');
 var through = require('through2');
 var Simplite = require('../dep/simplite');
-
-var includeReg = /\<\%\s*include\s*\(\s*(['"])(.*?)\1/g;
+var config = require('./config');
 
 var parseInclude = function (content, encoding) {
-    content.replace(includeReg, function (all, quot, pth) {
-        var tplContent = fs.readFileSync(path.resolve('view/' + pth));
+    content.replace(config.includeReg, function (all, quot, pth) {
+        var tplContent = fs.readFileSync(path.resolve(path.join(config.htmlPath, pth)));
         Simplite.addTemplate(pth, new String(tplContent, encoding));
     });
 };

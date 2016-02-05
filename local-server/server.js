@@ -8,7 +8,7 @@ var buildPath = require('../gulp-builder/config').buildPath;
 module.exports = function () {
     var port = config.server.port;
     var host = config.server.host;
-    var cwd = process.cwd();
+    var cwd = config.cwd;
     return connect.server({
         host: host,
         port: port,
