@@ -9,16 +9,16 @@
             var start = (_this.currentGroup - 1) * _this.displayPageCount;
             for (var i = start + 1; i <= start + _this.displayPageCount; i++) {
                 if (i > _this.totalPage) {
-                    continue;
+                    break;
                 }
         %>
                 <li class="<%= i == _this.currentPage ? 'active' : 'page-btn' %>" data-page="<%= i %>">
-                    <a href="javascript:;"><%= i %><span class="sr-only"><%= i %></span></a>
+                    <a href="javascript:;"><%= filter('format-length', i, _this.totalPage) %></a>
                 </li>
         <%
             }
         %>
-        <li class="next-group<% if (_this.currentGroup >= _this.totalGrout) { %> disabled<% } %>">
+        <li class="next-group<% if (_this.currentGroup >= _this.totalGroup) { %> disabled<% } %>">
             <a href="javascript:;" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
