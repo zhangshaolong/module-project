@@ -12,7 +12,7 @@ module.exports = function (content, pth) {
         if (tplPath.indexOf('.') === 0) { // 不会存在代码写在隐藏文件里面的情况
             tplPath = path.join(path.dirname(pth), tplPath);
         } else {
-            tplPath = cwd + path.resolve(path.dirname(pth), tplPath);
+            tplPath = path.join(cwd, tplPath);
         }
         var data = fs.readFileSync(tplPath, 'utf-8');
         data.replace(tplReg, function (all, tplId, tplContent) {
