@@ -107,7 +107,10 @@ module.exports = function (req, res, next) {
                         res.end(JSON.stringify(result));
                     }, result.sleep);
                 } else {
-                    res.end(JSON.stringify(result));
+                    if (typeof result !== 'string') {
+                        result = JSON.stringify(result);
+                    }
+                    res.end(result);
                 }
             } catch (e) {
                 console.log(e);
