@@ -11,7 +11,8 @@ define(function (require, exports) {
      * 获取所有任务数据
      */
     exports.getTaskList = function (options) {
-        return ajax.post('/api-prefix/task/list', {
+        // jsonp的使用方式请参考此处的mock
+        return ajax.jsonp('/api-prefix/task/list', {
             ts: new Date().getTime()
         }, options);
     };

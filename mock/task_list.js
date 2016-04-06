@@ -1,5 +1,6 @@
 module.exports = function (params) {
-    return {
+    var callback = params.callback;
+    var resp = {
         status: 200,
         sleep: 2000,
         data: [
@@ -12,5 +13,6 @@ module.exports = function (params) {
                 name: '任务2'
             }
         ]
-    }
+    };
+    return callback + '(' + JSON.stringify(resp) + ')';
 };
