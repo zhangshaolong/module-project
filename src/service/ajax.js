@@ -61,7 +61,20 @@ define(function (require, exports) {
             url: url,
             data: JSON.stringify(params),
             dataType: 'jsonp',
-            timeout: timeout
+            timeout: timeout,
+            scriptCharset: 'UTF-8'
+        }).pipe(function (response) {
+            if (response.status === 200) {
+                return response;
+            } else {
+                var deferred = $.Deferred();
+                if (commonErrors[response.status]) {
+                    deferred.reject(response);
+                } else {
+                    deferred.reject(response);
+                }
+                return deferred.promise();
+            }
         });
     };
 });
