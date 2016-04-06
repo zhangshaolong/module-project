@@ -25,14 +25,29 @@ module.exports = function (req, res, next) {
 
     var apiType = config.api.type;
     var apiValue = config.api.value;
+    if (typeof apiValue === 'string') {
+        apiValue = [apiValue];
+    }
+    var len = apiValue.length;
     if (apiType === 'prefix') {
-        apiValue = config.rootBase + apiValue;
+        for (var i = 0; i < len; i++) {
+            apiValue[i] = config.rootBase + apiValue[i];
+        }
     }
     var isApi = false;
     if (apiType === 'prefix') {
-        isApi = reqUrl.indexOf(apiValue) === 0;
+        for (var i = 0; i < len; i++) {
+            if (!isApi) {
+                isApi = reqUrl.indexOf(apiValue[i]) === 0;
+            }
+        }
     } else if (apiType === 'suffix') {
-        isApi = reqUrl.split('?')[0].endsWith(apiValue);
+        var sufValue = reqUrl.split('?')[0];
+        for (var i = 0; i < len; i++) {
+            if (!isApi) {
+                isApi = isApi = sufValue.endsWith(apiValue[i]);
+            }
+        }
     }
     if (isApi) {
         var contentType = req.headers['content-type'];
@@ -95,7 +110,10 @@ module.exports = function (req, res, next) {
 
         var doMock = function (params, pathName) {
             try {
-                var path = require.resolve('../mock/' + pathName.replace(apiValue, '').replace(/^\//, '').replace(/\//g, '_'));
+                for (var i = 0; i < len; i++) {
+                    pathName = pathName.replace(apiValue[i], '');
+                }
+                var path = require.resolve('../mock/' + pathName.replace(/^\//, '').replace(/\//g, '_'));
                 delete require.cache[path];
                 var result = require(path);
                 if (typeof result === 'function') {
