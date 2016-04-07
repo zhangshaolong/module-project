@@ -1,6 +1,6 @@
 define(function (require) {
 
-    var UI = require('dep/event').create({
+    var UI = require('dep/eventable').create({
         init: function (options) {
             var me = this;
             this.on('init', function () {

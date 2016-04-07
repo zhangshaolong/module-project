@@ -9,5 +9,7 @@ module.exports = {
     includeReg: /\<\%\s*include\s*\(\s*(['"])(.*?)\1/g,
     baseUrlReg: /(baseUrl\s*:\s*["'](?:[^'"]+)?\/)src(["'],)/,
     cwd: process.cwd(),
+    widgetsPath: '/src/component/widgets',
+    cssPluginRule: /\s+require\('css\![^\)]+?'\);?/g,
     rootBase: ''
 };

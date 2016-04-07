@@ -1,5 +1,6 @@
 define(function (require) {
 
+    require('css!./pager.less');
     require('tpl!./pager.tpl');
 
     Simplite.addFilter('format-length', function (num, maxNum) {

@@ -47,6 +47,43 @@ define(function (require, exports) {
     };
 
     /**
+     * 更新浏览器URL中的参数
+     * @param {string} key 指定需要获取的key的值
+     * @param {string} value 指定需设置key对应的值
+     */
+    exports.refreshQuery = function (key, value) {
+        var search = location.search;
+        if (!key) {
+            return '';
+        }
+        if (typeof key === 'string') {
+            var keyMap = {};
+            keyMap[key] = value;
+            key = keyMap;
+        }
+        if (search) {
+            for (var ki in key) {
+                var has = false;
+                search = search.replace(new RegExp('([?&]' + ki + '=)([^&$]*)'), function (all, k, v) {
+                    has = true;
+                    return k + key[ki];
+                });
+                if (!has) {
+                    search = search += '&' + ki + '=' + value[ki];
+                }
+            }
+        } else {
+            var args = [];
+            for (var ki in key) {
+                args.push(ki + '=' + key[ki]);
+            }
+            args.sort();
+            return '?' + args.join('&');
+        }
+        return search;
+    };
+
+    /**
      * 获取浏览器URL中的参数
      * @param {string} key 指定需要获取的key的值，默认全部
      * @return {string|Object} 如果指定了key，则返回对应的值，否则返回由key->value的map
