@@ -11,11 +11,11 @@ module.exports = function (content, pth) {
                 pluginPath = path.join(cwd, pluginPath);
             }
             var data = fs.readFileSync(pluginPath, 'utf-8');
-            return '\nvar _pageHead = document.head || document.getElementsByTagName("head")[0];'
-                + 'var _style = document.createElement("style");'
-                + '_style.setAttribute("type", "text/css");'
-                + '_style.innerHTML = "' + data.replace(/"/g, '\\"').replace(/\s+/g, ' ') + '";'
-                + '_pageHead.appendChild(_style);\n';
+            return '\n(function () {var head = document.head || document.getElementsByTagName("head")[0];'
+                + 'var style = document.createElement("style");'
+                + 'style.setAttribute("type", "text/css");'
+                + 'style.innerHTML = "' + data.replace(/"/g, '\\"').replace(/\s+/g, ' ') + '";'
+                + 'head.appendChild(style);})();\n';
         });
     }
     return content;
