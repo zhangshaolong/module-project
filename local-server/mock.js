@@ -50,7 +50,7 @@ module.exports = function (req, res, next) {
         }
     }
     if (isApi) {
-        var contentType = req.headers['content-type'];
+        var contentType = req.headers['content-type'] || 'text/plain;charset=UTF-8';
         res.writeHead(200, {'Content-Type': contentType});
         var headers = {};
         for (var key in req.headers) {
