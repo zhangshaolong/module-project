@@ -48,7 +48,7 @@ define(function (require, exports) {
 
     /**
      * 更新浏览器URL中的参数
-     * @param {string} key 指定需要获取的key的值
+     * @param {string|Object} key 指定需要获取的key的值或者key value组成的map结构
      * @param {string} value 指定需设置key对应的值
      */
     exports.refreshQuery = function (key, value) {
@@ -69,7 +69,7 @@ define(function (require, exports) {
                     return k + key[ki];
                 });
                 if (!has) {
-                    search = search += '&' + ki + '=' + value[ki];
+                    search += '&' + ki + '=' + key[ki];
                 }
             }
         } else {
@@ -179,5 +179,57 @@ define(function (require, exports) {
     };
     exports.firstOfWeek = function (date) {
         return exports.addDay(date, -exports.offsetOfWeek(date));
+    };
+
+    exports.getFormData = function (container, rule) {
+        var data = {};
+        rule = rule || '[name]'
+        container.find(rule).each(function () {
+            data[this.name] = this.value;
+        });
+        return data;
+    };
+
+    var formatJSON = exports.formatJSON = function (data, level) {
+        level = level || 0;
+        if (null == data) {
+            return '' + data;
+        }
+        var constructor = data.constructor;
+        if (constructor === String) {
+            return '"' + data + '"';
+        } else if (constructor === Number) {
+            return data;
+        } else if (constructor === Array) {
+            var tab = '';
+            for (var i = 0; i < level; i++) {
+                tab += '\t';
+            }
+            var astr = '[\n';
+            astr += tab;
+            for (var i = 0, len = data.length; i < len - 1; i++) {
+                astr += tab + formatJSON(data[i], level + 1) + ',\n';
+            }
+            astr += formatJSON(data[len - 1], level + 1) + tab + '\n' + tab + ']';
+            return astr;
+        } else if (constructor === Object) {
+            var tab = '';
+            for (var i = 0; i < level; i++) {
+                tab += '\t';
+            }
+            var ostr = tab + '{\n';
+            var isEmpty = true;
+            for (var key in data) {
+                isEmpty = false;
+                ostr += tab + '\t"' + key + '": ' + formatJSON(data[key], level + 1) + ',\n';
+            }
+            if (!isEmpty) {
+                ostr = ostr.slice(0, -2);
+            }
+            ostr += '\n';
+            ostr += tab;
+            ostr += '}';
+            return ostr;
+        }
     };
 });
