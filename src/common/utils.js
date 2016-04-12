@@ -190,34 +190,34 @@ define(function (require, exports) {
         return data;
     };
 
-     var formatJSON = exports.formatJSON = function (data, space) {
+     var formatJSON = exports.formatJSON = function (data, codeStyle, space) {
         if (null == data) {
             return '' + data;
         }
         space = space || '';
         var constructor = data.constructor;
         if (constructor === String) {
-            return '"' + data + '"';
+            return codeStyle ? '<span class="json-string-value">"' + data + '"</span>' : '"' + data + '"';
         } else if (constructor === Number) {
-            return data;
+            return codeStyle ? '<span class="json-number-value">' + data + '</span>' : data;
         } else if (constructor === Array) {
-            var astr = '[\n';
+            var astr = codeStyle ? '<span class="json-array-tag">[</span>\n' : '[\n';
             for (var i = 0, len = data.length; i < len - 1; i++) {
-                astr += space + '\t' + formatJSON(data[i], space + '\t') + ',\n';
+                astr += space + '\t' + formatJSON(data[i], codeStyle, space + '\t') + ',\n';
             }
-            astr += space + '\t' + formatJSON(data[len - 1], space + '\t') + '\n';
-            return astr + space + ']';
+            astr += space + '\t' + formatJSON(data[len - 1], codeStyle, space + '\t') + '\n';
+            return astr + space + (codeStyle ? '<span class="json-array-tag">]</span>' : ']');
         } else if (constructor === Object) {
-            var ostr = '{\n';
+            var ostr = codeStyle ? '<span class="json-object-tag">{</span>\n' : '{\n';
             var isEmpty = true;
             for (var key in data) {
                 isEmpty = false;
-                ostr += space + '\t"' + key + '": ' + formatJSON(data[key], space + '\t') + ',\n';
+                ostr += space + '\t' + (codeStyle ? '<span class="json-object-key">' + '"' + key + '"' + '</span>' : '"' + key + '"') + ': ' + formatJSON(data[key], codeStyle, space + '\t') + ',\n';
             }
             if (!isEmpty) {
                 ostr = ostr.slice(0, -2);
             }
-            return ostr + '\n' + space + '}';
+            return ostr + '\n' + space + (codeStyle ? '<span class="json-object-tag">}</span>' : '}');
         }
     };
 });
