@@ -190,46 +190,34 @@ define(function (require, exports) {
         return data;
     };
 
-    var formatJSON = exports.formatJSON = function (data, level) {
-        level = level || 0;
+     var formatJSON = exports.formatJSON = function (data, space) {
         if (null == data) {
             return '' + data;
         }
+        space = space || '';
         var constructor = data.constructor;
         if (constructor === String) {
             return '"' + data + '"';
         } else if (constructor === Number) {
             return data;
         } else if (constructor === Array) {
-            var tab = '';
-            for (var i = 0; i < level; i++) {
-                tab += '\t';
-            }
             var astr = '[\n';
-            astr += tab;
             for (var i = 0, len = data.length; i < len - 1; i++) {
-                astr += tab + formatJSON(data[i], level + 1) + ',\n';
+                astr += space + '\t' + formatJSON(data[i], space + '\t') + ',\n';
             }
-            astr += formatJSON(data[len - 1], level + 1) + tab + '\n' + tab + ']';
-            return astr;
+            astr += space + '\t' + formatJSON(data[len - 1], space + '\t') + '\n';
+            return astr + space + ']';
         } else if (constructor === Object) {
-            var tab = '';
-            for (var i = 0; i < level; i++) {
-                tab += '\t';
-            }
-            var ostr = tab + '{\n';
+            var ostr = '{\n';
             var isEmpty = true;
             for (var key in data) {
                 isEmpty = false;
-                ostr += tab + '\t"' + key + '": ' + formatJSON(data[key], level + 1) + ',\n';
+                ostr += space + '\t"' + key + '": ' + formatJSON(data[key], space + '\t') + ',\n';
             }
             if (!isEmpty) {
                 ostr = ostr.slice(0, -2);
             }
-            ostr += '\n';
-            ostr += tab;
-            ostr += '}';
-            return ostr;
+            return ostr + '\n' + space + '}';
         }
     };
 });
