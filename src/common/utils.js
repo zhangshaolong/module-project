@@ -190,11 +190,18 @@ define(function (require, exports) {
         return data;
     };
 
-     var formatJSON = exports.formatJSON = function (data, codeStyle, space) {
+    /**
+     * @param data  json格式的数据，必填
+     * @param codeStyle 是否高亮显示
+     * @param space 默认使用的缩进空白
+     * @param indents 当前行需要的缩进（内部参数，调用者不要设置）
+     */
+     var formatJSON = exports.formatJSON = function (data, codeStyle, space, indents) {
         if (null == data) {
             return '' + data;
         }
-        space = space || '';
+        space = space || '    ';
+        indents = indents || '';
         var constructor = data.constructor;
         if (constructor === String) {
             return codeStyle ? '<span class="json-string-value">"' + data + '"</span>' : '"' + data + '"';
@@ -203,21 +210,21 @@ define(function (require, exports) {
         } else if (constructor === Array) {
             var astr = codeStyle ? '<span class="json-array-tag">[</span>\n' : '[\n';
             for (var i = 0, len = data.length; i < len - 1; i++) {
-                astr += space + '\t' + formatJSON(data[i], codeStyle, space + '\t') + ',\n';
+                astr += indents + space + formatJSON(data[i], codeStyle, space, indents + space) + ',\n';
             }
-            astr += space + '\t' + formatJSON(data[len - 1], codeStyle, space + '\t') + '\n';
-            return astr + space + (codeStyle ? '<span class="json-array-tag">]</span>' : ']');
+            astr += indents + space + formatJSON(data[len - 1], codeStyle, space, indents + space) + '\n';
+            return astr + indents + (codeStyle ? '<span class="json-array-tag">]</span>' : ']');
         } else if (constructor === Object) {
             var ostr = codeStyle ? '<span class="json-object-tag">{</span>\n' : '{\n';
             var isEmpty = true;
             for (var key in data) {
                 isEmpty = false;
-                ostr += space + '\t' + (codeStyle ? '<span class="json-object-key">' + '"' + key + '"' + '</span>' : '"' + key + '"') + ': ' + formatJSON(data[key], codeStyle, space + '\t') + ',\n';
+                ostr += indents + space + (codeStyle ? '<span class="json-object-key">' + '"' + key + '"' + '</span>' : '"' + key + '"') + ': ' + formatJSON(data[key], codeStyle, space, indents + space) + ',\n';
             }
             if (!isEmpty) {
                 ostr = ostr.slice(0, -2);
             }
-            return ostr + '\n' + space + (codeStyle ? '<span class="json-object-tag">}</span>' : '}');
+            return ostr + '\n' + indents + (codeStyle ? '<span class="json-object-tag">}</span>' : '}');
         }
     };
 });
