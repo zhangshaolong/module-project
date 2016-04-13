@@ -1,6 +1,14 @@
-module.exports = {
-    '/': 'product-list.html',
-    '/product/list': '/',
-    '/product/add': 'product-add.html',
-    '/task/list': 'task-list.html'
-}
+module.exports = [
+    [
+        '/',
+        function () {
+            return 'product-list.html';
+        }
+    ],
+    [
+        /^\/(\w+)\/(\w+)$/,
+        function (all, k1, k2) {
+            return k1 + '-' + k2 + '.html';
+        }
+    ]
+]

@@ -12,29 +12,39 @@ var path = require('path');
 var htmlMerge = require('./html').htmlMerge;
 var routerConfig = require('./routerConfig');
 
-/**
- * 支持多级定向查找，直到找到.html文件或者未找到为止
- */
-var lookupRedirectHtml = function (urlPath, res) {
-    var redirectPath = routerConfig[urlPath];
-    if (redirectPath) {
-        if (redirectPath.indexOf('.html') > 0) {
+var redirectHtml = function (urlPath, res) {
+    for (var i = 0, len = routerConfig.length; i < len; i++) {
+        var config = routerConfig[i];
+        var key = config[0];
+        var handler = config[1];
+        if (typeof key === 'string') {
+            if (urlPath === key) {
+                var name = handler(key);
+            }
+        } else {
+            if (key.test(urlPath)) {
+                var name = urlPath.replace(key, handler);
+            }
+        }
+        if (name) {
             var encoding = 'UTF-8';
             res.writeHead(200, {'Content-Type': 'text/html'});
-            var tplContent = fs.readFileSync(path.resolve('view/' + redirectPath));
-            var content = new String(tplContent, encoding);
+            try {
+                var tplContent = fs.readFileSync(path.resolve('view/' + name));
+                var content = new String(tplContent, encoding);
+            } catch (e) {
+                var content = JSON.stringify(e);
+            }
             res.end(htmlMerge(content, encoding));
-        } else {
-            return lookupRedirectHtml(redirectPath, res);
+            return;
         }
-    } else {
-        return false;
     }
+    return false;
 }
 
 module.exports = function (req, res, next) {
     var pathname = URL.parse(req.url).pathname;
-    var matched = lookupRedirectHtml(pathname, res);
+    var matched = redirectHtml(pathname, res);
     if (matched === false) {
         return next();
     }
