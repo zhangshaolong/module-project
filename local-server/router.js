@@ -28,14 +28,21 @@ var redirectHtml = function (urlPath, res) {
         }
         if (name) {
             var encoding = 'UTF-8';
-            res.writeHead(200, {'Content-Type': 'text/html'});
-            try {
-                var tplContent = fs.readFileSync(path.resolve('view/' + name));
-                var content = new String(tplContent, encoding);
-            } catch (e) {
-                var content = JSON.stringify(e);
-            }
-            res.end(htmlMerge(content, encoding));
+            res.writeHead(200, {'Content-Type': 'text/html;charset=' + encoding});
+            var fullPath = path.resolve('view/' + name);
+            fs.exists(fullPath, function (exist) {
+                if (exist) {
+                    try {
+                        var tplContent = fs.readFileSync(fullPath);
+                        var content = new String(tplContent, encoding);
+                    } catch (e) {
+                        var content = JSON.stringify(e);
+                    }
+                    res.end(htmlMerge(content, encoding));
+                } else {
+                    res.end(fullPath + '文件不存在~');
+                }
+            });
             return;
         }
     }

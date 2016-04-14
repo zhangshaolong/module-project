@@ -200,7 +200,7 @@ define(function (require, exports) {
         if (null == data) {
             return '' + data;
         }
-        space = space || '    ';
+        space = space != null ? space : '    ';
         indents = indents || '';
         var constructor = data.constructor;
         if (constructor === String) {
