@@ -1,8 +1,9 @@
 define(function (require, exports) {
 
     var pathMap = {
-        '/product/list': ['/product/list', '/product/add', '/']
     };
+
+    var querys = require('common/utils').getQuery();
 
     exports.init = function () {
 
@@ -20,15 +21,24 @@ define(function (require, exports) {
                 $.each(pathArr, function (idx, pname) {
                     if (pname === pathname) {
                         $this.parent().addClass('active');
-                        return false;
                     }
                 });
             } else {
-                if (href === pathname) {
+                if (href.indexOf(pathname) === 0) {
                     $this.parent().addClass('active');
                 }
             }
-            $this.attr('href', href).removeAttr('data-href');
+            var args = $(this).data('args');
+            if (!args) {
+                $this.attr('href', href).removeAttr('data-href');
+            } else {
+                args = args.split(',');
+                var serachs = [];
+                for (var i = 0, len = args.length; i < len; i++) {
+                    serachs.push(args[i] + '=' + querys[args[i]]);
+                }
+                $this.attr('href', href + '?' + serachs.join('&')).removeAttr('data-href');
+            }
         });
     };
 });

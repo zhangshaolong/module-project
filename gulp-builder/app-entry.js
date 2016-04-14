@@ -7,6 +7,8 @@ module.exports = function () {
         name: 'main',
         paths: {
             tpl: 'common/tpl',
+            css: 'common/css',
+            ui: 'common/ui',
             dep: '../dep'
         },
         out: path.join(config.buildPath, config.jsPath, 'main.js')

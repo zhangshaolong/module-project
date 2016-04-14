@@ -2,23 +2,12 @@ define(function (require, exports) {
 
     require('./base-nav');
 
-    // store里面的数据是页面内共享的
-    var store = require('common/store');
-
-    var userService = require('service/common/user-service');
+    var service = require('./service/common');
 
     exports.init = function () {
-
         var moduleNode = this.element;
-
-        return userService.getUserData(Math.round(Math.random() * 100)).done(function (resp) {
-
-            if (resp.status === 200) {
-
-                store.set('userData', resp.data);
-
-                moduleNode.find('.user-name').text(resp.data.name);
-            }
+        return service.getUserInfo().done(function (resp) {
+            moduleNode.find('.user-name').text(resp.data.name);
         });
     };
 

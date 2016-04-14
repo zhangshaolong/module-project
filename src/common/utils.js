@@ -47,43 +47,6 @@ define(function (require, exports) {
     };
 
     /**
-     * 更新浏览器URL中的参数
-     * @param {string|Object} key 指定需要获取的key的值或者key value组成的map结构
-     * @param {string} value 指定需设置key对应的值
-     */
-    exports.refreshQuery = function (key, value) {
-        var search = location.search;
-        if (!key) {
-            return '';
-        }
-        if (typeof key === 'string') {
-            var keyMap = {};
-            keyMap[key] = value;
-            key = keyMap;
-        }
-        if (search) {
-            for (var ki in key) {
-                var has = false;
-                search = search.replace(new RegExp('([?&]' + ki + '=)([^&$]*)'), function (all, k, v) {
-                    has = true;
-                    return k + key[ki];
-                });
-                if (!has) {
-                    search += '&' + ki + '=' + key[ki];
-                }
-            }
-        } else {
-            var args = [];
-            for (var ki in key) {
-                args.push(ki + '=' + key[ki]);
-            }
-            args.sort();
-            return '?' + args.join('&');
-        }
-        return search;
-    };
-
-    /**
      * 获取浏览器URL中的参数
      * @param {string} key 指定需要获取的key的值，默认全部
      * @return {string|Object} 如果指定了key，则返回对应的值，否则返回由key->value的map
@@ -96,12 +59,12 @@ define(function (require, exports) {
                 return querys;
             }
             search.replace(/(?:\?|&)([^=]+)=([^&$]*)/g, function (all, key, val) {
-                querys[key] = val;
+                querys[key] = decodeURIComponent(val);
             });
             return querys;
         } else {
             var rst = new RegExp('[?&]' + key + '=([^&$]*)').exec(search);
-            return rst && rst[1];
+            return rst && decodeURIComponent(rst[1]);
         }
     };
 
@@ -113,6 +76,7 @@ define(function (require, exports) {
      * @return {string} 格式化的字符串
      */
     exports.format = function (val, ch, len) {
+        if (typeof val === 'undefined') return '';
         ch = ch || ',';
         len = len || 3;
         return ('' + val).replace(new RegExp('(\\d{1,' + len + '})(?=(\\d{' + len + '})+(?:$|\\.))', 'g'), '$1' + ch);
@@ -190,18 +154,11 @@ define(function (require, exports) {
         return data;
     };
 
-    /**
-     * @param data  json格式的数据，必填
-     * @param codeStyle 是否高亮显示
-     * @param space 默认使用的缩进空白
-     * @param indents 当前行需要的缩进（内部参数，调用者不要设置）
-     */
-     var formatJSON = exports.formatJSON = function (data, codeStyle, space, indents) {
+    var formatJSON = exports.formatJSON = function (data, codeStyle, space) {
         if (null == data) {
             return '' + data;
         }
-        space = space || '    ';
-        indents = indents || '';
+        space = space || '';
         var constructor = data.constructor;
         if (constructor === String) {
             return codeStyle ? '<span class="json-string-value">"' + data + '"</span>' : '"' + data + '"';
@@ -210,21 +167,21 @@ define(function (require, exports) {
         } else if (constructor === Array) {
             var astr = codeStyle ? '<span class="json-array-tag">[</span>\n' : '[\n';
             for (var i = 0, len = data.length; i < len - 1; i++) {
-                astr += indents + space + formatJSON(data[i], codeStyle, space, indents + space) + ',\n';
+                astr += space + '\t' + formatJSON(data[i], codeStyle, space + '\t') + ',\n';
             }
-            astr += indents + space + formatJSON(data[len - 1], codeStyle, space, indents + space) + '\n';
-            return astr + indents + (codeStyle ? '<span class="json-array-tag">]</span>' : ']');
+            astr += space + '\t' + formatJSON(data[len - 1], codeStyle, space + '\t') + '\n';
+            return astr + space + (codeStyle ? '<span class="json-array-tag">]</span>' : ']');
         } else if (constructor === Object) {
             var ostr = codeStyle ? '<span class="json-object-tag">{</span>\n' : '{\n';
             var isEmpty = true;
             for (var key in data) {
                 isEmpty = false;
-                ostr += indents + space + (codeStyle ? '<span class="json-object-key">' + '"' + key + '"' + '</span>' : '"' + key + '"') + ': ' + formatJSON(data[key], codeStyle, space, indents + space) + ',\n';
+                ostr += space + '\t' + (codeStyle ? '<span class="json-object-key">' + '"' + key + '"' + '</span>' : '"' + key + '"') + ': ' + formatJSON(data[key], codeStyle, space + '\t') + ',\n';
             }
             if (!isEmpty) {
                 ostr = ostr.slice(0, -2);
             }
-            return ostr + '\n' + indents + (codeStyle ? '<span class="json-object-tag">}</span>' : '}');
+            return ostr + '\n' + space + (codeStyle ? '<span class="json-object-tag">}</span>' : '}');
         }
     };
 });

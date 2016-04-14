@@ -15,6 +15,7 @@ module.exports = function () {
                 paths: {
                     tpl: 'common/tpl',
                     css: 'common/css',
+                    ui: 'common/ui',
                     dep: '../dep'
                 },
                 stubModules: ['tpl'],

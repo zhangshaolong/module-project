@@ -1,7 +1,5 @@
 define(function (require, exports) {
 
-    var commonErrors = require('./commonErrors');
-
     /**
      * 发送 post 请求
      *
@@ -15,36 +13,42 @@ define(function (require, exports) {
      * @return {Promise}
      */
     exports.post = function (url, params, options) {
-        params = params || {};
         options = options || {};
+        params = params || {};
         return $.ajax({
-            url: window.rootBase + url,
-            data: JSON.stringify(params),
+            url: url,
+            // data: JSON.stringify(params),
+            data: params,
             method: 'POST',
             type: 'POST',
             dataType: 'json',
-            contentType: 'application/json;charset=UTF-8',
-            async: options.sync ? false : true,
             timeout: 20000,
             beforeSend: options.beforeSend || function () {
                 var time = new Date().getTime();
                 options._time = time;
-                options.holder && options.holder.append('<div class="data-loading data-loading-' + time + '">').addClass('data-loading-relative');
-            }
+                options.holder && options.holder.append('<div class="loading loading-' + time + '">').addClass('relative');
+            },
+
+            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+            // contentType: 'application/json;charset=UTF-8',
+            async: options.sync ? false : true
         }).pipe(function (response) {
-            options.holder && options.holder.removeClass('data-loading-relative').find('.data-loading-' + options._time).remove();
-            if (response.status === 200) {
+            options.holder && options.holder.removeClass('relative').find('.loading-' + options._time).remove();
+            if (response.err_no === 0) {
                 return response;
-            } else if (response.status === 302) { // 需要登录认证
-                window.location.href = window.rootBase + '/login';
             } else {
-                var deferred = $.Deferred();
-                if (commonErrors[response.status]) {
-                    deferred.reject(response);
+                if (response.err_no === 302) {
+                    var config = {
+                        online: 'http://mis.diditaxi.com.cn/auth/sso/login?app_id=94',
+                        offline: 'http://mis-test.diditaxi.com.cn/auth/sso/login?app_id=99'
+                    };
+                    var pagePath = encodeURIComponent(location.href);
+                    location.href = config.online + '&version=1.0&jumpto=' + pagePath;
                 } else {
+                    var deferred = $.Deferred();
                     deferred.reject(response);
+                    return deferred.promise();
                 }
-                return deferred.promise();
             }
         });
     }
@@ -59,21 +63,30 @@ define(function (require, exports) {
     exports.jsonp = function (url, params, timeout) {
         return $.ajax({
             url: url,
-            data: JSON.stringify(params),
+            data: params,
             dataType: 'jsonp',
             timeout: timeout,
             scriptCharset: 'UTF-8'
         }).pipe(function (response) {
-            if (response.status === 200) {
+            if (response.err_no === 0) {
                 return response;
             } else {
-                var deferred = $.Deferred();
-                if (commonErrors[response.status]) {
-                    deferred.reject(response);
+                if (response.err_no === 302) {
+                    var config = {
+                        online: 'http://mis.diditaxi.com.cn/auth/sso/login?app_id=94',
+                        offline: 'http://mis-test.diditaxi.com.cn/auth/sso/login?app_id=99'
+                    };
+                    var pagePath = encodeURIComponent(location.href);
+                    location.href = config.online + '&version=1.0&jumpto=' + pagePath;
                 } else {
-                    deferred.reject(response);
+                    var deferred = $.Deferred();
+                    if (commonErrors[response.err_no]) {
+                        deferred.reject(response);
+                    } else {
+                        deferred.reject(response);
+                    }
+                    return deferred.promise();
                 }
-                return deferred.promise();
             }
         });
     };

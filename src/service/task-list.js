@@ -7,13 +7,16 @@ define(function (require, exports) {
 
     var ajax = require('service/ajax');
 
-    /**
-     * 获取所有任务数据
-     */
-    exports.getTaskList = function (options) {
-        // jsonp的使用方式请参考此处的mock
-        return ajax.jsonp('/api-prefix/task/list', {
-            ts: new Date().getTime()
-        }, options);
+    exports.getTaskList = function (param) {
+        return ajax.post('/omega-compute/compute-api/get_task_list', param);
     };
+
+    exports.getHistoryTaskList = function (param) {
+        return ajax.post('/omega-compute/compute-api/get_task_history_list', param);
+    };
+
+    exports.opTask = function (param) {
+        return ajax.post('/omega-compute/compute-api/operate_task', param);
+    };
+
 });

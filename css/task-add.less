@@ -1,0 +1,30 @@
+@import './base.less';
+
+.base-container {
+    margin-left: 210px;
+
+    & > div {
+        background: #fff;
+        margin: 10px 0;
+        padding: 15px;
+        & > .row {
+            padding: 0 20px;
+            .item-title {
+                border-left: 4px solid #f6871b;
+                padding-left: 10px;
+            }
+
+            .item-body {
+                border-top: 1px solid #edeef1;
+                padding-top: 10px;
+                margin: 15px -20px 0 -20px;
+            }
+        }
+    }
+}
+
+[data-module-path="task-add/task-add"] {
+    textarea {
+        resize: none;
+    }
+}

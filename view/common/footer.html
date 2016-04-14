@@ -11,6 +11,7 @@
             }
         %>
         <script src="<%= _this.rootBase %>/dep/require.js"></script>
+        <script src="<%= _this.rootBase %>/dep/ec/echarts.js"></script>
         <script>
             window.rootBase = '<%= _this.rootBase %>';
             requirejs.config({
@@ -18,7 +19,9 @@
                 paths: {
                     tpl: 'common/tpl',
                     css: 'common/css',
-                    dep: '../dep'
+                    ui: 'common/ui',
+                    dep: '../dep',
+                    echarts: '../dep/ec'
                 }
             });
             require(['main']);

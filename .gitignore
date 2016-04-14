@@ -1,7 +1,4 @@
 test
-output
-output_bak
-output_bak_temp
 *.bat
 *.psd
 npm-debug.log

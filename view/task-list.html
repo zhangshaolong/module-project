@@ -6,25 +6,11 @@
     });
 %>
 
-<div class="base-container" data-module-path="task-list/main" data-interceptor-path="task-list/interceptor/base-data">
-    <p>测试下哈哈</p>
-    <img src="<%= _this.rootBase %>/img/a.jpg" />
-    <div class="main" data-module-path="task-list/sub-module-1">
-    </div>
+<div class="base-container" data-module-path="task-list/main">
 
-    以下示例中的data-module-path指向的是一个类，然后每次引用会创建一个对象，所以这种模式可以在一个页面多次引用同一个类，可以用这种模式做公共组件或者模块开发。
+    <div data-module-path="task-list/task-list"></div>
 
-    <div data-module-path="task-list/instance-demo" data-type="demo1">
-        <button>销毁此模块</button>
-    </div>
-    <div style="margin-top: 10px; padding-top: 10px; border-top: 2px solid #333; "></div>
-    <div data-module-path="task-list/instance-demo" data-type="demo2">
-        <button>销毁此模块</button>
-    </div>
 </div>
-
-<nav id="pager-container" style="position: absolute; bottom: 40px; left: 300px">
-</nav>
 
 <%
     include('common/nav.html');
