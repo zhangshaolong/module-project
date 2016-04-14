@@ -4,9 +4,8 @@
             <meta charset="utf-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-
-            <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-            <title>任务计算平台</title>
+            <meta name="renderer" content="webkit">
+            <title>模块化使用Demo</title>
 
             <!-- Bootstrap -->
             <link href="<%= _this.rootBase %>/dep/bootstrap3/bootstrap.css" rel="stylesheet">
@@ -20,7 +19,7 @@
             }
         %>
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via 'file://' -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
             <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
             <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -37,7 +36,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand logo-href" href="/"><span>任务计算平台</span></a>
+                        <a class="navbar-brand logo-href" href="<%= _this.rootBase %>/"><span>模块化Demo</span></a>
                     </div>
                     <div class="collapse navbar-collapse user-account">
                         <ul class="nav navbar-nav navbar-right">
@@ -48,8 +47,7 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="user-operation-list">
-                                    <li role="separator" class="divider"></li>
-                                    <li><a href="/api/logout">退出登录</a></li>
+                                    <li><a href="<%= _this.rootBase %>/api-prefix/logout">退出登录</a></li>
                                 </ul>
                             </li>
                         </ul>

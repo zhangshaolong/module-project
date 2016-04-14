@@ -2,7 +2,7 @@ module.exports = [
     [
         '/',
         function () {
-            return 'task-list.html';
+            return 'product-list.html';
         }
     ],
     [

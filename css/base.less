@@ -1,32 +1,3 @@
-body {
-    height: 100%;
-    background-color: #edeef1;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-pre {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-
-    .json-string-value {
-        color: #007777;
-    }
-    .json-number-value {
-        color: #AA00AA;
-    }
-    .json-array-tag {
-        color: #0033FF;
-        font-weight: bold;
-    }
-    .json-object-tag {
-        color: #00AA00;
-        font-weight: bold;
-    }
-    .json-object-key {
-        color: #CC0000;
-        font-weight: bold;
-    }
-}
-
 .base-header {
     color: #a7a7a8;
     position: fixed;
@@ -103,7 +74,27 @@ pre {
 
 .base-container {
     margin: 20px;
-    margin-top: 60px;
+    margin-top: 90px;
+    margin-left: 220px;
+
+    & > div {
+        background: #fff;
+        margin: 20px 0;
+        padding: 15px;
+        & > .row {
+            padding: 0 20px;
+            .item-title {
+                border-left: 4px solid #f6871b;
+                padding-left: 10px;
+            }
+
+            .item-body {
+                border-top: 1px solid #edeef1;
+                padding-top: 10px;
+                margin: 15px -20px 0 -20px;
+            }
+        }
+    }
 }
 
 .text-ellipsis {
@@ -117,12 +108,21 @@ pre {
     margin-top: -2px;
 }
 
-.relative {
+.data-loading-relative {
     position: relative;
     min-height: 70px;
 }
 
-.loading {
+.validator-error {
+    margin-top: 5px;
+    color: #a94442;
+}
+
+.float-right {
+    float: right;
+}
+
+div.data-loading {
     position: absolute;
     top: 0;
     left: 0;
@@ -184,29 +184,3 @@ pre {
         color: #333;
     }
 }
-
-.glyphicon-info-sign {
-    color: #337ab7;
-}
-
-.tooltip-inner {
-    max-width: 600px;
-    min-width: 300px;
-    padding: 10px;
-    text-align: left;
-    background: #337ab7;
-    word-break: break-all;
-}
-.tooltip-arrow {
-    border-top-color: #337ab7 !important;
-}
-.tooltip-inner > div > div {
-    display: inline-block;
-    vertical-align: top;
-    max-width: 400px;
-}
-
-.table {
-    margin-bottom: 5px;
-}
-
