@@ -11,7 +11,7 @@
                             <th>业务线名称</th>
                             <th>接口人</th>
                             <th style="width: 100px;">手机号</th>
-                            <th>邮箱</th>
+                            <th>属性配置</th>
                             <th>操作</th>
                         </tr>
                     </thead>
@@ -56,7 +56,7 @@
             <td><%= item.productName %></td>
             <td><%= item.owner %></td>
             <td><%= item.ownerPhone %></td>
-            <td><%= item.ownerMail %></td>
+            <td><pre><%= filter('formatJson', item.attrs, true) %></pre></td>
             <td><a class="btn btn-primary" href="<%= window.rootBase %>/product/add?id=<%= item.productId %>">编辑</a><span class="separator">|</span><a href="#" class="btn btn-danger to-set-delete" data-id="<%= item.productId %>" data-name="<%= item.productName %>" data-toggle="modal" data-target="#delete-product-modal">删除</a></td>
         </tr>
     <% 

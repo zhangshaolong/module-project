@@ -5,6 +5,8 @@ define(function (require, exports) {
     // store里面的数据是页面内共享的
     var store = require('common/store');
 
+    Simplite.addFilter('formatJson', require('common/utils').formatJSON);
+
     exports.init = function () {
 
         var moduleNode = this.element;
