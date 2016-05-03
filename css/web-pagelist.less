@@ -1,0 +1,46 @@
+@import './base.less';
+
+[data-module-path="web-pagelist/main"] {
+    .filters {
+        .form-group {
+            margin-right: 40px;
+        }
+        #date-range {
+            width: 200px;
+            margin-left: 5px;
+        }
+    }
+
+    .list {
+        margin-top: 20px;
+        padding-top: 30px;
+        border-top: 1px solid #e6e2e1;
+        
+        & > div {
+            overflow-x: auto;
+        }
+
+        table {
+
+            td.page-url {
+                position: relative;
+                padding-right: 30px;
+                .glyphicon-random {
+                    display: none;
+                    position: absolute;
+                    right: 10px;
+                    top: 10px;
+                    cursor: pointer;
+                }
+            }
+            
+
+            tr:hover {
+                .glyphicon-random {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+}
+

@@ -1,3 +1,9 @@
+body {
+    height: 100%;
+    background-color: #edeef1;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
 pre {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-align: left;
@@ -80,17 +86,57 @@ pre {
     left: 0;
     bottom: 0;
     background-color: #ffffff;
-    padding-top: 20px;
+    color: #6f6f70;
 
-    .nav-pills {
-        & > li {
+    a {
+        text-decoration: none;
+    }
+
+    .nav-item {
+        position: relative;
+
+        &.active {
             & > a {
-                border-radius: 0;
-
-                span {
-                    margin-right: 10px;
-                }
+                color: #ff8903;
             }
+        }
+        & > a {
+            & > .toggle {
+                position: absolute;
+                right: -10px;
+                top: 6px;
+            }
+        }
+    }
+
+    & > .nav-item {
+        &:hover {
+            background: #f6f6f8;
+        }
+        & > a {
+            &:focus {
+                color: #6f6f70;
+            }
+            & > .toggle {
+                position: absolute;
+                right: 10px;
+                top: 18px;
+            }
+        }
+    }
+
+    & > div {
+        line-height: 30px;
+        font-size: 14px;
+        color: #6f6f70;
+        padding: 10px 20px;
+        border-bottom: 1px solid #eee;
+
+        .sub-list {
+            display: none;
+            margin-left: 20px;
+            line-height: 25px;
+            font-size: 13px;
         }
     }
 }
@@ -104,16 +150,15 @@ pre {
         background: #fff;
         margin: 20px 0;
         padding: 15px;
-        & > .row {
-            padding: 0 20px;
-            .item-title {
+
+        .module-block {
+            .block-title {
                 border-left: 4px solid #f6871b;
                 padding-left: 10px;
             }
-
-            .item-body {
+            .block-content {
                 border-top: 1px solid #edeef1;
-                padding-top: 10px;
+                padding: 20px 30px;
                 margin: 15px -20px 0 -20px;
             }
         }
@@ -136,11 +181,6 @@ pre {
     min-height: 70px;
 }
 
-.validator-error {
-    margin-top: 5px;
-    color: #a94442;
-}
-
 .float-right {
     float: right;
 }
@@ -157,53 +197,14 @@ div.data-loading {
     background-size: auto !important;
 }
 
-[data-module-path="common-module/base-app"] {
-    padding: 0 !important;
-    .app-container {
-        position: relative;
-        img {
-            position: absolute;
-            top: 11px;
-            left: 12px;
-        }
-
-        .app-name {
-            float: left;
-            margin-left: 40px;
-            height: 50px;
-            line-height: 50px;
-            margin-right: 10px
-        }
-
-        .navbar-nav {
-            margin-left: 36px;
-        }
+table {
+    thead {
+        background: #f8f8f8;
     }
-
-    .nav > li > a:hover, .nav > li > a:focus {
-        background: #fff;
+    th {
+        white-space: nowrap;
     }
-
-    .line {
-        float: left;
-        border-left: 1px solid #ddd;
-        height: 20px;
-        vertical-align: middle;
-        margin-top: 15px;
-        padding: 0 !important;
-    }
-
-    .app-info-container {
-        float: right;
-
-        & > div {
-            float: left;
-            padding: 15px;
-        }
-    }
-
-    .version-text {
-        padding-left: 10px;
-        color: #333;
+    td {
+        white-space: nowrap;
     }
 }

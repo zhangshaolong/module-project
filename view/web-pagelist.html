@@ -1,0 +1,24 @@
+<%
+    include('common/header.html', {
+        links: [
+            _this.rootBase + '/css/web-pagelist.less',
+            _this.rootBase + '/dep/daterangepicker/daterangepicker.css'
+        ]
+    });
+%>
+
+<div class="base-container" data-module-path="web-pagelist/main">
+</div>
+
+<%
+    include('common/nav.html');
+%>
+
+<%
+    include('common/footer.html', {
+        scripts: [
+            _this.rootBase + '/dep/daterangepicker/moment.js',
+            _this.rootBase + '/dep/daterangepicker/daterangepicker.js'
+        ]
+    });
+%>
