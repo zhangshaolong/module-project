@@ -4,6 +4,7 @@ test
 npm-debug.log
 router.sublime-project
 router.sublime-workspace
+output
 .DS_Store
 node_modules
 .swp
