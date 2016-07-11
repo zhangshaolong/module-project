@@ -17,6 +17,12 @@ var formDataReg = /multipart\/form-data/;
 
 var config = require('./config');
 
+// 可配置使用代理时，指定api接口还是走本地
+var localRouterMap = {
+    '/api-prefix/common/user': 1,
+    '/api-prefix/product/list': 1
+};
+
 var proxyInfo;
 
 module.exports = function (req, res, next) {
@@ -102,8 +108,7 @@ module.exports = function (req, res, next) {
         if (!proxyInfo) {
             proxyInfo = getProxyInfo();
         }
-
-        if (proxyInfo) {
+        if (proxyInfo && !localRouterMap[reqUrl]) {
             doProxy(proxyInfo);
             return ;
         }
