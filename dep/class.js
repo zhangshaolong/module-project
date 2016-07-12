@@ -18,14 +18,24 @@
      */
     var noop = function () {};
     /**
-     * 获取父类的方法
+     * 获取有此方法的最近父类中的方法
      */
-    var callSuper = function (method) {
-        var me = this;
-        return function () {
-            me.superClass.prototype[method].apply(me, arguments);
-        };
-    }
+    var getSuper = function (method) {
+        return getClosestSuperMethod(this.superClass, method);
+    };
+    /**
+     * 获取父类中的存在name的最近的父亲的方法
+     */
+    var getClosestSuperMethod = function (parentClass, name) {
+        while (parentClass) {
+            var pMethod = parentClass.prototype[name];
+            if (!pMethod) {
+                return getClosestSuperMethod(parentClass.prototype.superClass);
+            } else {
+                return pMethod;
+            }
+        }
+    };
     /**
      * 类实例化对象的方法
      * @private param {object} options 实例化对象时的配置参数
@@ -63,15 +73,6 @@
             }
             methods = methods || {};
             var F = function () {
-                // if (parent) {
-                //     var p = parent;
-                //     while (p) {
-                //          if (p.prototype.init) {
-                //             p.prototype.init.apply(this, arguments);
-                //          }
-                //         p = p.prototype.superClass;
-                //     }
-                // }
                 for (var key in F.defaultOptions || {}) {
                     if (!this[key]) {
                         this[key] = F.defaultOptions[key];
@@ -84,12 +85,6 @@
                 F.prototype = new noop();
                 noop.prototype = null;
             }
-            F.prototype.init = function (options) {
-                options = options || {};
-                for(var p in options) {
-                    this[p] = options[p];
-                }
-            };
             for (var name in methods) {
                 if (methods.hasOwnProperty(name)) {
                     var method = methods[name];
@@ -103,13 +98,8 @@
                             if (!override) {
                                 var pMethod;
                                 if (parent) {
-                                    pMethod = parent.prototype[name];
-                                    if (!pMethod) {
-                                        parent = parent.superClass;
-                                        if (parent) {
-                                            parent.prototype[name].apply(this, arguments);
-                                        }
-                                    } else {
+                                    pMethod = getClosestSuperMethod(parent, name);
+                                    if (pMethod) {
                                         pMethod.apply(this, arguments);
                                     }
                                 }
@@ -122,12 +112,19 @@
             if (parent) {
                 F.prototype.superClass = parent;
                 F.prototype.constructor = F;
-                F.prototype.callSuper = callSuper;
+                F.prototype.getSuper = getSuper;
             }
             F.create = Root.create;
             F.init = init;
             return F;
         }
     };
-    return Root.create();
+    return Root.create({
+        init: function (options) {
+            options = options || {};
+            for(var p in options) {
+                this[p] = options[p];
+            }
+        }
+    });
 });
