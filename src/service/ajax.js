@@ -2,6 +2,8 @@ define(function (require, exports) {
 
     var commonErrors = require('./commonErrors');
 
+    var restfulReg = /\{([^\}]+)\}/g;
+
     /**
      * 发送 post 请求
      *
@@ -17,6 +19,15 @@ define(function (require, exports) {
     exports.post = function (url, params, options) {
         params = params || {};
         options = options || {};
+        var originalUrl = url;
+        var isRestful = false;
+        url = url.replace(restfulReg, function (all, key) {
+            isRestful = true;
+            return params[key];
+        });
+        if (isRestful) {
+            params.__url__ = originalUrl;
+        }
         return $.ajax({
             url: window.rootBase + url,
             data: JSON.stringify(params),

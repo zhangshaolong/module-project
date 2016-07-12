@@ -115,6 +115,10 @@ module.exports = function (req, res, next) {
 
         var doMock = function (params, pathName) {
             try {
+                if (params.__url__) {
+                    pathName = params.__url__;
+                    delete params.__url__;
+                }
                 for (var i = 0; i < len; i++) {
                     pathName = pathName.replace(apiValue[i], '');
                 }

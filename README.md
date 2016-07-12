@@ -55,4 +55,8 @@ module.exports = {
 ```
 #### 可以支持直接的数据或者返回一个function，此function支持获取请求参数，并把return的数据作为mock的数据返回。function用于需要动态结果时使用，可以支持延时返回，对应的返回字段sleep，值为毫秒数。
 
-#### 9：项目中的nginx-conf.txt文件中是部分nginx做前后端分离的配置信息，如果需要，请参考。
+#### 9：添加了restful接口的mock，具体使用方式请查看任务列表中的删除任务的接口。
+
+#### 10：支持了proxy模式下，可配置某些接口仍然走本地mock，需要在local-server/mock.js里面配置本地router的map。
+
+#### 11：项目中的nginx-conf.txt文件中是部分nginx做前后端分离的配置信息，如果需要，请参考。

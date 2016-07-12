@@ -14,7 +14,8 @@ define(function (require, exports) {
         return ajax.post('/api-prefix/product/list', null, options);
     };
 
+    // restful形式，注意：需要在params里面有id参数
     exports.deleteProduct = function (params, options) {
-        return ajax.post('/api-prefix/product/delete', params, options);
+        return ajax.post('/api-prefix/product/delete/{id}', params, options);
     };
 });
