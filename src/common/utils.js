@@ -50,9 +50,9 @@ define(function (require, exports) {
      * 更新浏览器URL中的参数
      * @param {string|Object} key 指定需要获取的key的值或者key value组成的map结构
      * @param {string} value 指定需设置key对应的值
+     * @param {boolean} isHasn 是否更新的是hash
      */
-    exports.refreshQuery = function (key, value) {
-        var search = location.search;
+    var refreshUrl = function (key, value, isHash) {
         if (!key) {
             return '';
         }
@@ -60,7 +60,14 @@ define(function (require, exports) {
             var keyMap = {};
             keyMap[key] = value;
             key = keyMap;
+        } else {
+            isHash = value;
         }
+        var search = location.search;
+        if (isHash === true) {
+            search = location.hash;
+        }
+        
         if (search) {
             for (var ki in key) {
                 var has = false;
@@ -86,12 +93,13 @@ define(function (require, exports) {
     /**
      * 获取浏览器URL中的参数
      * @param {string} key 指定需要获取的key的值，默认全部
+     * @param {boolean} isHash 是否从hash中获取
      * @return {string|Object} 如果指定了key，则返回对应的值，否则返回由key->value的map
      */
-    exports.getQuery = function (key) {
+    var getUrlParams = function (key, isHash) {
         var search = location.search;
+        var querys = {};
         if (!arguments.length) {
-            var querys = {};
             if (!search) {
                 return querys;
             }
@@ -100,9 +108,36 @@ define(function (require, exports) {
             });
             return querys;
         } else {
+            if (typeof key === 'string') {
+                if (isHash) {
+                    search = location.hash;
+                }
+            } else if (key) {
+                location.hash.replace(/(?:\?|&)([^=]+)=([^&$]*)/g, function (all, key, val) {
+                    querys[key] = val;
+                });
+                return querys;
+            }
             var rst = new RegExp('[?&]' + key + '=([^&$]*)').exec(search);
             return rst && rst[1];
         }
+    };
+
+
+    exports.refreshQuery = function (key, value) {
+        return refreshUrl(key, value);
+    };
+
+    exports.getQuery = function (key) {
+        return getUrlParams(key);
+    };
+
+    exports.refreshFrag = function (key, value) {
+        return refreshUrl(key, value, 1);
+    };
+
+    exports.getFrag = function (key) {
+        return getUrlParams(key, 1);
     };
 
     /**
