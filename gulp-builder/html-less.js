@@ -18,7 +18,10 @@ module.exports = function () {
             var name = path.basename(absPath);
             var suffix = '_' + hashCode + '.css';
             gulp.src(lessPath.substr(1) + '.less')
-            .pipe(less({ plugins: [new lessPluginFunction()] }))
+            .pipe(less({
+                plugins: [new lessPluginFunction()],
+                relativeUrls: true
+            }))
             .pipe(cssmin())
             .pipe(rename(name.replace('.less', suffix)))
             .pipe(gulp.dest(path.join(config.buildPath, lessPath.substr(0, lessPath.lastIndexOf('/')))));

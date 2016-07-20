@@ -24,7 +24,10 @@ module.exports = function (req, res, next) {
         if (fs.existsSync(url.replace(/^\//, ''))) {
             res.writeHead(200, {'Content-Type': 'text/css'});
             return gulp.src(url.substr(1))
-                .pipe(less({ plugins: [new lessPluginFunction()] }))
+                .pipe(less({
+                    plugins: [new lessPluginFunction()],
+                    relativeUrls: true
+                }))
                 .pipe(cssWriter(res));
         } else {
             return next();
