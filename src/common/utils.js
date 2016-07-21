@@ -104,7 +104,7 @@ define(function (require, exports) {
                 return querys;
             }
             search.replace(/(?:\?|&)([^=]+)=([^&$]*)/g, function (all, key, val) {
-                querys[key] = val;
+                querys[key] = decodeURIComponent(val);
             });
             return querys;
         } else {
@@ -114,12 +114,12 @@ define(function (require, exports) {
                 }
             } else if (key) {
                 location.hash.replace(/(?:\?|&)([^=]+)=([^&$]*)/g, function (all, key, val) {
-                    querys[key] = val;
+                    querys[key] = decodeURIComponent(val);
                 });
                 return querys;
             }
             var rst = new RegExp('[?&]' + key + '=([^&$]*)').exec(search);
-            return rst && rst[1];
+            return rst && decodeURIComponent(rst[1]);
         }
     };
 
