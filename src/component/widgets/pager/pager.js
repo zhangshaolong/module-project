@@ -4,6 +4,7 @@ define(function (require) {
     require('tpl!./pager.tpl');
 
     Simplite.addFilter('format-length', function (num, maxNum) {
+        return num;
         for (var i = ('' + num).length, len = ('' + maxNum).length; i < len; i++) {
             num = '0' + num;
         }
@@ -11,8 +12,8 @@ define(function (require) {
     });
 
     var Pager = require('../../ui').create({
-        init: function (options) {
-            this.element = $(this.element);
+        init: function () {
+            this.element.addClass('pager-widget');
         },
         bindEvent: function () {
             var me = this;
@@ -89,7 +90,7 @@ define(function (require) {
         currentPage: 1,
         pageSize: 20,
         totalPage: 1,
-        displayPageCount: 5,
+        displayPageCount: 15,
         currentGroup: 1,
         totalGroup: 1
     };

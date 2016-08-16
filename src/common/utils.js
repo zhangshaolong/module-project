@@ -52,7 +52,7 @@ define(function (require, exports) {
      * @param {string} value 指定需设置key对应的值
      * @param {boolean} isHasn 是否更新的是hash
      */
-    var refreshUrl = function (key, value, isHash) {
+    exports.refreshQuery = function (key, value, isHash) {
         if (!key) {
             return '';
         }
@@ -96,7 +96,7 @@ define(function (require, exports) {
      * @param {boolean} isHash 是否从hash中获取
      * @return {string|Object} 如果指定了key，则返回对应的值，否则返回由key->value的map
      */
-    var getUrlParams = function (key, isHash) {
+    exports.getQuery = function (key, isHash) {
         var search = location.search;
         var querys = {};
         if (!arguments.length) {
@@ -123,21 +123,15 @@ define(function (require, exports) {
         }
     };
 
-
-    exports.refreshQuery = function (key, value) {
-        return refreshUrl(key, value);
-    };
-
-    exports.getQuery = function (key) {
-        return getUrlParams(key);
-    };
-
     exports.refreshFrag = function (key, value) {
-        return refreshUrl(key, value, 1);
+        return exports.refreshQuery(key, value, true);
     };
 
     exports.getFrag = function (key) {
-        return getUrlParams(key, 1);
+        if (typeof key === 'string') {
+            return exports.getQuery(key, true);
+        }
+        return exports.getQuery(true);
     };
 
     /**
@@ -200,6 +194,35 @@ define(function (require, exports) {
         }
         return year + '-' + month + '-' + d + ' ' + h + ':' + m + ':' + s;
     };
+    exports.toMDHmsS = function (date) {
+        var month = date.getMonth() + 1;
+        var d = date.getDate();
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var s = date.getSeconds();
+        var S = date.getMilliseconds();
+        if (month < 10) {
+            month = '0' + month;
+        }
+        if (d < 10) {
+            d = '0' + d;
+        }
+        if (h < 10) {
+            h = '0' + h;
+        }
+        if (m < 10) {
+            m = '0' + m;
+        }
+        if (s < 10) {
+            s = '0' + s;
+        }
+        if (S < 10) {
+            S = '00' + S;
+        } else if (S < 100) {
+            S = '0' + S;
+        }
+        return month + '-' + d + ' ' + h + ':' + m + ':' + s + '.' + S;
+    };
     exports.toTimestamp = function (date) {
         return date.getTime();
     };
@@ -240,7 +263,7 @@ define(function (require, exports) {
         var constructor = data.constructor;
         if (constructor === String) {
             return codeStyle ? '<span class="json-string-value">"' + data + '"</span>' : '"' + data + '"';
-        } else if (constructor === Number || constructor == Boolean) {
+        } else if (constructor === Number) {
             return codeStyle ? '<span class="json-number-value">' + data + '</span>' : data;
         } else if (constructor === Array) {
             var astr = codeStyle ? '<span class="json-array-tag">[</span>\n' : '[\n';
