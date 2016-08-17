@@ -69,7 +69,7 @@ module.exports = function (req, res, next) {
             var query = URL.parse(pageUrl, true).query;
 
             if (query && query.proxy) {
-                var pair = query.proxy.split(':');
+                var pair = query.proxy.replace(/^https?\:\/\//, '').split(':');
                 return {
                     host: pair[0],
                     port: pair[1] || 80
