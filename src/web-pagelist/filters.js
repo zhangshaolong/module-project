@@ -5,6 +5,8 @@ define(function (require, exports) {
 
     var eventEmitter = require('common/eventEmitter');
 
+    var Dropdown = require('component/widgets/dropdown/dropdown');
+
     var store = require('common/store');
 
     var startDate = moment().add(-14, 'days').startOf('day');
@@ -22,10 +24,32 @@ define(function (require, exports) {
 
         var moduleNode = this.element;
 
+        
+
         service.getProducts().done(function (resp) {
 
             var html = Simplite.render('web-pagelist-filters', $.extend(true, {}, argsMap, resp.data));
             moduleNode.html(html);
+
+            var dropdown = Dropdown.init({
+                element: moduleNode.find('.dropdown'),
+                defaultText: '请选择产品'
+            });
+
+            dropdown.on('change', function (item) {
+                argsMap.product = item.id;
+                eventEmitter.fire('web-pagelist-filters-change', argsMap);
+            });
+
+            var list = resp.data.list;
+            var dropdownData = [];
+            $.each(list, function (idx, item) {
+                dropdownData.push({
+                    id: item,
+                    text: item
+                });
+            });
+            dropdown.render(dropdownData);
 
             moduleNode.find('#date-range').daterangepicker({
                 startDate: startDate,
@@ -60,12 +84,8 @@ define(function (require, exports) {
             });
         });
 
-        moduleNode.on('click', '.dropdown-menu .select-item', function () {
-            var id = $(this).data('id');
-            var text = $(this).text();
-            var name = $(this).closest('.dropdown').find('.item-selected').text(text).data('name');
-            argsMap[name] = id;
-            eventEmitter.fire('web-pagelist-filters-change', argsMap);
+        moduleNode.on('click', '.dialog', function () {
+            eventEmitter.fire('web-pagelist-filters-dialog');
         });
 
         eventEmitter.fire('web-pagelist-filters-change', argsMap);

@@ -9,6 +9,8 @@ define(function (require, exports) {
 
     var Pager = require('component/widgets/pager/pager');
 
+    var Dialog = require('component/widgets/dialog/dialog');
+
     var params = {
         current_page: 0,
         page_size: 10
@@ -42,6 +44,17 @@ define(function (require, exports) {
             element: moduleNode.find('.widgets-pager')
         });
 
+        var dialog = Dialog.init({
+            data: {
+                title: '弹窗标题',
+                content: '弹窗内容'
+            }
+        });
+
+        dialog.on('ok', function () {
+            dialog.hide();
+        });
+
         moduleNode.on('click', '.trend', function (e) {
             e.stopPropagation();
             var href = $(this).data('href');
@@ -64,5 +77,14 @@ define(function (require, exports) {
         if (args) {
             refreshList(moduleNode, pager, args);
         }
+
+        eventEmitter.on('web-pagelist-filters-dialog', function () {
+            dialog.show();
+
+            setTimeout(function () {
+                dialog.setTitle('标题可以动态设置');
+                dialog.setContent('内容可以动态设置');
+            }, 1000);
+        });
     };
 });

@@ -13,26 +13,17 @@
 {{ -- tpl:web-pagelist-filters -- }}
     <form class="form-inline">
         <div class="form-group">
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <span class="item-selected" data-name="product">请选择产品</span>
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <%
-                        for (var i = 0, len = _this.list.length; i < len; i++) {
-                            var item = _this.list[i];
-                    %>
-                        <li class="select-item" data-id="<%= item %>"><a href="javascript:;"><%= item %></a></li>
-                    <% } %>
-                </ul>
-            </div>
+            <div class="dropdown"></div>
         </div>
 
         <div class="form-group">
             <label for="date-range">选择日期范围</label>
             <input type="text" class="form-control" id="date-range" value="<%= _this.start_date + ' 到 ' + _this.end_date %>">
 
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-default dialog">点击弹窗</button>
         </div>
     </form>
 {{ -- /tpl -- }}
