@@ -11,7 +11,6 @@ var htmlminProcessor = require('./gulp-builder/html-min');
 var jsmd5Processor = require('./gulp-builder/md5-js');
 var htmlJsProcessor = require('./gulp-builder/html-js');
 var htmlLessProcessor = require('./gulp-builder/html-less');
-var appEntryProcessor = require('./gulp-builder/app-entry');
 var imageminProcessor = require('./gulp-builder/image-min');
 
 var buildPath = config.buildPath;
@@ -43,7 +42,6 @@ gulp.task('htmlmin', function () {
         .pipe(gulp.dest(path.join(buildPath, htmlPath)));
 });
 
-gulp.task('main', appEntryProcessor);
 
 gulp.task('copy', function () {
     gulp.src(['dep/**/*.*', '!dep/**/bootstrap.js', '!dep/simplite.js'])
@@ -55,7 +53,7 @@ gulp.task('copy', function () {
 
 gulp.task('build', sequence(
     'clean',
-    ['htmlmin', 'imagemin', 'main', 'copy'], // 图片依赖libc.so.6: version `GLIBC_2.14'
+    ['htmlmin', 'imagemin', 'copy'], // 图片依赖libc.so.6: version `GLIBC_2.14'
     'jsmd5'
 ));
 
