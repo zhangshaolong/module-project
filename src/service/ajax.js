@@ -40,10 +40,31 @@ define(function (require, exports) {
             beforeSend: options.beforeSend || function () {
                 var time = new Date().getTime();
                 options._time = time;
-                options.holder && options.holder.append('<div class="data-loading data-loading-' + time + '">').addClass('data-loading-relative');
+                var holder = options.holder;
+                if (holder) {
+                    var loading = holder.children('.data-loading');
+                    if (!loading[0]) {
+                        loading = $('<div class="data-loading data-loading-' + time + '" data-count="1">');
+                        holder.append(loading);
+                    } else {
+                        loading.data('count', +loading.data('count') + 1);
+                    }
+                    if (!holder.hasClass('data-loading-relative')) {
+                        holder.addClass('data-loading-relative');
+                    }
+                }
             }
         }).pipe(function (response) {
-            options.holder && options.holder.removeClass('data-loading-relative').find('.data-loading-' + options._time).remove();
+            var holder = options.holder;
+            if (holder) {
+                var loading = holder.children('.data-loading');
+                var count = +loading.data('count');
+                if (count > 1) {
+                    loading.data('count', count - 1);
+                } else {
+                    holder.removeClass('data-loading-relative').find('.data-loading-' + options._time).remove();
+                }
+            }
             if (response.status === 200) {
                 return response;
             } else if (response.status === 302) { // 需要登录认证
