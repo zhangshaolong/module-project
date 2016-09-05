@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var config = require('./config');
 var cwd = config.cwd;
+var buildedMap = {};
 module.exports = function (content, pth) {
     if (pth.indexOf(config.widgetsPath) > -1) {
         content = content.replace(config.cssPluginRule, function (all, pluginPath) {
@@ -10,12 +11,16 @@ module.exports = function (content, pth) {
             } else {
                 pluginPath = path.join(cwd, pluginPath);
             }
-            var data = fs.readFileSync(pluginPath, 'utf-8');
-            return '\n(function () {var head = document.head || document.getElementsByTagName("head")[0];'
-                + 'var style = document.createElement("style");'
-                + 'style.setAttribute("type", "text/css");'
-                + 'style.innerHTML = "' + data.replace(/"/g, '\\"').replace(/\s+/g, ' ') + '";'
-                + 'head.appendChild(style);})();\n';
+            var cssContent = buildedMap[pluginPath];
+            if (!cssContent) {
+                var data = fs.readFileSync(pluginPath, 'utf-8');
+                cssContent = buildedMap[pluginPath] = '\n(function () {var head = document.head || document.getElementsByTagName("head")[0];'
+                    + 'var style = document.createElement("style");'
+                    + 'style.setAttribute("type", "text/css");'
+                    + 'style.innerHTML = "' + data.replace(/"/g, '\\"').replace(/\s+/g, ' ') + '";'
+                    + 'head.appendChild(style);})();\n';
+            }
+            return cssContent;
         });
     }
     return content;
