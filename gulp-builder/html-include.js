@@ -7,8 +7,9 @@ var config = require('./config');
 var parseInclude = function (content, encoding) {
     content.replace(config.includeReg, function (all, quot, pth) {
         var tplContent = fs.readFileSync(path.resolve(path.join(config.htmlPath, pth)));
-        Simplite.addTemplate(pth, new String(tplContent, encoding));
-        parseInclude(new String(tplContent, encoding));
+        var content = new String(tplContent, encoding);
+        Simplite.addTemplate(pth, content);
+        parseInclude(content, encoding);
     });
 };
 
