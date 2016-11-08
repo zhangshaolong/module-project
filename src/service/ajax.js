@@ -38,13 +38,11 @@ define(function (require, exports) {
             async: options.sync ? false : true,
             timeout: 20000,
             beforeSend: options.beforeSend || function () {
-                var time = new Date().getTime();
-                options._time = time;
                 var holder = options.holder;
                 if (holder) {
                     var loading = holder.children('.data-loading');
                     if (!loading[0]) {
-                        loading = $('<div class="data-loading data-loading-' + time + '" data-count="1">');
+                        loading = $('<div class="data-loading data-loading" data-count="1">');
                         holder.append(loading);
                     } else {
                         loading.data('count', +loading.data('count') + 1);
@@ -62,7 +60,7 @@ define(function (require, exports) {
                 if (count > 1) {
                     loading.data('count', count - 1);
                 } else {
-                    holder.removeClass('data-loading-relative').find('.data-loading-' + options._time).remove();
+                    holder.removeClass('data-loading-relative').find('.data-loading').remove();
                 }
             }
             if (response.status === 200) {

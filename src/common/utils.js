@@ -243,7 +243,15 @@ define(function (require, exports) {
         var data = {};
         rule = rule || '[name]'
         container.find(rule).each(function () {
-            data[this.name] = this.value;
+            var val = data[this.name];
+            if (val) {
+                if (typeof val === 'string') {
+                    data[this.name] = [val];
+                }
+                data[this.name].push(this.value);
+            } else {
+                data[this.name] = this.value;
+            }
         });
         return data;
     };

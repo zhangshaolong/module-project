@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var less = require('less');
 var config = require('./config');
 var cwd = config.cwd;
 var buildedMap = {};
@@ -14,10 +15,16 @@ module.exports = function (content, pth) {
             var cssContent = buildedMap[pluginPath];
             if (!cssContent) {
                 var data = fs.readFileSync(pluginPath, 'utf-8');
+                var css = data;
+                less.render(css, function (e, cssobj) {
+                    css = cssobj.css;
+                }, {
+                    sync: true
+                });
                 cssContent = buildedMap[pluginPath] = '\n(function () {var head = document.head || document.getElementsByTagName("head")[0];'
                     + 'var style = document.createElement("style");'
                     + 'style.setAttribute("type", "text/css");'
-                    + 'style.innerHTML = "' + data.replace(/"/g, '\\"').replace(/\s+/g, ' ') + '";'
+                    + 'style.innerHTML = "' + css.replace(/"/g, '\\"').replace(/\s+/g, ' ') + '";'
                     + 'head.appendChild(style);})();\n';
             }
             return cssContent;
