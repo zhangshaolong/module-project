@@ -3,11 +3,9 @@ define(function (require, exports) {
 
     var service = require('service/web-pagelist');
 
-    var eventEmitter = require('common/eventEmitter');
+    var eventEmitter = require('dep/eventEmitter');
 
     var Dropdown = require('component/widgets/dropdown/dropdown');
-
-    var store = require('common/store');
 
     var startDate = moment().add(-14, 'days').startOf('day');
     var endDate = moment().add(-1, 'days').startOf('day');
@@ -19,8 +17,6 @@ define(function (require, exports) {
             start_date: startDate.format('YYYY-MM-DD'),
             end_date: endDate.format('YYYY-MM-DD')
         };
-
-        store.set('web-pagelist-filters', argsMap);
 
         var moduleNode = this.element;
 

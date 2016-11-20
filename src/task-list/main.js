@@ -17,7 +17,7 @@ define(function (require, exports) {
     require('./instance-demo');
 
     // 事件管理器，页面内共享
-    var eventEmitter = require('common/eventEmitter');
+    var eventEmitter = require('dep/eventEmitter');
 
     var moduleNode;
 

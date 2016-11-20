@@ -243,6 +243,12 @@ define(function (require, exports) {
         var data = {};
         rule = rule || '[name]'
         container.find(rule).each(function () {
+            if (this.type === 'radio') {
+                if (this.checked) {
+                    data[this.name] = this.value;
+                }
+                return;
+            }
             var val = data[this.name];
             if (val) {
                 if (typeof val === 'string') {

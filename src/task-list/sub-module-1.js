@@ -6,7 +6,7 @@ define(function (require, exports) {
     'use strict';
 
     // 事件管理器，页面内共享
-    var eventEmitter = require('common/eventEmitter');
+    var eventEmitter = require('dep/eventEmitter');
 
     // 你可以通过init的参数获取在data-interceptor-path设置的js的返回值
     exports.init = function (id) {

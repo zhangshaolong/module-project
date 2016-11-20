@@ -3,9 +3,7 @@ define(function (require, exports) {
 
     var service = require('service/web-pagelist');
 
-    var eventEmitter = require('common/eventEmitter');
-
-    var store = require('common/store');
+    var eventEmitter = require('dep/eventEmitter');
 
     var Pager = require('component/widgets/pager/pager');
 
@@ -72,11 +70,6 @@ define(function (require, exports) {
         eventEmitter.on('web-pagelist-filters-change', function (args) {
             refreshList(moduleNode, pager, args);
         });
-
-        var args = store.get('web-pagelist-filters');
-        if (args) {
-            refreshList(moduleNode, pager, args);
-        }
 
         eventEmitter.on('web-pagelist-filters-dialog', function () {
             dialog.show();
