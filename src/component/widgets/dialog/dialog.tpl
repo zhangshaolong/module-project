@@ -1,13 +1,13 @@
 {{ -- tpl: dialog-template -- }}
-    <div class="modal<%= _this.nofade ? '' : ' fade' %><%= _this.cls ? ' ' + _this.cls : '' %>">
-        <div class="modal-dialog"<%= _this.width ? ' style="width:' + _this.width + 'px;"' : '' %>>
+    <div class="modal{{ _this.nofade ? '' : ' fade' }}{{ _this.cls ? ' ' + _this.cls : '' }}">
+        <div class="modal-dialog"{{ _this.width ? ' style="width:' + _this.width + 'px;"' : '' }}>
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><%= _this.title %></h4>
+                    <h4 class="modal-title">{{ _this.title }}</h4>
                 </div>
             <div class="modal-body">
-                <%= _this.content %>
+                {{ _this.content }}
             </div>
             <%
                 var len = _this.actions && _this.actions.length;
@@ -30,7 +30,7 @@
                             <%
                                 }
                             %>
-                            ><%= _this.buttons[type].text %></button>
+                            >{{ _this.buttons[type].text }}</button>
                         <%
                             }
                     %>

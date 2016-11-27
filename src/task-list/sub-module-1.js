@@ -18,7 +18,7 @@ define(function (require, exports) {
         //模拟一个异步处理，由于异步后模块处理器并不能扫描到此节点下面的所有data-module-path，所以可以手动调用模块扫描方法，如下：
         setTimeout(function () {
             moduleNode.html(Simplite.render('task-list-sub-module-1', {
-                ip: moduleData.ip,
+                ip: moduleData.ip + '\nasdf\ndsdff',
                 list: [
                     {
                         date: '2015-10-10',

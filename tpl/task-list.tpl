@@ -1,6 +1,7 @@
 {{ -- tpl:task-list-sub-module-1 -- }}
 <div>
-    ip：<%= _this.ip.replace(/\n/g, '<br>') %>
+    http:\/\/www.baidu.com/aaab/bbb.com
+    {{ _this.ip.replace(/\n/g, '<br />') }}
 </div>
 <table class="table">
     <thead>
@@ -17,12 +18,12 @@
             tmp = _this.list[i]; %>
         <tr>
             <td>
-                <%= tmp.date %>
+                {{ tmp.date }}
             </td>
-            <td><%= (tmp.natureFlow + tmp.tgFlow) %></td>
-            <td><%= tmp.scoreCost %></td>
+            <td>{{ (tmp.natureFlow + tmp.tgFlow) }}</td>
+            <td>{{ tmp.scoreCost }}</td>
             <td class="text-highlight">
-                <%= tmp.tgFlow %>
+                {{ tmp.tgFlow }}
             </td>
         </tr>
         <% } %>
@@ -40,6 +41,6 @@
 
 {{ -- tpl:task-list-sub2-include -- }}
 <p>
-    通过include传递参数<%= _this %>
+    通过include传递参数{{ _this }}
 </p>
 {{ -- /tpl -- }}

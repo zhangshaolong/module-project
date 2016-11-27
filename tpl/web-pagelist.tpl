@@ -18,7 +18,7 @@
 
         <div class="form-group">
             <label for="date-range">选择日期范围</label>
-            <input type="text" class="form-control" id="date-range" value="<%= _this.start_date + ' 到 ' + _this.end_date %>">
+            <input type="text" class="form-control" id="date-range" value="{{ _this.start_date + ' 到 ' + _this.end_date }}">
 
         </div>
 
@@ -56,11 +56,11 @@
                 var item = _this.list[i];
     %>
             <tr>
-                <td class="page-url"><a href="<%= item.page_url %>" target="_blank"><%= item.page_url %></a><a class="trend" data-href="<%= window.rootBase + '/web/pagetrend' %>" data-url="<%= item.page_url %>" target="_blank"><span class="glyphicon glyphicon-random"></span></a></td>
-                <td><%= item.page_name %></td>
-                <td><%= item.pvs %></td>
-                <td><%= item.uvs %></td>
-                <td><%= item.ips %></td>
+                <td class="page-url"><a href="{{ item.page_url }}" target="_blank">{{ item.page_url }}</a><a class="trend" data-href="{{ window.rootBase + '/web/pagetrend' }}" data-url="{{ item.page_url }}" target="_blank"><span class="glyphicon glyphicon-random"></span></a></td>
+                <td>{{ item.page_name }}</td>
+                <td>{{ item.pvs }}</td>
+                <td>{{ item.uvs }}</td>
+                <td>{{ item.ips }}</td>
             </tr>
     <%
             }

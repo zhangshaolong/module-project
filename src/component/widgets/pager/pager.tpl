@@ -12,8 +12,8 @@
                     break;
                 }
         %>
-                <li class="<%= i == _this.currentPage ? 'active' : 'page-btn' %>" data-page="<%= i %>">
-                    <a href="javascript:;"><%= filter('format-length', i, _this.totalPage) %></a>
+                <li class="{{ i == _this.currentPage ? 'active' : 'page-btn' }}" data-page="{{ i }}">
+                    <a href="javascript:;">{{ filter('format-length', i, _this.totalPage) }}</a>
                 </li>
         <%
             }

@@ -277,7 +277,7 @@ define(function (require, exports) {
         var constructor = data.constructor;
         if (constructor === String) {
             return codeStyle ? '<span class="json-string-value">"' + data + '"</span>' : '"' + data + '"';
-        } else if (constructor === Number) {
+        } else if (constructor === Number || constructor === Boolean) {
             return codeStyle ? '<span class="json-number-value">' + data + '</span>' : data;
         } else if (constructor === Array) {
             var astr = codeStyle ? '<span class="json-array-tag">[</span>\n' : '[\n';

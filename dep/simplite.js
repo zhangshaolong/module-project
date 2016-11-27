@@ -35,9 +35,9 @@
             // 默认逻辑闭合标签
             logicCloseTag: options.logicCloseTag || '%>',
             // 默认属性开始标签
-            attrOpenTag: options.attrOpenTag || '<%=',
+            attrOpenTag: options.attrOpenTag || '{{',
             // 默认属性闭合标签
-            attrCloseTag: options.attrCloseTag || '%>',
+            attrCloseTag: options.attrCloseTag || '}}',
             // 默认使用_this作为传入数据的载体，可以使用_this.a获取数据中的a属性的值
             dataKey: options.dataKey || '_this',
             // 初始化已编译存储容器
@@ -169,6 +169,8 @@
     var filterReg = /^\s*filter\(/g;
     var quotReg = /"/g;
     var slashReg = /\//g;
+    var stubReg = /\-\-s\-\-/g;
+    var stubStr = '--s--';
     var commentAndTagBlankTrimReg = /(?:(["'])[\s\S]*?\1)|(?:\/\/.*\n)|(?:\/\*([\s\S])*?\*\/)|(?:\>\s+\<)|(?:\s+)/g;
 
     var commentAndTagBlankTrimHandler = function (all) {
@@ -191,8 +193,14 @@
         }
         return '"+_t.defaultAttr(' + p.replace(filterReg, '_t.filter(') + ')+"';
     };
-    var htmlHandler = function (all) {
-        return all.replace(slashReg, '\\/').replace(quotReg, '\\"');
+    var htmlHandler = function (all, simplite) {
+        var attrs = [];
+        return all.replace(simplite.attrTagReg, function (attr) {
+            attrs.push(attr);
+            return stubStr;
+        }).replace(slashReg, '\\/').replace(quotReg, '\\"').replace(stubReg, function () {
+            return attrs.shift();
+        });
     };
 
     Simplite.compile = function (name, simplite) {
@@ -236,6 +244,7 @@
             }
             return (pre || '') + ' _o+=_t.' + keyword + '(' + args + ',' + simplite.dataKey + ')\n';
         };
+
         simplite = simplite || Simplite;
         var attrTagReg = simplite.attrTagReg;
         var logicOpenTagReg = simplite.logicOpenTagReg;
@@ -247,7 +256,9 @@
             logicCloseTagReg = simplite.logicCloseTagReg = new RegExp('\\s?' + simplite.logicCloseTag + '(?=\\s?)', 'g');
             htmlReg = simplite.htmlReg = new RegExp('(?:' + simplite.logicCloseTag  + '|^)(?:(?!' + simplite.logicOpenTag + ')[\\s\\S])+?(?:$|' + simplite.logicOpenTag + ')', 'g');
         }
-        var codeBlock = template.replace(htmlReg, htmlHandler)
+        var codeBlock = template.replace(htmlReg, function (all) {
+            return htmlHandler(all, simplite);
+        })
         .replace(commentAndTagBlankTrimReg, commentAndTagBlankTrimHandler)
         .replace(attrTagReg, attrHandler)
         .replace(logicOpenTagReg, '";')
