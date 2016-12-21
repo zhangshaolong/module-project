@@ -4,6 +4,33 @@ define(function (require, exports) {
 
     var restfulReg = /\{([^\}]+)\}/g;
 
+    var requests = [];
+
+    $(window).bind('beforeunload', function () {
+        $.each(requests, function (idx, req) {
+            if (req) {
+                req.abort();
+            }
+        });
+    });
+
+    var hasFile = function (params) {
+        for (var key in params) {
+            if (params[key] && params[key].constructor === File) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    var wrapParams = function (params) {
+        var fd = new FormData();
+        for (var key in params) {
+            fd.append(key, params[key]);
+        }
+        return fd;
+    }
+
     /**
      * 发送 post 请求
      *
@@ -28,14 +55,14 @@ define(function (require, exports) {
         if (isRestful) {
             params.__url__ = originalUrl;
         }
-        return $.ajax({
-            url: window.rootBase + url,
-            data: JSON.stringify(params),
+        url = window.rootBase + url;
+        var configs = {
+            url: url,
+            data: params,
             method: 'POST',
             type: 'POST',
             dataType: 'json',
-            contentType: 'application/json;charset=UTF-8',
-            async: options.sync ? false : true,
+            cache: false,
             timeout: 20000,
             beforeSend: options.beforeSend || function () {
                 var holder = options.holder;
@@ -47,12 +74,26 @@ define(function (require, exports) {
                     } else {
                         loading.data('count', +loading.data('count') + 1);
                     }
-                    if (!holder.hasClass('data-loading-relative')) {
+                    if (holder.css('position') === 'static' && !holder.hasClass('data-loading-relative')) {
                         holder.addClass('data-loading-relative');
                     }
                 }
-            }
-        }).pipe(function (response) {
+            },
+            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+            // contentType: 'application/json;charset=UTF-8',
+            async: options.sync ? false : true
+        };
+        if (options.headers) {
+            configs.headers = options.headers;
+        }
+        if (hasFile(params)) {
+            configs.data = wrapParams(params);
+            configs.contentType = false;
+            configs.processData = false;
+        }
+        var deferred = $.ajax(configs);
+        requests.push(deferred);
+        return deferred.pipe(function (response) {
             var holder = options.holder;
             if (holder) {
                 var loading = holder.children('.data-loading');
@@ -65,16 +106,26 @@ define(function (require, exports) {
             }
             if (response.status === 200) {
                 return response;
-            } else if (response.status === 302) { // 需要登录认证
-                window.location.href = window.rootBase + '/login';
             } else {
-                var deferred = $.Deferred();
-                if (commonErrors[response.status]) {
-                    deferred.reject(response);
+                if (response.status === 302) { // 需要登录
+                    window.location.href = window.rootBase + '/login';
+                } else if (response.status === 403) { // 没有权限
+                    alert('你还没有此权限，马上去申请权限~');
                 } else {
+                    var deferred = $.Deferred();
                     deferred.reject(response);
+                    return deferred.promise();
                 }
-                return deferred.promise();
+            }
+        }).fail(function (response) {
+            if (response.status !== 200 && response.statusText) {
+                console.log(response.statusText);
+            }
+        }).always(function () {
+            for (var i = 0; i < requests.length; i++) {
+                if (requests[i] === deferred) {
+                    requests.splice(i--, 1);
+                }
             }
         });
     }
