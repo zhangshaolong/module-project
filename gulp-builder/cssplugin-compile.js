@@ -16,10 +16,10 @@ module.exports = function (content, pth) {
             if (!cssContent) {
                 var data = fs.readFileSync(pluginPath, 'utf-8');
                 var css = data;
-                less.render(css, function (e, cssobj) {
-                    css = cssobj.css;
-                }, {
+                less.render(css, {
                     sync: true
+                }, function (e, cssobj) {
+                    css = cssobj.css;
                 });
                 cssContent = buildedMap[pluginPath] = '\n(function () {var head = document.head || document.getElementsByTagName("head")[0];'
                     + 'var style = document.createElement("style");'

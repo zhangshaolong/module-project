@@ -4,15 +4,20 @@ define(function (require) {
     require('tpl!./dropdown.tpl');
 
     var selectedItem = function ($this, dropdown) {
-        var oldItemNode = $this.siblings('.active');
-        if (oldItemNode[0] !== $this[0]) {
-            var data = $this.data();
-            oldItemNode.removeClass('active');
-            $this.addClass('active');
-            dropdown.element.find('.selected-item').data('val', data.id).html(data.text);
-            if (dropdown.name) {
-                dropdown.element.find('[name="' + dropdown.name + '"]').val(data.id);
+        if ($this[0]) {
+            var oldItemNode = $this.siblings('.active');
+            if (oldItemNode[0] !== $this[0]) {
+                var data = $this.data();
+                oldItemNode.removeClass('active');
+                $this.addClass('active');
+                dropdown.element.find('.selected-item').data(data).html(dropdown.renderItem(data));
+                if (dropdown.name) {
+                    dropdown.element.find('[name="' + dropdown.name + '"]').val(data.id);
+                }
             }
+        } else {
+            dropdown.element.find('.active').removeClass('active');
+            dropdown.element.find('.selected-item').data('id', '').html(dropdown.defaultText);
         }
     };
 
@@ -34,17 +39,26 @@ define(function (require) {
                 if ($(this).hasClass('disabled')) {
                     return false;
                 }
-            });
+            })
+
+            .on('input', '.search-container > :text', function (e) {
+                var val = $.trim(this.value);
+                $(this).parent().nextAll().each(function () {
+                    var data = $(this).data('text') + '';
+                    if (data.indexOf(val) > -1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            })
         },
         render: function (data, val) {
             val = val || this.value;
-            var html = Simplite.render('dropdown-template', {
+            var html = Simplite.render('dropdown-template', $.extend(this, {
                 list: data || [],
-                defaultText: this.defaultText,
-                value: val,
-                dropup: this.dropup,
-                name: this.name
-            });
+                value: val
+            }));
             this.element.html(html);
             if (val != null) {
                 this.setVal(val);
@@ -52,7 +66,7 @@ define(function (require) {
         },
         setData: function (data) {
             var me = this;
-            var itemsHtml = Simplite.render('dropdown-template-item', data || []);
+            var itemsHtml = Simplite.render('dropdown-template-item', $.extend(this, data || []));
             this.element.find('.dropdown-menu').html(itemsHtml);
 
             if (this.value) {
@@ -63,7 +77,13 @@ define(function (require) {
             selectedItem(this.element.find('.dropdown-item[data-id="' + id + '"]'), this);
         },
         getVal: function () {
-            return this.element.find('.selected-item').data('val');
+            return this.getItem().id;
+        },
+        getItem: function () {
+            return this.element.find('.selected-item').data();
+        },
+        renderItem: function (item) {
+            return item.text;
         },
         setDisabled: function (status) {
             if (status !== false) {

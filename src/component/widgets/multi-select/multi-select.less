@@ -1,12 +1,11 @@
-.dropdown-widget {
+.multi-select-widget {
     &.disabled {
         .dropdown-toggle {
             background-color: #e6e6e6;
         }
     }
-
     .dropdown, .dropup {
-        & > .btn {
+        &  > .btn {
             width: 100%;
             text-align: left;
             padding-right: 26px;
@@ -17,8 +16,19 @@
         min-width: 100%;
     }
 
+    .dropdown-item {
+        .chbox {
+            margin-right: 5px;
+        }
+    }
+
     .search-container {
         padding: 0 10px 5px 10px;
+    }
+
+    .selected-item {
+        white-space: normal;
+        word-break: break-all;
     }
 
     .caret {

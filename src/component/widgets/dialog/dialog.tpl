@@ -6,9 +6,9 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">{{ _this.title }}</h4>
                 </div>
-            <div class="modal-body">
-                {{ _this.content }}
-            </div>
+                <div class="modal-body">
+                    {{ _this.content }}
+                </div>
             <%
                 var len = _this.actions && _this.actions.length;
                 if (len) {

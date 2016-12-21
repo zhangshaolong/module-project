@@ -1,6 +1,6 @@
-{{ -- tpl: dropdown-template -- }}
+{{ -- tpl: multi-select-template -- }}
 <div class="{{ _this.dropup ? 'dropup' : 'dropdown' }}">
-    <button class="btn btn-default dropdown-toggle{{ _this.size ? ' ' + _this.size : '' }}" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
         <span class="selected-item" data-val="">{{ _this.defaultText }}</span>
         <span class="caret"></span>
         <%
@@ -21,17 +21,18 @@
         <%
             }
         %>
-        <% include('dropdown-template-item', _this); %>
+        <% include('multi-select-template-item', _this); %>
     </ul>
 {{ -- /tpl -- }}
 
-{{ -- tpl: dropdown-template-item -- }}
+{{ -- tpl: multi-select-template-item -- }}
     <%
         var len = _this.list.length;
         for (var i = 0; i < len; i++) {
             var item = _this.list[i];
     %>
             <li class="dropdown-item{{ _this.value == item.id ? ' active' : '' }}" 
+             {{ item.tip ? ('title="' + item.tip + '" data-toggle="tooltip"') : '' }}><a href="javascript:;"><input type="checkbox" class="chbox"  readonly="readonly" 
                 <%
                     for (var key in item) {
                         if (typeof item[key] !== 'object') {
@@ -41,7 +42,7 @@
                         }
                     }
                 %>
-             {{ item.tip ? ('title="' + item.tip + '" data-toggle="tooltip"') : '' }}><a href="javascript:;">{{ item.text }}</a></li>
+             />{{ item.text }}</a></li>
     <%
         }
     %>

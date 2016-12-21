@@ -90,7 +90,7 @@ define(function (require) {
         currentPage: 1,
         pageSize: 20,
         totalPage: 1,
-        displayPageCount: 15,
+        displayPageCount: 10,
         currentGroup: 1,
         totalGroup: 1
     };
