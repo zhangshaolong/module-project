@@ -249,6 +249,15 @@ define(function (require, exports) {
                 }
                 return;
             }
+            if (this.type === 'checkbox') {
+                if (!this.checked) {
+                    return;
+                }
+            }
+            if (this.type === 'file') { // 只支持一个文件
+                this.files[0] && (data[this.name] = this.files[0]);
+                return;
+            }
             var val = data[this.name];
             if (val) {
                 if (typeof val === 'string') {
