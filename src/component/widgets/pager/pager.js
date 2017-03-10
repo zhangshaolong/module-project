@@ -47,14 +47,22 @@ define(function (require) {
                 return;
             }
             this.currentGroup--;
-            this.render();
+            if (this.displayPageCount === 1) {
+                this.toPage(this.currentPage - 1);
+            } else {
+                this.render();
+            }
         },
         toNextGroup: function (element) {
             if (element.hasClass('disabled')) {
                 return;
             }
             this.currentGroup++;
-            this.render();
+            if (this.displayPageCount === 1) {
+                this.toPage(this.currentPage + 1);
+            } else {
+                this.render();
+            }
         },
         toPage: function (page) {
             page = parseInt(page);

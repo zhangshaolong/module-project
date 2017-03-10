@@ -11,7 +11,7 @@
             }
         %>
     </button>
-    <ul class="dropdown-menu"{{ _this.height ? ' style="max-height:' + _this.height + 'px;overflow-y:auto;"' : '' }}>
+    <ul class="dropdown-menu{{ _this.fixedWidth ? ' fixed-width' : '' }}"{{ _this.height ? ' style="max-height:' + _this.height + 'px;overflow-y:auto;"' : '' }}>
         <%
             if (_this.filterable && _this.list.length) {
         %>
@@ -21,7 +21,7 @@
         <%
             }
         %>
-        <% include('dropdown-template-item', _this); %>
+        <% include('dropdown-template-item'); %>
     </ul>
 {{ -- /tpl -- }}
 
@@ -30,6 +30,12 @@
         var len = _this.list.length;
         for (var i = 0; i < len; i++) {
             var item = _this.list[i];
+            if (typeof item === 'string') {
+                item = {
+                    id: item,
+                    text: item
+                };
+            }
     %>
             <li class="dropdown-item{{ _this.value == item.id ? ' active' : '' }}" 
                 <%

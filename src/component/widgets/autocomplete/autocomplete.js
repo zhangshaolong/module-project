@@ -51,6 +51,7 @@ define(function (require) {
 
             .on('keydown', function (e) {
                 var code = e.keyCode;
+                e.stopPropagation();
                 if (code == 40 || code == 38 || code == 13) {
                     var activeNode = me.autoConatinerNode.find('.auto-item.active');
                     if (code == 13) {

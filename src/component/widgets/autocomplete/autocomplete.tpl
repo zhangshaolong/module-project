@@ -5,6 +5,12 @@
             if (len) {
                 for (var i = 0; i < len; i++) {
                     var item = _this[i];
+                    if (typeof item === 'string') {
+                        item = {
+                            id: item,
+                            text: item
+                        };
+                    }
         %>
                     <li class="auto-item" data-id="{{ item.id }}" data-text="{{ item.text }}"><a href="javascript:;">{{ item.text }}</a></li>
         <%

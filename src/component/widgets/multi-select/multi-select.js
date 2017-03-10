@@ -116,9 +116,6 @@ define(function (require) {
             } else {
                 this.element.removeClass('disabled');
             }
-        },
-        find: function (rule) {
-            return this.element.find(rule);
         }
     });
 

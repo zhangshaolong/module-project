@@ -42,12 +42,11 @@ define(function (require) {
         setContent: function (content) {
             this.dialog.find('.modal-body').html(content);
         },
-        find: function (rule) {
-            return this.dialog.find(rule);
-        },
-        destroy: function () {
-            this.dialog.remove();
-            $('.modal-backdrop').remove();
+        find: {
+            override: true,
+            handler: function (rule) {
+                return this.dialog.find(rule);
+            }
         }
     });
 

@@ -14,11 +14,23 @@
     }
 
     .dropdown-menu {
-        min-width: 100%;
+        & > li {
+            & > a {
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        &.fixed-width {
+            width: 100%;
+        }
     }
 
     .search-container {
         padding: 0 10px 5px 10px;
+        input {
+            width: 100%;
+        }
     }
 
     .caret {

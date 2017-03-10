@@ -10,7 +10,7 @@ define(function (require) {
                 var data = $this.data();
                 oldItemNode.removeClass('active');
                 $this.addClass('active');
-                dropdown.element.find('.selected-item').data(data).html(dropdown.renderItem(data));
+                dropdown.element.find('.selected-item').data(data).html(dropdown.renderSelectedText(data));
                 if (dropdown.name) {
                     dropdown.element.find('[name="' + dropdown.name + '"]').val(data.id);
                 }
@@ -43,18 +43,24 @@ define(function (require) {
 
             .on('input', '.search-container > :text', function (e) {
                 var val = $.trim(this.value);
-                $(this).parent().nextAll().each(function () {
-                    var data = $(this).data('text') + '';
-                    if (data.indexOf(val) > -1) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            })
+                me.filterItems(val, $(this));
+            });
+        },
+        filterItems: function (val, item) {
+            item.parent().nextAll().each(function () {
+                var data = $(this).data('text') + '';
+                if (data.indexOf(val) > -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
         },
         render: function (data, val) {
             val = val || this.value;
+            if (data) {
+                this.formatData(data);
+            }
             var html = Simplite.render('dropdown-template', $.extend(this, {
                 list: data || [],
                 value: val
@@ -66,6 +72,9 @@ define(function (require) {
         },
         setData: function (data) {
             var me = this;
+            if (data) {
+                me.formatData(data);
+            }
             var itemsHtml = Simplite.render('dropdown-template-item', $.extend(this, data || []));
             this.element.find('.dropdown-menu').html(itemsHtml);
 
@@ -82,7 +91,7 @@ define(function (require) {
         getItem: function () {
             return this.element.find('.selected-item').data();
         },
-        renderItem: function (item) {
+        renderSelectedText: function (item) {
             return item.text;
         },
         setDisabled: function (status) {
@@ -92,8 +101,8 @@ define(function (require) {
                 this.element.removeClass('disabled');
             }
         },
-        find: function (rule) {
-            return this.element.find(rule);
+        formatData: function (data) {
+            return data;
         }
     });
 

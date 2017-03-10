@@ -14,6 +14,9 @@ define(function (require) {
         dispose: function () {
             this.element.remove();
             this.fire('dispose');
+        },
+        find: function (rule) {
+            return this.element.find(rule);
         }
     });
     return UI;
