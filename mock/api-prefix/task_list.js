@@ -1,4 +1,4 @@
-module.exports = function (params) {
+function (params) {
     var callback = params.callback;
     var resp = {
         status: 200,

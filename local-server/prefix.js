@@ -6,7 +6,7 @@
 'use strict';
 var URL = require('url');
 var argv = require('yargs').argv;
-var request = require('./request');
+var http = require('http');
 var config = require('./config');
 var prefixConfig = require('./prefixConfig');
 
@@ -43,7 +43,7 @@ module.exports = function (req, res, next) {
             //     return next();
             // }
         }
-        var proxyReq = request({
+        var proxyReq = http.request({
             host: urlInfo.host || config.server.host,
             port: urlInfo.port || config.server.port,
             path: pathname.replace(prefixKey, prefixConfig[matchedKey]),

@@ -24,6 +24,7 @@
     "imagemin-pngquant": "^4.2.0",
     "less": "^2.7.1",
     "less-plugin-functions": "0.0.2",
+    "mock-proxy-middleware": "^1.0.0",
     "requirejs": "^2.1.20",
     "through2": "^2.0.0",
     "yargs": "~3.30.0"

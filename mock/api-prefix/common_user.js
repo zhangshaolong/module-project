@@ -1,4 +1,4 @@
-module.exports = function (params) {
+function (params) {
 
     var name = '张三\n12 sfdsd /nsdfsf ';
     if (params.id == 1) {

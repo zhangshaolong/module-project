@@ -1,4 +1,4 @@
-module.exports = function (params) {
+function (params) {
     return {
         status: 200,
         data: {

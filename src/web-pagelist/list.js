@@ -16,7 +16,7 @@ define(function (require, exports) {
 
     var refreshList = function (moduleNode, pager, args) {
         $.extend(true, params, args);
-        if (!args.product) return;
+        if (!params.product) return;
         service.getPageList(params).done(function (resp) {
             var html = Simplite.render('web-pagelist-list-tbody', resp.data);
             moduleNode.find('tbody').html(html);
