@@ -15,9 +15,11 @@ define(function (require, exports) {
 
         var moduleData = this.data;
 
+        var me = this;
+
         //模拟一个异步处理，由于异步后模块处理器并不能扫描到此节点下面的所有data-module-path，所以可以手动调用模块扫描方法，如下：
         setTimeout(function () {
-            moduleNode.html(Simplite.render('task-list-sub-module-1', {
+            me.render('task-list-sub-module-1', {
                 ip: moduleData.ip + '\nasdf\ndsdff',
                 list: [
                     {
@@ -39,7 +41,7 @@ define(function (require, exports) {
                         tgFlow: 23
                     }
                 ]
-            }));
+            });
 
             require('dep/moduleHandler').init(moduleNode.children(), exports);
         }, 1000);
@@ -78,6 +80,12 @@ define(function (require, exports) {
 
         return deferred.promise();
     };
+
+    exports.methods = {
+        test: function () {
+            alert($(this).html());
+        }
+    }
 
     exports.dispose = function () {
         console.log('dispose task-list/sub-module-1');

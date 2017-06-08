@@ -6,13 +6,7 @@
 
 define(function (require, exports) {
 
-    var Simplite = window.Simplite = require('./simplite');
-
     'use strict';
-    var eventKey = 'm-bind';
-    var splitReg = /\s*:\s*/;
-
-    var slice = Array.prototype.slice;
 
     var disposeModule = function (module) {
         if (!module) {
@@ -68,38 +62,15 @@ define(function (require, exports) {
     exports.load = function (path, moduleNode, parentModule) {
         var moduleData = moduleNode.data();
         var interceptorPath = moduleData.interceptorPath;
-        var execModule = function (factory) {
-            var args = slice.call(arguments, 1);
+        var execModule = function (factory, data) {
             if (factory) {
                 if ($.isFunction(factory)) {
                     factory = new factory();
                 }
                 factory.element = moduleNode;
                 factory.data = moduleData;
-                factory.render = function (tplName, node, data, _type) {
-                    if (node) {
-                        if ($(node)[0].nodeName) {
-                            node = $(node);
-                        } else {
-                            _type = data;
-                            data = node;
-                            node = moduleNode;
-                        }
-                    }
-                    _type = _type || 'html';
-                    node[_type](Simplite.render(tplName, data)).find('[' + eventKey + ']').each(function () {
-                        var eventVal = $(this).attr(eventKey);
-                        if (eventVal) {
-                            var pair = eventVal.split(splitReg);
-                            $(this).removeAttr(eventKey).on(pair[0], factory.methods[pair[1]]);
-                        }
-                    });
-                };
-                factory.append = function (tplName, node, data) {
-                    factory.render(tplName, node, data, 'append');
-                };
                 if ($.isFunction(factory.init)) {
-                    var deferred = factory.init.apply(factory, args);
+                    var deferred = factory.init(data);
                     if (deferred && deferred.done) {
                         deferred.done(function (data) {
                             exports.init(moduleNode.children(), factory);
@@ -142,8 +113,8 @@ define(function (require, exports) {
                         if ($.isFunction(interceptorFactory.init)) {
                             var deferred = interceptorFactory.init();
                             if (deferred && deferred.done) {
-                                deferred.done(function () {
-                                    execModule.apply(null, [factory].concat(slice.apply(arguments)));
+                                deferred.done(function (data) {
+                                    execModule(factory, data);
                                 });
                             } else {
                                 execModule(factory, deferred);
