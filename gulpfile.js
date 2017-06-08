@@ -46,7 +46,7 @@ gulp.task('htmlmin', function () {
 gulp.task('copy', function () {
     gulp.src(['dep/**/*.*', '!dep/**/bootstrap.js', '!dep/simplite.js'])
         .pipe(gulp.dest(path.join(buildPath, 'dep')));
-    gulp.src(['dep/**/bootstrap.js'])
+    gulp.src(['dep/**/bootstrap.js', 'dep/simplite.js'])
         .pipe(uglify())
         .pipe(gulp.dest(path.join(buildPath, 'dep')));
 });

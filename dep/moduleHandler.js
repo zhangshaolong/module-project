@@ -6,8 +6,6 @@
 
 define(function (require, exports) {
 
-    var Simplite = window.Simplite = require('./simplite');
-
     'use strict';
     var eventKey = 'm-bind';
     var splitReg = /\s*:\s*/;
