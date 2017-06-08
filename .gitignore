@@ -5,6 +5,7 @@ npm-debug.log
 router.sublime-project
 router.sublime-workspace
 output
+output_bak
 .DS_Store
 node_modules
 .swp
