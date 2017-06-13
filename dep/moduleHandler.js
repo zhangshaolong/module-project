@@ -8,6 +8,7 @@ define(function (require, exports) {
 
     'use strict';
     var eventKey = 'm-bind';
+    var eventDividerReg = /\s*,\s*/g;
     var splitReg = /\s*:\s*/;
 
     var slice = Array.prototype.slice;
@@ -90,8 +91,12 @@ define(function (require, exports) {
                     node[_type](Simplite.render(tplName, data)).find('[' + eventKey + ']').each(function () {
                         var eventVal = $(this).attr(eventKey);
                         if (eventVal) {
-                            var pair = eventVal.split(splitReg);
-                            $(this).removeAttr(eventKey).on(pair[0], factory.methods[pair[1]]);
+                            var events = eventVal.split(eventDividerReg);
+                            var me = $(this).removeAttr(eventKey);
+                            for (var i = 0, len = events.length; i < len; i++) {
+                                var pair = events[i].split(splitReg);
+                                me.on(pair[0], factory.methods[pair[1]]);
+                            }
                         }
                     });
                 };

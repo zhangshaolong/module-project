@@ -20,7 +20,7 @@
             <td m-bind="click:test">
                 {{ tmp.date }}
             </td>
-            <td>{{ (tmp.natureFlow + tmp.tgFlow) }}</td>
+            <td m-bind="click:test">{{ (tmp.natureFlow + tmp.tgFlow) }}</td>
             <td>{{ tmp.scoreCost }}</td>
             <td class="text-highlight">
                 {{ tmp.tgFlow }}

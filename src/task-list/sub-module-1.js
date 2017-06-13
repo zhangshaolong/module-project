@@ -84,6 +84,9 @@ define(function (require, exports) {
     exports.methods = {
         test: function () {
             alert($(this).html());
+        },
+        test1: function () {
+            alert(1);
         }
     }
 
