@@ -83,6 +83,8 @@ define(function (require, exports) {
                             data = node;
                             node = moduleNode;
                         }
+                    } else {
+                        node = moduleNode;
                     }
                     _type = _type || 'html';
                     node[_type](Simplite.render(tplName, data)).find('[' + eventKey + ']').each(function () {
