@@ -88,7 +88,9 @@ define(function (require, exports) {
                         node = moduleNode;
                     }
                     _type = _type || 'html';
-                    node[_type](Simplite.render(tplName, data)).find('[' + eventKey + ']').each(function () {
+
+                    var renderedNode = $(Simplite.render(tplName, data));
+                    node[_type](renderedNode).find('[' + eventKey + ']').each(function () {
                         var eventVal = $(this).attr(eventKey);
                         if (eventVal) {
                             var events = eventVal.split(eventDividerReg);
@@ -99,6 +101,7 @@ define(function (require, exports) {
                             }
                         }
                     });
+                    exports.init(renderedNode, factory);
                 };
                 factory.append = function (tplName, node, data) {
                     factory.render(tplName, node, data, 'append');
