@@ -93,7 +93,7 @@ define(function (require, exports) {
         }
         var deferred = $.ajax(configs);
         requests.push(deferred);
-        return deferred.pipe(function (response) {
+        var pipe = deferred.pipe(function (response) {
             var holder = options.holder;
             if (holder) {
                 var loading = holder.children('.data-loading');
@@ -125,9 +125,19 @@ define(function (require, exports) {
             for (var i = 0; i < requests.length; i++) {
                 if (requests[i] === deferred) {
                     requests.splice(i--, 1);
+                    return;
                 }
             }
         });
+        pipe.abort = function () {
+            for (var i = 0; i < requests.length; i++) {
+                if (requests[i] === deferred) {
+                    requests.splice(i--, 1)[0].abort();
+                    return;
+                }
+            }
+        };
+        return pipe;
     }
 
     /**

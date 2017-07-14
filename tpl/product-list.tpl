@@ -59,9 +59,9 @@
             <td><pre>{{ filter('formatJson', item.attrs, true) }}</pre></td>
             <td><a class="btn btn-primary" href="{{ window.rootBase }}/product/add?id={{ item.productId }}">编辑</a><span class="separator">|</span><a href="#" class="btn btn-danger to-set-delete" data-id="{{ item.productId }}" data-name="{{ item.productName }}" data-toggle="modal" data-target="#delete-product-modal">删除</a></td>
         </tr>
-    <% 
+    <%
             }
-        } else { 
+        } else {
     %>
         <tr><td colspan="6"><center>没有查询到结果</center></td></tr>
     <% } %>

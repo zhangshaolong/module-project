@@ -14,7 +14,6 @@ define(function (require, exports) {
         service.getProductList({
             holder: moduleNode
         }).done(function (resp) {
-
             if (resp.status === 200) {
                 var data = resp.data;
                 var html = Simplite.render('product-list-product-list', data);
@@ -35,7 +34,7 @@ define(function (require, exports) {
                     alert('删除产品线失败，请重试');
                 }
             });
-            
+
         })
 
         .on('click', '.to-set-delete', function () {

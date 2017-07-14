@@ -42,7 +42,7 @@ define(function (require, exports) {
             var subModule = subModules[i];
             if (subModule === module) {
                 subModules.splice(i, 1);
-                i--;
+                return;
             }
         }
     };

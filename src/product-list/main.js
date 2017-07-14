@@ -7,15 +7,15 @@ define(function (require, exports) {
 
     exports.init = function () {
 
-        var pager = new Pager({
+        var pager = Pager.init({
             element: this.element.find('.pager-container')
         });
         pager.on('page', function (data) {
             console.log(data);
         });
         pager.render({
-            totalPage: 134,
-            displayPageCount: 10
+            totalPage: 13,
+            displayPageCount: 5
         });
     };
 });
