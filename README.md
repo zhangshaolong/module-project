@@ -57,6 +57,6 @@ module.exports = {
 
 #### 9：添加了restful接口的mock，具体使用方式请查看任务列表中的删除任务的接口。
 
-#### 10：支持了proxy模式下，可配置某些接口仍然走本地mock，需要在local-server/mock.js里面配置本地router的map。
+#### 10：支持了proxy模式下，可配置某些接口仍然走本地mock，需要在local-server/config.js里面配置ignoreProxyPaths。
 
 #### 11：项目中的nginx-conf.txt文件中是部分nginx做前后端分离的配置信息，如果需要，请参考。
