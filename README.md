@@ -41,13 +41,26 @@ exports.init = function (dataFromInterceptor) {
 ```
 #### 8：本地开发mock，比如我们的规则是以/module-project/开头的请求都认为是调用后端api的接口，比如：/module-proejct/common/user，那么映射到mock文件为/mock/common_user.js，对应的内容类似如下：
 ```
-module.exports = {
+{
     "status" : 200,
     "data": {
         id: 1,
         name: "张三\n12 sfdsd /nsdfsf "
     }
 };
+
+or
+
+function (params) {
+  return {
+    "status" : 200,
+    "sleep": 1000,
+    "data": {
+        id: 1,
+        name: "张三\n12 sfdsd /nsdfsf "
+    }
+  }
+}
 ```
 #### 可以支持直接的数据或者返回一个function，此function支持获取请求参数，并把return的数据作为mock的数据返回。function用于需要动态结果时使用，可以支持延时返回，对应的返回字段sleep，值为毫秒数。
 
