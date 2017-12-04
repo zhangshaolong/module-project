@@ -290,10 +290,13 @@ define(function (require, exports) {
             return codeStyle ? '<span class="json-number-value">' + data + '</span>' : data;
         } else if (constructor === Array) {
             var astr = codeStyle ? '<span class="json-array-tag">[</span>\n' : '[\n';
-            for (var i = 0, len = data.length; i < len - 1; i++) {
-                astr += indents + space + formatJSON(data[i], codeStyle, space, indents + space) + ',\n';
+            var len = data.length;
+            if (len) {
+                for (var i = 0; i < len - 1; i++) {
+                    astr += indents + space + formatJSON(data[i], codeStyle, space, indents + space) + ',\n';
+                }
+                astr += indents + space + formatJSON(data[len - 1], codeStyle, space, indents + space) + '\n';
             }
-            astr += indents + space + formatJSON(data[len - 1], codeStyle, space, indents + space) + '\n';
             return astr + indents + (codeStyle ? '<span class="json-array-tag">]</span>' : ']');
         } else if (constructor === Object) {
             var ostr = codeStyle ? '<span class="json-object-tag">{</span>\n' : '{\n';
@@ -303,9 +306,9 @@ define(function (require, exports) {
                 ostr += indents + space + (codeStyle ? '<span class="json-object-key">' + '"' + key + '"' + '</span>' : '"' + key + '"') + ': ' + formatJSON(data[key], codeStyle, space, indents + space) + ',\n';
             }
             if (!isEmpty) {
-                ostr = ostr.slice(0, -2);
+                ostr = ostr.slice(0, -2) + '\n';
             }
-            return ostr + '\n' + indents + (codeStyle ? '<span class="json-object-tag">}</span>' : '}');
+            return ostr + indents + (codeStyle ? '<span class="json-object-tag">}</span>' : '}');
         }
     };
 });
