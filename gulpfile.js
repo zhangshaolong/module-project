@@ -5,6 +5,7 @@ var config = require('./gulp-builder/config');
 var server = require('./local-server/server');
 var uglify = require('gulp-uglify');
 var path = require('path');
+var babel = require('gulp-babel');
 
 var htmlIncludeProcessor = require('./gulp-builder/html-include');
 var htmlminProcessor = require('./gulp-builder/html-min');
@@ -44,9 +45,15 @@ gulp.task('htmlmin', function () {
 
 
 gulp.task('copy', function () {
-    gulp.src(['dep/**/*.*', '!dep/**/bootstrap.js', '!dep/simplite.js'])
+    gulp.src(['dep/**/*.*', '!dep/**/bootstrap.js', '!dep/moduleHandler.js', '!dep/simplite.js'])
         .pipe(gulp.dest(path.join(buildPath, 'dep')));
-    gulp.src(['dep/**/bootstrap.js', 'dep/simplite.js'])
+    gulp.src(['dep/**/bootstrap.js', 'dep/moduleHandler.js'])
+        .pipe(uglify())
+        .pipe(gulp.dest(path.join(buildPath, 'dep')));
+    gulp.src(['dep/simplite.js'])
+        .pipe(babel({
+            presets: ['env']
+        }))
         .pipe(uglify())
         .pipe(gulp.dest(path.join(buildPath, 'dep')));
 });

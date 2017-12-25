@@ -33,7 +33,6 @@ module.exports = function () {
                 out: path.join(config.buildPath, config.jsPath, main + '.js')
             });
             content = content.replace(config.baseUrlReg, '$1' + config.jsPath + '$2');
-
             file.contents = new Buffer(content);
             return all;
         });

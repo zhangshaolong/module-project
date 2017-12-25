@@ -12,7 +12,9 @@
   "author": "zhangshaolong",
   "license": "ISC",
   "devDependencies": {
+    "babel-preset-env": "^1.6.1",
     "gulp": "^3.9.0",
+    "gulp-babel": "^7.0.0",
     "gulp-cache": "^0.3.0",
     "gulp-clean": "^0.3.2",
     "gulp-clean-css": "^3.9.0",

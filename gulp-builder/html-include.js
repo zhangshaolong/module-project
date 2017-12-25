@@ -9,6 +9,7 @@ var parseInclude = function (content, encoding) {
         var tplContent = fs.readFileSync(path.resolve(path.join(config.htmlPath, pth)));
         var content = new String(tplContent, encoding);
         Simplite.addTemplate(pth, content);
+        Simplite.compile(pth);
         parseInclude(content, encoding);
     });
 };
@@ -17,7 +18,7 @@ var htmlMerge = exports.htmlMerge = function (htmlContent, encoding, rootBase) {
     var key = (new Date().getTime()) + '_t';
     parseInclude(htmlContent, encoding || 'UTF-8');
     Simplite.addTemplate(key, htmlContent);
-    Simplite.compiles = {};
+    Simplite.compile(key);
     return Simplite.render(key, {
         rootBase: rootBase
     });
