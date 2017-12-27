@@ -311,4 +311,58 @@ define(function (require, exports) {
             return ostr + indents + (codeStyle ? '<span class="json-object-tag">}</span>' : '}');
         }
     };
+
+    var findBreadthFirst = function (data, value, level) {
+        if (!data) return
+        level = level || 1
+        if (data.constructor === Object) {
+            return findBreadthFirst([data], value, level)
+        } else if (data.constructor === Array) {
+            var arr = []
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].value === value) {
+                    return {
+                        level: level,
+                        index: i,
+                        data: data[i]
+                    }
+                } else {
+                    if (data[i].subs) {
+                        arr = arr.concat(data[i].subs)
+                    }
+                }
+            }
+            if (arr.length) {
+                return findBreadthFirst(arr, value, level + 1)
+            }
+        }
+    };
+
+    var findDepthFirst = function (data, value, level, index) {
+        if (!data) return
+        level = level || 1
+        index = index || 0
+        if (data.constructor === Object) {
+            return findDepthFirst([data], value, level, index)
+        } else if (data.constructor === Array) {
+            var flatIndex = 0
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].value === value) {
+                    return {
+                        level: level,
+                        index: index + i,
+                        data: data[i]
+                    }
+                } else {
+                    if (data[i].subs) {
+                        var result = findDepthFirst(data[i].subs, value, level + 1, flatIndex)
+                        flatIndex += data[i].subs.length
+                        if (result) {
+                            return result
+                        }
+                    }
+                }
+            }
+        }
+    }
 });
